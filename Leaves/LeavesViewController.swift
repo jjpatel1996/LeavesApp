@@ -37,7 +37,7 @@ class LeavesViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if LeavesHandler.isFirstTime() {
-            let GetLeavesVC = storyboard?.instantiateViewController(withIdentifier: GetLeavesID) as! GetLeavesViewController
+            let GetLeavesVC = storyboard?.instantiateViewController(withIdentifier: "GetLeavesID") as! GetLeavesViewController
             self.present(GetLeavesVC, animated: true, completion: nil)
             return
         }
