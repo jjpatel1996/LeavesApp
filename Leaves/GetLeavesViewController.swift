@@ -17,6 +17,8 @@ class GetLeavesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        SickLeaveTextField.text = "0"
+        WorkingLeaveTextField.text = "0"
     }
 
     @IBAction func SubmitLeaves(_ sender: Any) {

@@ -28,11 +28,15 @@ class LeavesViewController: UITableViewController {
         return dtFormatter
     }()
     
+    var totalSickLeaves:Int = 0
+    var totalWorkingLeaves:Int = 0
+    var RemainSickLeaves:Int = 0
+    var RemainWorkingLeaves:Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupDesign()
     }
-
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -41,7 +45,15 @@ class LeavesViewController: UITableViewController {
             self.present(GetLeavesVC, animated: true, completion: nil)
             return
         }
-        //Now What to do
+        fetchLeaves()
+        self.tableView.reloadData()
+    }
+    
+    func fetchLeaves(){
+        totalSickLeaves = LeavesHandler.getSickLeaves()
+        totalWorkingLeaves = LeavesHandler.getWorkingLeaves()
+        RemainSickLeaves = LeavesHandler.getSickLeaves()
+        RemainWorkingLeaves = LeavesHandler.getWorkingLeaves()
     }
     
     override func didReceiveMemoryWarning() {
@@ -49,7 +61,7 @@ class LeavesViewController: UITableViewController {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        //NotificationCenter.default.removeObserver(self)
         LeavesFetchResultController.delegate = nil
     }
     
@@ -68,7 +80,13 @@ class LeavesViewController: UITableViewController {
     
     func setupDesign(){
         
-        self.title = "Leaves"
+        //self.title = "Leaves"
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 30))
+        label.textAlignment = .center
+        label.text = "Leaves"
+        label.adjustsFontSizeToFitWidth = true
+        label.font = UIFont(name: "Arial-Bold", size: 23)
+        self.navigationItem.titleView = label
         
         if #available(iOS 11.0, *) {
             self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -112,7 +130,8 @@ class LeavesViewController: UITableViewController {
         
         if indexPath.section == 0 && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "LeaveHeaderID", for: indexPath) as! LeaveHeaderCell
-            //Show Total Leaves
+            cell.SickLeaveDetails.text = "\(totalSickLeaves-RemainSickLeaves) taken | \(RemainSickLeaves) Remain"
+            cell.WorkingLeaveDetails.text = "\(totalWorkingLeaves-RemainWorkingLeaves) taken | \(RemainWorkingLeaves) Remain"
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "LeaveID", for: indexPath) as! LeavesCell
