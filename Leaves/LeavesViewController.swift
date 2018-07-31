@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class LeavesViewController: UITableViewController {
+class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDelegate, UITableViewDataSource {
 
     lazy var LeavesFetchResultController:NSFetchedResultsController<LeavesHistory> = {
         
@@ -17,7 +17,7 @@ class LeavesViewController: UITableViewController {
         let sort1 = NSSortDescriptor(key: #keyPath(LeavesHistory.leave_datetime), ascending: false)
         fetchRequest.sortDescriptors = [sort1]
         
-        let fetchRequestController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.managedObjectContext, sectionNameKeyPath: #keyPath(LeavesHistory.leave_type), cacheName: "LeavesHistory")
+        let fetchRequestController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.managedObjectContext, sectionNameKeyPath: #keyPath(LeavesHistory.leave_type), cacheName: nil)
         fetchRequestController.delegate = self
         return fetchRequestController
     }()
@@ -28,38 +28,48 @@ class LeavesViewController: UITableViewController {
         return dtFormatter
     }()
     
+    @IBOutlet weak var leaveTableView:UITableView!
+
     var totalSickLeaves:Int = 0
     var totalWorkingLeaves:Int = 0
     var RemainSickLeaves:Int = 0
     var RemainWorkingLeaves:Int = 0
     
+    
+    @IBOutlet weak var SickLeaveLabel: UILabel!
+    @IBOutlet weak var WorkingLeaveLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDesign()
+        fetchData()
+        fetchLeaves()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if LeavesHandler.isFirstTime() {
             let GetLeavesVC = storyboard?.instantiateViewController(withIdentifier: "GetLeavesID") as! GetLeavesViewController
+            GetLeavesVC.delegate = self
             self.present(GetLeavesVC, animated: true, completion: nil)
             return
         }
+    }
+    
+    func LeavesSetted() {
         fetchLeaves()
-        self.tableView.reloadData()
+        self.leaveTableView.reloadData()
     }
     
     func fetchLeaves(){
         totalSickLeaves = LeavesHandler.getSickLeaves()
         totalWorkingLeaves = LeavesHandler.getWorkingLeaves()
-        RemainSickLeaves = LeavesHandler.getSickLeaves()
-        RemainWorkingLeaves = LeavesHandler.getWorkingLeaves()
+        RemainSickLeaves = LeavesHandler.getRemainSickLeaves()
+        RemainWorkingLeaves = LeavesHandler.getRemainWorkingLeaves()
+        SickLeaveLabel.text = "\(totalSickLeaves-RemainSickLeaves) taken | \(RemainSickLeaves) remain"
+        WorkingLeaveLabel.text = "\(totalWorkingLeaves-RemainWorkingLeaves) taken | \(RemainWorkingLeaves) remain"
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
+
     deinit {
         //NotificationCenter.default.removeObserver(self)
         LeavesFetchResultController.delegate = nil
@@ -84,14 +94,13 @@ class LeavesViewController: UITableViewController {
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 30))
         label.textAlignment = .center
         label.text = "Leaves"
+        label.textColor = UIColor.white
         label.adjustsFontSizeToFitWidth = true
-        label.font = UIFont(name: "Arial-Bold", size: 23)
+        label.font = UIFont(name: "Arial-Bold", size: 25)
         self.navigationItem.titleView = label
-        
-        if #available(iOS 11.0, *) {
-            self.navigationController?.navigationBar.prefersLargeTitles = true
-        }
-
+        self.leaveTableView.tableFooterView = UIView()
+        leaveTableView.delegate = self
+        leaveTableView.dataSource = self
     }
     
     func showError() {
@@ -106,60 +115,41 @@ class LeavesViewController: UITableViewController {
     }
     
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         if LeavesFetchResultController.sections != nil {
-            return LeavesFetchResultController.sections!.count + 1
+          return LeavesFetchResultController.sections!.count
         }else{
-            return 1
+            return 0
         }
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if LeavesFetchResultController.sections != nil {
-            if section == 0 {
-               return 1
-            }else{
-               return LeavesFetchResultController.sections![section].numberOfObjects
-            }
+           return LeavesFetchResultController.sections![section].numberOfObjects
         }else{
-            return 1
+            return 0
         }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if indexPath.section == 0 && indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "LeaveHeaderID", for: indexPath) as! LeaveHeaderCell
-            cell.SickLeaveDetails.text = "\(totalSickLeaves-RemainSickLeaves) taken | \(RemainSickLeaves) Remain"
-            cell.WorkingLeaveDetails.text = "\(totalWorkingLeaves-RemainWorkingLeaves) taken | \(RemainWorkingLeaves) Remain"
-            return cell
-        }else{
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
             let cell = tableView.dequeueReusableCell(withIdentifier: "LeaveID", for: indexPath) as! LeavesCell
-            let leaveO = LeavesFetchResultController.object(at: indexPath)
+            let leaveO = LeavesFetchResultController.object(at: IndexPath(row: indexPath.row, section: indexPath.section))
             cell.LeaveCount.text = "Total: \(leaveO.leave_count)"
-            cell.LeaveTextView.text = leaveO.leave_description ?? ""
+            cell.LeaveTextView.text = leaveO.leave_description ?? "No Description written"
             cell.LeaveDate.text = dateTimeFormaater.string(from: leaveO.leave_datetime! as Date)
             return cell
-        }
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 35
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        //
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? nil : LeavesFetchResultController.sections![section].name
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return  LeavesFetchResultController.sections![section].name
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             self.popupAlert(title: "Delete Leave", message: "It will also affect to leaves count.", actionTitles: ["Cancel","Delete"], actions: [
                 { cancel in },
@@ -172,21 +162,21 @@ extension LeavesViewController: NSFetchedResultsControllerDelegate {
     
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
+        leaveTableView.beginUpdates()
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
         switch type {
         case .insert:
-            tableView.insertRows(at: [newIndexPath!], with: .fade)
+            leaveTableView.insertRows(at: [newIndexPath!], with: .fade)
             
         case .delete:
-            tableView.deleteRows(at: [indexPath!], with: .fade)
+            leaveTableView.deleteRows(at: [indexPath!], with: .fade)
             
         case .update:
             
-            if let cell = tableView.cellForRow(at: indexPath!) as? LeavesCell {
+            if let cell = leaveTableView.cellForRow(at: indexPath!) as? LeavesCell {
                 let leaveO = LeavesFetchResultController.object(at: indexPath!)
                 cell.LeaveCount.text = "Total: \(leaveO.leave_count)"
                 cell.LeaveTextView.text = leaveO.leave_description ?? ""
@@ -194,8 +184,8 @@ extension LeavesViewController: NSFetchedResultsControllerDelegate {
             }
             
         case .move:
-            tableView.deleteRows(at: [indexPath!], with: .fade)
-            tableView.insertRows(at: [newIndexPath!], with: .fade)
+            leaveTableView.deleteRows(at: [indexPath!], with: .fade)
+            leaveTableView.insertRows(at: [newIndexPath!], with: .fade)
         }
     }
     
@@ -203,15 +193,15 @@ extension LeavesViewController: NSFetchedResultsControllerDelegate {
         NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch type {
         case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+            leaveTableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
         case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
+            leaveTableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
         default: break
         }
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
+        leaveTableView.endUpdates()
     }
     
 }

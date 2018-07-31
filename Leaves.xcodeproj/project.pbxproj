@@ -74,11 +74,11 @@
 			children = (
 				37035C1A210ECDDE00ECF2F6 /* AppDelegate.swift */,
 				37035C1C210ECDDE00ECF2F6 /* LeavesViewController.swift */,
-				37035C50210F07CB00ECF2F6 /* LoginSignupViewController.swift */,
 				37035C52210F0CF900ECF2F6 /* GetLeavesViewController.swift */,
 				37035C4E210EE64800ECF2F6 /* NewLeaveViewController.swift */,
 				37035C4C210ED54800ECF2F6 /* LeavesCell.swift */,
 				37035C38210ECFB000ECF2F6 /* CoreDataController.swift */,
+				37035C50210F07CB00ECF2F6 /* LoginSignupViewController.swift */,
 				37035C4A210ED1A700ECF2F6 /* Classes.swift */,
 				37035C37210ECF1800ECF2F6 /* Model */,
 				37035C1E210ECDDE00ECF2F6 /* Main.storyboard */,

@@ -21,6 +21,6 @@ extension LeavesHistory {
     @NSManaged public var leave_count: Int32
     @NSManaged public var leave_description: String?
     @NSManaged public var dead: Int16
-    @NSManaged public var leave_datetime: NSDate?
+    @NSManaged public var leave_datetime: Date?
 
 }

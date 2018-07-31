@@ -33,6 +33,7 @@ class NewLeaveViewController: UIViewController {
         super.viewDidLoad()
         loadTotalLeaves()
         leaveCountTextField.addTarget(self, action: #selector(textDidChanged(sender:)), for: UIControlEvents.editingChanged)
+        DescriptionTextView.layer.cornerRadius = 8
     }
     
     func loadTotalLeaves(){
@@ -52,7 +53,7 @@ class NewLeaveViewController: UIViewController {
     
     //Animate view
     @IBAction func LeaveCountChangeValue(_ sender: Any) {
-        leaveCountTextField.text = String(IncreaseDecreaseStepper.value)
+        leaveCountTextField.text = String(Int(IncreaseDecreaseStepper.value))
         
     }
     
@@ -88,7 +89,7 @@ class NewLeaveViewController: UIViewController {
         newLeave.dead = 0
         newLeave.leave_count = Int32(leaveCount)
         newLeave.leave_type = leaveType.rawValue
-        newLeave.leave_datetime = NSDate()
+        newLeave.leave_datetime = Date()
         newLeave.leave_description = DescriptionTextView.text
         
         do {
