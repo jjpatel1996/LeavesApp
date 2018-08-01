@@ -36,7 +36,7 @@ class NewLeaveViewController: UIViewController {
         loadTotalLeaves()
         leaveCountTextField.addTarget(self, action: #selector(textDidChanged(sender:)), for: UIControlEvents.editingChanged)
         DescriptionTextView.layer.cornerRadius = 8
-        newLeaveView.layer.cornerRadius = 8
+        //newLeaveView.layer.cornerRadius = 8
         IncreaseDecreaseStepper.maximumValue = Double(sickLeavesRemain)
     }
     

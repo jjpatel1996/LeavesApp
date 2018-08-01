@@ -23,8 +23,8 @@ class GetLeavesViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        SickLeaveTextField.text = "0"
-        WorkingLeaveTextField.text = "0"
+        SickLeaveTextField.text = nil
+        WorkingLeaveTextField.text = nil
         WorkingLeaveTextField.delegate = self
         SickLeaveTextField.delegate = self
     }

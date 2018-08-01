@@ -176,15 +176,16 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
             
             let addLeaveBackCount = leave.leave_count
             
-            CoreDataStack.managedObjectContext.delete(leave)
-            try CoreDataStack.saveContext()
-            
-            print("Added Back \(addLeaveBackCount) For \(leave.leave_type)")
+            print("Added Back \(addLeaveBackCount) For \(leave.leave_type ?? "leave not found")")
             if leave.leave_type == LeaveType.Sick.rawValue {
                 LeavesHandler.SetRemainSickLeaves(leaves: self.RemainSickLeaves + Int(addLeaveBackCount))
             }else{
                 LeavesHandler.SetRemainWorkingLeaves(leaves: self.RemainWorkingLeaves + Int(addLeaveBackCount))
             }
+            
+            CoreDataStack.managedObjectContext.delete(leave)
+            try CoreDataStack.saveContext()
+            
             fetchLeaves()
             
         } catch {
