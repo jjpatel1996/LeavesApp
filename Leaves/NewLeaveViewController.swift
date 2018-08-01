@@ -26,6 +26,8 @@ class NewLeaveViewController: UIViewController {
     
     @IBOutlet weak var newLeaveView: UIView!
     
+    var delegate:LeaveSetDelegate?
+    
     var sickLeavesRemain:Int = 0
     var workingLeavesRemain:Int = 0
     
@@ -34,6 +36,8 @@ class NewLeaveViewController: UIViewController {
         loadTotalLeaves()
         leaveCountTextField.addTarget(self, action: #selector(textDidChanged(sender:)), for: UIControlEvents.editingChanged)
         DescriptionTextView.layer.cornerRadius = 8
+        newLeaveView.layer.cornerRadius = 8
+        IncreaseDecreaseStepper.maximumValue = Double(sickLeavesRemain)
     }
     
     func loadTotalLeaves(){
@@ -54,7 +58,6 @@ class NewLeaveViewController: UIViewController {
     //Animate view
     @IBAction func LeaveCountChangeValue(_ sender: Any) {
         leaveCountTextField.text = String(Int(IncreaseDecreaseStepper.value))
-        
     }
     
     @IBAction func LeaveTypeChanged(_ sender: Any) {
@@ -110,6 +113,7 @@ class NewLeaveViewController: UIViewController {
         do {
             try CoreDataStack.saveContext()
             updateCurrentLeaves(newLeaveCounts: leaveCount)
+            delegate?.LeavesSetted()
             self.dismiss(animated: true, completion: nil)
         } catch {
             print(error.localizedDescription)

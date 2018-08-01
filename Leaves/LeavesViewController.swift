@@ -24,7 +24,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     
     lazy var dateTimeFormaater:DateFormatter = {
         let dtFormatter = DateFormatter()
-        dtFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dtFormatter.dateFormat = "HH:mm:ss dd-MM-yyyy"
         return dtFormatter
     }()
     
@@ -43,11 +43,12 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         super.viewDidLoad()
         setupDesign()
         fetchData()
+        fetchLeaves()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchLeaves()
+        
         if LeavesHandler.isFirstTime() {
             let GetLeavesVC = storyboard?.instantiateViewController(withIdentifier: "GetLeavesID") as! GetLeavesViewController
             GetLeavesVC.delegate = self
@@ -78,7 +79,13 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     
     @IBAction func newLeave(_ sender: Any) {
         let newVC = storyboard?.instantiateViewController(withIdentifier: "NewLeaveViewID") as! NewLeaveViewController
+        newVC.delegate = self
         self.present(newVC, animated: true, completion: nil)
+    }
+    
+    
+    @IBAction func settingTapped(_ sender: Any) {
+        //Setting in future
     }
     
     func fetchData(){
@@ -97,7 +104,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         label.text = "Leaves"
         label.textColor = UIColor.white
         label.adjustsFontSizeToFitWidth = true
-        label.font = UIFont(name: "Arial-Bold", size: 25)
+        label.font = UIFont(name: "Arial-Bold", size: 27)
         self.navigationItem.titleView = label
         self.leaveTableView.tableFooterView = UIView()
         leaveTableView.delegate = self
@@ -154,7 +161,34 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         if editingStyle == .delete {
             self.popupAlert(title: "Delete Leave", message: "It will also affect to leaves count.", actionTitles: ["Cancel","Delete"], actions: [
                 { cancel in },
-                { delete in  }])
+                { delete in
+                    self.deleteLeave(indexPath: indexPath)
+                }])
+        }
+    }
+    
+    func deleteLeave(indexPath:IndexPath){
+        //LeavesFetchResultController.sections![section]
+        
+        let leave = LeavesFetchResultController.object(at: indexPath)
+        
+        do {
+            
+            let addLeaveBackCount = leave.leave_count
+            
+            CoreDataStack.managedObjectContext.delete(leave)
+            try CoreDataStack.saveContext()
+            
+            print("Added Back \(addLeaveBackCount) For \(leave.leave_type)")
+            if leave.leave_type == LeaveType.Sick.rawValue {
+                LeavesHandler.SetRemainSickLeaves(leaves: self.RemainSickLeaves + Int(addLeaveBackCount))
+            }else{
+                LeavesHandler.SetRemainWorkingLeaves(leaves: self.RemainWorkingLeaves + Int(addLeaveBackCount))
+            }
+            fetchLeaves()
+            
+        } catch {
+            self.showError()
         }
     }
     
