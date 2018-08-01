@@ -43,17 +43,18 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         super.viewDidLoad()
         setupDesign()
         fetchData()
-        fetchLeaves()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        fetchLeaves()
         if LeavesHandler.isFirstTime() {
             let GetLeavesVC = storyboard?.instantiateViewController(withIdentifier: "GetLeavesID") as! GetLeavesViewController
             GetLeavesVC.delegate = self
             self.present(GetLeavesVC, animated: true, completion: nil)
             return
         }
+        
     }
     
     func LeavesSetted() {

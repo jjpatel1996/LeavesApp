@@ -67,6 +67,15 @@ class NewLeaveViewController: UIViewController {
         }
     }
     
+    func updateCurrentLeaves(newLeaveCounts:Int){
+        
+        if leaveType == .Sick {
+            LeavesHandler.SetRemainSickLeaves(leaves: sickLeavesRemain-newLeaveCounts)
+        }else {
+            LeavesHandler.SetRemainWorkingLeaves(leaves: workingLeavesRemain-newLeaveCounts)
+        }
+        
+    }
     
     func saveNewLeave(){
         
@@ -78,6 +87,11 @@ class NewLeaveViewController: UIViewController {
             return
         }
         
+        if leaveCount > Int(IncreaseDecreaseStepper.maximumValue) {
+            self.popupAlertwithoutButton(title: "Oppsy!!", message: "How can you take more leaves more then they giving😅")
+            return
+        }
+        
         var newLeave:LeavesHistory!
         if #available(iOS 10.0, *) {
             newLeave = LeavesHistory(entity: LeavesHistory.entity(), insertInto: CoreDataStack.managedObjectContext)
@@ -85,6 +99,7 @@ class NewLeaveViewController: UIViewController {
             let entity = NSEntityDescription.entity(forEntityName: "LeavesHistory", in: CoreDataStack.managedObjectContext)!
             newLeave = LeavesHistory(entity: entity, insertInto: CoreDataStack.managedObjectContext)
         }
+        
         
         newLeave.dead = 0
         newLeave.leave_count = Int32(leaveCount)
@@ -94,6 +109,7 @@ class NewLeaveViewController: UIViewController {
         
         do {
             try CoreDataStack.saveContext()
+            updateCurrentLeaves(newLeaveCounts: leaveCount)
             self.dismiss(animated: true, completion: nil)
         } catch {
             print(error.localizedDescription)
