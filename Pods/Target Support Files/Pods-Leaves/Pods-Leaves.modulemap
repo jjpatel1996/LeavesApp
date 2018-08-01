@@ -1,0 +1,6 @@
+framework module Pods_Leaves {
+  umbrella header "Pods-Leaves-umbrella.h"
+
+  export *
+  module * { export * }
+}
