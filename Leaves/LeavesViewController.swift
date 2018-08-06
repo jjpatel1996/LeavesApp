@@ -80,6 +80,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     @IBAction func newLeave(_ sender: Any) {
         let newVC = storyboard?.instantiateViewController(withIdentifier: "NewLeaveViewID") as! NewLeaveViewController
         newVC.delegate = self
+        newVC.isNew = true
         self.present(newVC, animated: true, completion: nil)
     }
     
@@ -141,16 +142,27 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-            let cell = tableView.dequeueReusableCell(withIdentifier: "LeaveID", for: indexPath) as! LeavesCell
-            let leaveO = LeavesFetchResultController.object(at: IndexPath(row: indexPath.row, section: indexPath.section))
-            cell.LeaveCount.text = "Total: \(leaveO.leave_count)"
-            cell.LeaveTextView.text = leaveO.leave_description ?? "No Description written"
-            cell.LeaveDate.text = dateTimeFormaater.string(from: leaveO.leave_datetime! as Date)
-            return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LeaveID", for: indexPath) as! LeavesCell
+        let leaveO = LeavesFetchResultController.object(at: IndexPath(row: indexPath.row, section: indexPath.section))
+        cell.LeaveCount.text = "Total: \(leaveO.leave_count)"
+        cell.LeaveTextView.text = leaveO.leave_description ?? "No Description written"
+        cell.LeaveDate.text = dateTimeFormaater.string(from: leaveO.leave_datetime! as Date)
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       //
+       //go for edit
+        tableView.deselectRow(at: indexPath, animated: true)
+        gotoEditMode(indexPath: indexPath)
+    }
+    
+    func gotoEditMode(indexPath: IndexPath){
+        let leaveO = LeavesFetchResultController.object(at: IndexPath(row: indexPath.row, section: indexPath.section))
+        let newVC = storyboard?.instantiateViewController(withIdentifier: "NewLeaveViewID") as! NewLeaveViewController
+        newVC.delegate = self
+        newVC.isNew = false
+        newVC.leave = leaveO
+        self.present(newVC, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

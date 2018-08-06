@@ -119,7 +119,7 @@
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LeaveID" rowHeight="98" id="qSV-Xs-qSr" customClass="LeavesCell" customModule="Leaves" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="LeaveID" rowHeight="98" id="qSV-Xs-qSr" customClass="LeavesCell" customModule="Leaves" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="103" width="375" height="98"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qSV-Xs-qSr" id="myr-Zr-K4C">
@@ -253,7 +253,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="INM-xF-XFc">
-                                <rect key="frame" x="0.0" y="437" width="375" height="230"/>
+                                <rect key="frame" x="0.0" y="437" width="375" height="235"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lrz-8e-xUB">
                                         <rect key="frame" x="5" y="5" width="60" height="30"/>
@@ -353,14 +353,14 @@
                                     <constraint firstItem="P8Y-ax-adA" firstAttribute="top" secondItem="INM-xF-XFc" secondAttribute="top" constant="5" id="6Te-SS-McE"/>
                                     <constraint firstItem="lrz-8e-xUB" firstAttribute="leading" secondItem="INM-xF-XFc" secondAttribute="leading" constant="5" id="A7l-Ev-pYQ"/>
                                     <constraint firstItem="s7h-Jx-hUN" firstAttribute="top" secondItem="kJz-ej-LU8" secondAttribute="bottom" constant="3" id="E3K-VQ-baL"/>
-                                    <constraint firstAttribute="height" constant="230" id="HUj-Ip-Mu8"/>
+                                    <constraint firstAttribute="height" constant="235" id="HUj-Ip-Mu8"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lrz-8e-xUB" secondAttribute="trailing" constant="20" symbolic="YES" id="MKV-1Q-LMI"/>
                                     <constraint firstItem="5sA-Uq-af1" firstAttribute="leading" secondItem="INM-xF-XFc" secondAttribute="leading" constant="8" id="UeF-5p-4te"/>
                                     <constraint firstItem="s7h-Jx-hUN" firstAttribute="leading" secondItem="INM-xF-XFc" secondAttribute="leading" constant="8" id="Y0K-Sd-UPj"/>
                                     <constraint firstItem="tVY-Rg-5df" firstAttribute="centerX" secondItem="INM-xF-XFc" secondAttribute="centerX" id="YKz-cp-2hx"/>
                                     <constraint firstItem="kJz-ej-LU8" firstAttribute="leading" secondItem="INM-xF-XFc" secondAttribute="leading" constant="8" id="Yol-Cx-mq0"/>
                                     <constraint firstItem="P8Y-ax-adA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="INM-xF-XFc" secondAttribute="leading" constant="20" symbolic="YES" id="YwP-Y8-laJ"/>
-                                    <constraint firstAttribute="bottom" secondItem="s7h-Jx-hUN" secondAttribute="bottom" constant="5" id="aBa-rO-Ku8"/>
+                                    <constraint firstAttribute="bottom" secondItem="s7h-Jx-hUN" secondAttribute="bottom" constant="10" id="aBa-rO-Ku8"/>
                                     <constraint firstAttribute="trailing" secondItem="s7h-Jx-hUN" secondAttribute="trailing" constant="8" id="byt-Nh-3Z6"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kJz-ej-LU8" secondAttribute="trailing" constant="20" symbolic="YES" id="ciU-gt-zRE"/>
                                     <constraint firstItem="tVY-Rg-5df" firstAttribute="top" secondItem="5sA-Uq-af1" secondAttribute="bottom" constant="12" id="eTm-sP-82F"/>
@@ -373,7 +373,7 @@
                         <color key="backgroundColor" white="1" alpha="0.3986247859589041" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="wiH-UC-CZa" firstAttribute="trailing" secondItem="INM-xF-XFc" secondAttribute="trailing" id="ZSO-Ce-vp5"/>
-                            <constraint firstItem="wiH-UC-CZa" firstAttribute="bottom" secondItem="INM-xF-XFc" secondAttribute="bottom" id="hgC-dr-Zvp"/>
+                            <constraint firstItem="wiH-UC-CZa" firstAttribute="bottom" secondItem="INM-xF-XFc" secondAttribute="bottom" constant="-5" id="hgC-dr-Zvp"/>
                             <constraint firstItem="INM-xF-XFc" firstAttribute="leading" secondItem="wiH-UC-CZa" secondAttribute="leading" id="zRD-Wz-45n"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wiH-UC-CZa"/>
@@ -381,7 +381,9 @@
                     <connections>
                         <outlet property="DescriptionTextView" destination="s7h-Jx-hUN" id="rfG-Pk-pfH"/>
                         <outlet property="IncreaseDecreaseStepper" destination="SOG-O0-5gg" id="0EJ-QN-29R"/>
+                        <outlet property="SaveButton" destination="lrz-8e-xUB" id="KRS-DR-TyB"/>
                         <outlet property="leaveCountTextField" destination="mMf-FP-NI1" id="p2Z-xC-nR1"/>
+                        <outlet property="leaveTypeChanger" destination="tVY-Rg-5df" id="5Kl-ON-nhi"/>
                         <outlet property="newLeaveView" destination="INM-xF-XFc" id="2fz-tU-dPg"/>
                     </connections>
                 </viewController>
@@ -423,7 +425,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="l1M-eE-GWo">
                                                 <rect key="frame" x="0.0" y="50" width="246.5" height="30"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Working Leaves" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z4a-CH-fK6">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Working Leaves" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z4a-CH-fK6">
                                                         <rect key="frame" x="0.0" y="0.0" width="121" height="30"/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

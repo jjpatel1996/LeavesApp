@@ -22,8 +22,15 @@ class NewLeaveViewController: UIViewController {
     
     @IBOutlet weak var DescriptionTextView: UITextView!
     
+    @IBOutlet weak var leaveTypeChanger: UISegmentedControl!
+    
     var leaveType:LeaveType = .Sick
     
+    var isNew:Bool = true
+    
+    var leave:LeavesHistory?
+    
+    @IBOutlet weak var SaveButton: UIButton!
     @IBOutlet weak var newLeaveView: UIView!
     
     var delegate:LeaveSetDelegate?
@@ -31,13 +38,40 @@ class NewLeaveViewController: UIViewController {
     var sickLeavesRemain:Int = 0
     var workingLeavesRemain:Int = 0
     
+    var remainTotalLeaveForCurrentSelectedLeave:Int = 0
     override func viewDidLoad() {
         super.viewDidLoad()
         loadTotalLeaves()
         leaveCountTextField.addTarget(self, action: #selector(textDidChanged(sender:)), for: UIControlEvents.editingChanged)
         DescriptionTextView.layer.cornerRadius = 8
-        //newLeaveView.layer.cornerRadius = 8
-        IncreaseDecreaseStepper.maximumValue = Double(sickLeavesRemain)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if isNew {
+            IncreaseDecreaseStepper.maximumValue = Double(sickLeavesRemain)
+        }else{
+            guard leave != nil else {
+                self.dismiss(animated: true, completion: nil)
+                return
+            }
+            //Set IDS Max Value
+            SaveButton.setTitle("Update", for: .normal)
+            leaveTypeChanger.isEnabled = false
+            
+            if leave!.leave_type == LeaveType.Sick.rawValue {
+                leaveType = .Sick
+                remainTotalLeaveForCurrentSelectedLeave = sickLeavesRemain + Int(leave!.leave_count)
+            }else{
+                leaveType = .Working
+                remainTotalLeaveForCurrentSelectedLeave = workingLeavesRemain + Int(leave!.leave_count)
+            }
+            IncreaseDecreaseStepper.maximumValue = Double(remainTotalLeaveForCurrentSelectedLeave)
+            leaveCountTextField.text = String(leave!.leave_count)
+            DescriptionTextView.text = leave?.leave_description
+            
+        }
     }
     
     func loadTotalLeaves(){
@@ -47,11 +81,19 @@ class NewLeaveViewController: UIViewController {
     
     @objc func textDidChanged(sender:UITextField){
         if let value = Int(sender.text!) {
-            let LeaveRemainForcurrentType = leaveType == .Sick ? sickLeavesRemain : workingLeavesRemain
-            if value > LeaveRemainForcurrentType {
-                leaveCountTextField.text = String(LeaveRemainForcurrentType)
-                IncreaseDecreaseStepper.value = Double(LeaveRemainForcurrentType)
+            if isNew {
+                let LeaveRemainForcurrentType = leaveType == .Sick ? sickLeavesRemain : workingLeavesRemain
+                if value > LeaveRemainForcurrentType {
+                    leaveCountTextField.text = String(LeaveRemainForcurrentType)
+                    IncreaseDecreaseStepper.value = Double(LeaveRemainForcurrentType)
+                }
+            }else{
+                if value > remainTotalLeaveForCurrentSelectedLeave {
+                    leaveCountTextField.text = String(remainTotalLeaveForCurrentSelectedLeave)
+                    IncreaseDecreaseStepper.value = Double(remainTotalLeaveForCurrentSelectedLeave)
+                }
             }
+            
         }
     }
     
@@ -82,44 +124,79 @@ class NewLeaveViewController: UIViewController {
     
     func saveNewLeave(){
         
-        var leaveCount = 0
-        if let Count = Int(leaveCountTextField.text!){
-            leaveCount = Count
+        if isNew {
+            
+            var leaveCount = 0
+            if let Count = Int(leaveCountTextField.text!){
+                leaveCount = Count
+            }else{
+                self.popupAlertwithoutButton(title: "Oppsy!!", message: "How can you take leave without inserting days 😅")
+                return
+            }
+            
+            if leaveCount > Int(IncreaseDecreaseStepper.maximumValue) {
+                self.popupAlertwithoutButton(title: "Oppsy!!", message: "How can you take more leaves more then they giving😅")
+                return
+            }
+            
+           var newLeave:LeavesHistory!
+            if #available(iOS 10.0, *) {
+                newLeave = LeavesHistory(entity: LeavesHistory.entity(), insertInto: CoreDataStack.managedObjectContext)
+            } else {
+                let entity = NSEntityDescription.entity(forEntityName: "LeavesHistory", in: CoreDataStack.managedObjectContext)!
+                newLeave = LeavesHistory(entity: entity, insertInto: CoreDataStack.managedObjectContext)
+            }
+            
+            
+            newLeave.dead = 0
+            newLeave.leave_count = Int32(leaveCount)
+            newLeave.leave_type = leaveType.rawValue
+            newLeave.leave_datetime = Date()
+            newLeave.leave_description = DescriptionTextView.text
+            
+            do {
+                try CoreDataStack.saveContext()
+                updateCurrentLeaves(newLeaveCounts: Int(leaveCount))
+                delegate?.LeavesSetted()
+                self.dismiss(animated: true, completion: nil)
+            } catch {
+                print(error.localizedDescription)
+                showError()
+            }
+            
         }else{
-            self.popupAlertwithoutButton(title: "Oppsy!!", message: "How can you take leave without inserting days 😅")
-            return
-        }
+            
+            
+            let oldValue = Int(leave!.leave_count)
+            
+            var leaveCount = 0
+            if let Count = Int(leaveCountTextField.text!){
+                leaveCount = Count
+            }else{
+                self.popupAlertwithoutButton(title: "Oppsy!!", message: "How can you take leave without inserting days 😅")
+                return
+            }
         
-        if leaveCount > Int(IncreaseDecreaseStepper.maximumValue) {
-            self.popupAlertwithoutButton(title: "Oppsy!!", message: "How can you take more leaves more then they giving😅")
-            return
-        }
-        
-        var newLeave:LeavesHistory!
-        if #available(iOS 10.0, *) {
-            newLeave = LeavesHistory(entity: LeavesHistory.entity(), insertInto: CoreDataStack.managedObjectContext)
-        } else {
-            let entity = NSEntityDescription.entity(forEntityName: "LeavesHistory", in: CoreDataStack.managedObjectContext)!
-            newLeave = LeavesHistory(entity: entity, insertInto: CoreDataStack.managedObjectContext)
-        }
-        
-        
-        newLeave.dead = 0
-        newLeave.leave_count = Int32(leaveCount)
-        newLeave.leave_type = leaveType.rawValue
-        newLeave.leave_datetime = Date()
-        newLeave.leave_description = DescriptionTextView.text
-        
-        do {
-            try CoreDataStack.saveContext()
-            updateCurrentLeaves(newLeaveCounts: leaveCount)
-            delegate?.LeavesSetted()
-            self.dismiss(animated: true, completion: nil)
-        } catch {
-            print(error.localizedDescription)
-            showError()
-        }
-        
+            if leaveCount > remainTotalLeaveForCurrentSelectedLeave {
+                self.popupAlertwithoutButton(title: "Oppsy!!", message: "How can you take more leaves more then they giving😅")
+                return
+            }
+            
+            //Update Old Data
+            leave!.leave_count = Int32(leaveCount)
+            leave!.leave_type = leaveType.rawValue
+            leave!.leave_description = DescriptionTextView.text
+            
+            do {
+                try CoreDataStack.saveContext()
+                updateCurrentLeaves(newLeaveCounts: leaveCount-oldValue)
+                delegate?.LeavesSetted()
+                self.dismiss(animated: true, completion: nil)
+            } catch {
+                print(error.localizedDescription)
+                showError()
+            }
+        } 
     }
     
     @IBAction func SaveButtonTapped(_ sender: Any) {
