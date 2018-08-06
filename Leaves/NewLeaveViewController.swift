@@ -50,13 +50,16 @@ class NewLeaveViewController: UIViewController {
         super.viewWillAppear(animated)
         
         if isNew {
+            leaveCountTextField.text = "0"
             IncreaseDecreaseStepper.maximumValue = Double(sickLeavesRemain)
+            IncreaseDecreaseStepper.value = 0
         }else{
             guard leave != nil else {
                 self.dismiss(animated: true, completion: nil)
                 return
             }
             //Set IDS Max Value
+            IncreaseDecreaseStepper.value = Double(leave!.leave_count)
             SaveButton.setTitle("Update", for: .normal)
             leaveTypeChanger.isEnabled = false
             
