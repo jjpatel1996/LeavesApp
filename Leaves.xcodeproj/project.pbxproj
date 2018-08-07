@@ -22,6 +22,7 @@
 		37035C4F210EE64800ECF2F6 /* NewLeaveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C4E210EE64800ECF2F6 /* NewLeaveViewController.swift */; };
 		37035C51210F07CB00ECF2F6 /* LoginSignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C50210F07CB00ECF2F6 /* LoginSignupViewController.swift */; };
 		37035C53210F0CF900ECF2F6 /* GetLeavesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C52210F0CF900ECF2F6 /* GetLeavesViewController.swift */; };
+		37B0140A2119649200B5B37B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 37B014092119649200B5B37B /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		37035C4E210EE64800ECF2F6 /* NewLeaveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLeaveViewController.swift; sourceTree = "<group>"; };
 		37035C50210F07CB00ECF2F6 /* LoginSignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupViewController.swift; sourceTree = "<group>"; };
 		37035C52210F0CF900ECF2F6 /* GetLeavesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLeavesViewController.swift; sourceTree = "<group>"; };
+		37B014092119649200B5B37B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7277804FF0BC6DC9DCCC84E2 /* Pods_Leaves.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Leaves.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF920AE570BE1E26F86F5D93 /* Pods-Leaves.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leaves.release.xcconfig"; path = "Pods/Target Support Files/Pods-Leaves/Pods-Leaves.release.xcconfig"; sourceTree = "<group>"; };
 		C05DB761FE5BCFE6FE920279 /* Pods-Leaves.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leaves.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Leaves/Pods-Leaves.debug.xcconfig"; sourceTree = "<group>"; };
@@ -80,13 +82,14 @@
 			isa = PBXGroup;
 			children = (
 				37035C1A210ECDDE00ECF2F6 /* AppDelegate.swift */,
+				37035C50210F07CB00ECF2F6 /* LoginSignupViewController.swift */,
 				37035C1C210ECDDE00ECF2F6 /* LeavesViewController.swift */,
 				37035C52210F0CF900ECF2F6 /* GetLeavesViewController.swift */,
 				37035C4E210EE64800ECF2F6 /* NewLeaveViewController.swift */,
 				37035C4C210ED54800ECF2F6 /* LeavesCell.swift */,
 				37035C38210ECFB000ECF2F6 /* CoreDataController.swift */,
-				37035C50210F07CB00ECF2F6 /* LoginSignupViewController.swift */,
 				37035C4A210ED1A700ECF2F6 /* Classes.swift */,
+				37B014092119649200B5B37B /* GoogleService-Info.plist */,
 				37035C37210ECF1800ECF2F6 /* Model */,
 				37035C1E210ECDDE00ECF2F6 /* Main.storyboard */,
 				37035C24210ECDEF00ECF2F6 /* Assets.xcassets */,
@@ -135,6 +138,7 @@
 				37035C14210ECDDE00ECF2F6 /* Frameworks */,
 				37035C15210ECDDE00ECF2F6 /* Resources */,
 				26D0FAAE2553BA94A27CE082 /* [CP] Embed Pods Frameworks */,
+				46F7FF38A48AB67B4267B346 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -184,6 +188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37035C28210ECDEF00ECF2F6 /* LaunchScreen.storyboard in Resources */,
+				37B0140A2119649200B5B37B /* GoogleService-Info.plist in Resources */,
 				37035C25210ECDEF00ECF2F6 /* Assets.xcassets in Resources */,
 				37035C20210ECDDE00ECF2F6 /* Main.storyboard in Resources */,
 			);
@@ -217,15 +222,43 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Leaves/Pods-Leaves-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Leaves/Pods-Leaves-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		46F7FF38A48AB67B4267B346 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Leaves/Pods-Leaves-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Leaves/Pods-Leaves-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

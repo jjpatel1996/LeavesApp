@@ -14,7 +14,7 @@
         <!--Leaves View Controller-->
         <scene sceneID="lD9-K9-ixN">
             <objects>
-                <viewController id="8zU-2A-nHN" customClass="LeavesViewController" customModule="Leaves" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LeavesID" id="8zU-2A-nHN" customClass="LeavesViewController" customModule="Leaves" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9kG-WC-G1F">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -510,10 +510,10 @@
             </objects>
             <point key="canvasLocation" x="1654" y="175"/>
         </scene>
-        <!--View Controller-->
+        <!--Login Signup View Controller-->
         <scene sceneID="UY7-sB-fRk">
             <objects>
-                <viewController id="t0p-Ak-wr6" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AuthID" id="t0p-Ak-wr6" customClass="LoginSignupViewController" customModule="Leaves" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ixh-z6-3ed">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -568,25 +568,52 @@
                                 <state key="normal" title="Log in">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="LoginSignupPressed:" destination="t0p-Ak-wr6" eventType="touchUpInside" id="jV6-UP-h2g"/>
+                                </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Sp7-3F-kDs">
+                                <rect key="frame" x="125" y="261" width="125" height="28"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="27" id="BmI-nM-xLw"/>
+                                    <constraint firstAttribute="width" constant="125" id="adZ-Il-v5W"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Login"/>
+                                    <segment title="SignUp"/>
+                                </segments>
+                                <color key="tintColor" red="0.01237811055034399" green="0.4060710072517395" blue="0.83826714754104614" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="LoginSignupDidChange:" destination="t0p-Ak-wr6" eventType="valueChanged" id="xAi-5b-GLH"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="ZxI-eI-lHZ" firstAttribute="width" secondItem="Ixh-z6-3ed" secondAttribute="width" multiplier="0.7" id="Gdh-G4-Rrj"/>
                             <constraint firstItem="3KU-Ej-8Xq" firstAttribute="centerX" secondItem="Ixh-z6-3ed" secondAttribute="centerX" id="Ggh-HX-6Bf"/>
                             <constraint firstItem="aYr-HE-AAc" firstAttribute="width" secondItem="Ixh-z6-3ed" secondAttribute="width" multiplier="0.7" id="Qlh-IO-qPL"/>
+                            <constraint firstItem="Sp7-3F-kDs" firstAttribute="centerX" secondItem="Ixh-z6-3ed" secondAttribute="centerX" id="Qxb-hb-5kx"/>
                             <constraint firstItem="3KU-Ej-8Xq" firstAttribute="top" secondItem="cQ5-8m-b3D" secondAttribute="top" constant="20" id="XBw-2g-PSc"/>
                             <constraint firstItem="aYr-HE-AAc" firstAttribute="centerX" secondItem="Ixh-z6-3ed" secondAttribute="centerX" id="bpj-ot-Qp3"/>
                             <constraint firstItem="aYr-HE-AAc" firstAttribute="centerY" secondItem="Ixh-z6-3ed" secondAttribute="centerY" id="ewO-jp-cQ5"/>
                             <constraint firstItem="ZxI-eI-lHZ" firstAttribute="centerX" secondItem="Ixh-z6-3ed" secondAttribute="centerX" id="g8m-Mx-YsD"/>
                             <constraint firstItem="ZxI-eI-lHZ" firstAttribute="top" secondItem="aYr-HE-AAc" secondAttribute="bottom" constant="12" id="pxd-rT-jPB"/>
+                            <constraint firstItem="aYr-HE-AAc" firstAttribute="top" secondItem="Sp7-3F-kDs" secondAttribute="bottom" constant="8" id="zUN-GF-6KF"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cQ5-8m-b3D"/>
                     </view>
+                    <connections>
+                        <outlet property="EmailTextField" destination="RXX-u8-3ln" id="S9e-Hu-foA"/>
+                        <outlet property="LoginSignupButton" destination="ZxI-eI-lHZ" id="kfZ-Ou-x6q"/>
+                        <outlet property="PasswordTextField" destination="O4N-vD-Fs7" id="I0g-qH-oeE"/>
+                        <outlet property="lsChangeSegment" destination="Sp7-3F-kDs" id="GSL-8e-k4g"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AHx-6G-NTd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="290" y="931"/>
+            <point key="canvasLocation" x="288.80000000000001" y="930.58470764617698"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ohJ-1H-Uwq">
