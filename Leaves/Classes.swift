@@ -113,6 +113,10 @@ enum LeavesFont : String {
 
 extension UIColor {
     
+    static func themeColor() -> UIColor {
+        return UIColor.rgb(0, green: 122, blue: 225)
+    }
+    
     static func rgb(_ red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
     }

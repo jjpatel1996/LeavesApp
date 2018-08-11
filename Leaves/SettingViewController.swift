@@ -12,9 +12,9 @@ import GoogleSignIn
 
 enum SettingType:String {
     case Profile = "Profile"
-    case Sync = "Sync data to server"
+    case Sync = "Sync data online"
     case Logout = "Logout from device"
-    case EditLeave = "Add/Edit total and remain leaves"
+    case EditLeave = "Total and remain leaves"
     case LoginSignUp = "Login/Signup" //Show LoginSignUp VC By Popup
 }
 
@@ -39,22 +39,29 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     var settingSections = [SettingType]()
     var leaveCells:[EditLeaveType] = [.TotalWorkingLeaves,.RemainWorkingLeaves,.TotalSickLeaves,.RemainSickLeaves]
     var profilesCells:[Profiles] = [.ProfileImage,.EmailAddress,.Name,.ContactNo]
-    
+    var hights = [CGFloat]()
+        
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Setting"
         SettingTableView.delegate = self
         SettingTableView.dataSource = self
         
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(closeView))
         settingSections.append(SettingType.EditLeave)
+        hights.append(50)
         settingSections.append(SettingType.Sync)
+        hights.append(50)
         
         if Auth.auth().currentUser != nil {
             settingSections.insert(SettingType.Profile, at: 0)
+            hights.insert(120, at: 0)
             settingSections.append(SettingType.Logout)
+            hights.append(50)
         } else {
             settingSections.append(SettingType.LoginSignUp)
+            hights.append(50)
         }
-        
     }
 
     var isFirstTime:Bool = true
@@ -65,6 +72,10 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }else{
             self.SettingTableView.reloadData()
         }
+    }
+    
+    @objc func closeView(){
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -80,7 +91,8 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         if settingSections[section] == .EditLeave {
             return leaveCells.count
         }else if settingSections[section] == .Profile {
-            return profilesCells.count
+            return 1
+            //profilesCells.count
         }else{
             return 1
         }
@@ -111,6 +123,10 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             loginVC.isPageOpenByPopup = true
             self.present( UINavigationController(rootViewController: loginVC), animated: true, completion: nil)
         }
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return hights[indexPath.section]
     }
     
     func setupLoginSignupCell(indexPath:IndexPath) -> UITableViewCell {
