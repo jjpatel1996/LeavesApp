@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A7B303C211EE1EA0034D545 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B303B211EE1EA0034D545 /* SettingViewController.swift */; };
+		0A7B303F211EE3D60034D545 /* SettingCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B303E211EE3D60034D545 /* SettingCells.swift */; };
 		331108ED5DADE9EE03888FB7 /* Pods_Leaves.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7277804FF0BC6DC9DCCC84E2 /* Pods_Leaves.framework */; };
 		37035C1B210ECDDE00ECF2F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C1A210ECDDE00ECF2F6 /* AppDelegate.swift */; };
 		37035C1D210ECDDE00ECF2F6 /* LeavesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C1C210ECDDE00ECF2F6 /* LeavesViewController.swift */; };
@@ -26,6 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A7B303B211EE1EA0034D545 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		0A7B303E211EE3D60034D545 /* SettingCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCells.swift; sourceTree = "<group>"; };
 		37035C17210ECDDE00ECF2F6 /* Leaves.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leaves.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37035C1A210ECDDE00ECF2F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37035C1C210ECDDE00ECF2F6 /* LeavesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeavesViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +64,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A7B303D211EE3BA0034D545 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				37035C4C210ED54800ECF2F6 /* LeavesCell.swift */,
+				0A7B303E211EE3D60034D545 /* SettingCells.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		37035C0E210ECDDE00ECF2F6 = {
 			isa = PBXGroup;
 			children = (
@@ -84,12 +97,13 @@
 				37035C1A210ECDDE00ECF2F6 /* AppDelegate.swift */,
 				37035C50210F07CB00ECF2F6 /* LoginSignupViewController.swift */,
 				37035C1C210ECDDE00ECF2F6 /* LeavesViewController.swift */,
+				0A7B303B211EE1EA0034D545 /* SettingViewController.swift */,
 				37035C52210F0CF900ECF2F6 /* GetLeavesViewController.swift */,
 				37035C4E210EE64800ECF2F6 /* NewLeaveViewController.swift */,
-				37035C4C210ED54800ECF2F6 /* LeavesCell.swift */,
 				37035C38210ECFB000ECF2F6 /* CoreDataController.swift */,
 				37035C4A210ED1A700ECF2F6 /* Classes.swift */,
 				37B014092119649200B5B37B /* GoogleService-Info.plist */,
+				0A7B303D211EE3BA0034D545 /* Cells */,
 				37035C37210ECF1800ECF2F6 /* Model */,
 				37035C1E210ECDDE00ECF2F6 /* Main.storyboard */,
 				37035C24210ECDEF00ECF2F6 /* Assets.xcassets */,
@@ -271,6 +285,7 @@
 				37035C1D210ECDDE00ECF2F6 /* LeavesViewController.swift in Sources */,
 				37035C46210ED0CA00ECF2F6 /* LeavesHistory+CoreDataClass.swift in Sources */,
 				37035C51210F07CB00ECF2F6 /* LoginSignupViewController.swift in Sources */,
+				0A7B303F211EE3D60034D545 /* SettingCells.swift in Sources */,
 				37035C1B210ECDDE00ECF2F6 /* AppDelegate.swift in Sources */,
 				37035C39210ECFB000ECF2F6 /* CoreDataController.swift in Sources */,
 				37035C53210F0CF900ECF2F6 /* GetLeavesViewController.swift in Sources */,
@@ -279,6 +294,7 @@
 				37035C23210ECDDE00ECF2F6 /* Leaves.xcdatamodeld in Sources */,
 				37035C4B210ED1A700ECF2F6 /* Classes.swift in Sources */,
 				37035C4F210EE64800ECF2F6 /* NewLeaveViewController.swift in Sources */,
+				0A7B303C211EE1EA0034D545 /* SettingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance().delegate = self
         
         if Auth.auth().currentUser != nil {
+            print("User alreadt exist.")
             // User is signed in.
             // ...
             //goto Leave VC
@@ -54,16 +55,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
         // ...
+        print(user.profile.email)
+        
         if let error = error {
-            // ...
+            print(error.localizedDescription)
             return
         }
         
         guard let authentication = user.authentication else { return }
         print(authentication)
-        //let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-         //                                              accessToken: authentication.accessToken)
-        // ...
+
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                       accessToken: authentication.accessToken)
+        
+        Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
+            if let error = error {
+                // ...
+                print(error.localizedDescription)
+                return
+            }
+            
+//            let leaveVC = self.storyboard?.instantiateViewController(withIdentifier: "LeavesID") as! LeavesViewController
+//            self.navigationController?.pushViewController(leaveVC, animated: true)
+            print("Just SignedIn")
+            // User is signed in
+            // ...
+        }
     }
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {

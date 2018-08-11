@@ -46,6 +46,10 @@ class GetLeavesViewController: UIViewController, UITextFieldDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
+    func saveInFirebase(SickLeave:Int,WorkingLeave:Int){
+            
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

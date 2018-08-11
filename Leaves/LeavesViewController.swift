@@ -85,9 +85,10 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         self.present(newVC, animated: true, completion: nil)
     }
     
-    
     @IBAction func settingTapped(_ sender: Any) {
         //Setting in future
+        let settingVC = storyboard?.instantiateViewController(withIdentifier: "SettingVCID") as! SettingViewController
+        self.present(UINavigationController(rootViewController: settingVC), animated: true, completion: nil)
     }
     
     func fetchData(){
@@ -100,7 +101,6 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     
     func setupDesign(){
         
-        //self.title = "Leaves"
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 30))
         label.textAlignment = .center
         label.text = "Leaves"
@@ -254,13 +254,4 @@ extension LeavesViewController: NSFetchedResultsControllerDelegate {
     }
     
 }
-
-
-
-
-
-
-
-
-
 

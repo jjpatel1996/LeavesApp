@@ -11,6 +11,16 @@ import UIKit
 
 public class LeavesHandler {
     
+    static func isSyncON() -> Bool {
+        return UserDefaults.standard.bool(forKey: "Sync")
+    }
+    
+    static func SetSync(isOn:Bool) {
+        let storage = UserDefaults.standard
+        storage.set(isOn, forKey: "Sync")
+        storage.synchronize()
+    }
+    
     static func isFirstTime() -> Bool {
         let storage = UserDefaults.standard
         return storage.integer(forKey: "FirstTime") == 0

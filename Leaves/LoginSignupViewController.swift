@@ -11,9 +11,11 @@ import Firebase
 import GoogleSignIn
 
 //AuthID
-class LoginSignupViewController: UIViewController, GIDSignInUIDelegate {
+class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
 
     var signInButton: GIDSignInButton!
+    
+    var isPageOpenByPopup:Bool = false
     
     @IBOutlet weak var EmailTextField: UITextField!
     
@@ -28,7 +30,8 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate {
         lsChangeSegment.selectedSegmentIndex = 0
         LoginSignupButton.setTitle("Log in", for: .normal)
         GIDSignIn.sharedInstance().uiDelegate = self
-        //GIDSignIn.sharedInstance().signIn()
+        GIDSignIn.sharedInstance().delegate = self
+     
         googleButton()
         
     }
@@ -60,30 +63,58 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate {
             return
         }
         
+        let email = EmailTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        
         if lsChangeSegment.selectedSegmentIndex == 0 { //Login
-            Auth.auth().signIn(withEmail: EmailTextField.text!, password: PasswordTextField.text!) { (user, error) in
+            Auth.auth().signIn(withEmail: email, password: PasswordTextField.text!) { (user, error) in
                 if let error = error {
-                    // ...
+      
                     print(error.localizedDescription)
+                    self.popupAlertwithoutButton(title: "Error", message: error.localizedDescription)
                     return
                 }
+                guard user != nil else {
+                    self.gotoLeaveVC()
+                    return
+                }
+                self.insertUserFirebase(userID: user!.user.uid, Email: email, FName: nil, LName: nil, ContactNo: nil, imageURL: nil)
+                self.gotoLeaveVC()
             }
-        }else{ //SignUp
-            Auth.auth().createUser(withEmail: EmailTextField.text!, password: PasswordTextField.text!) { (authResult, error) in
+        }else{
+            Auth.auth().createUser(withEmail: email, password: PasswordTextField.text!) { (authResult, error) in
                 if let error = error {
-                    // ...
+           
                     print(error.localizedDescription)
+                    self.popupAlertwithoutButton(title: "Error", message: error.localizedDescription)
                     return
                 }
+                
+                guard authResult != nil else {
+                    self.gotoLeaveVC()
+                    return
+                }
+                self.insertUserFirebase(userID: authResult!.user.uid, Email: email, FName: nil, LName: nil, ContactNo: nil, imageURL: nil)
+                self.gotoLeaveVC()
             }
         }
         
     }
     
+    func gotoLeaveVC(){
+        if isPageOpenByPopup {
+            self.navigationController?.dismiss(animated: true, completion: nil)
+            return
+        }
+        let leaveVC = self.storyboard?.instantiateViewController(withIdentifier: "LeaveID") as! LeavesViewController
+        self.navigationController?.pushViewController(leaveVC, animated: true)
+    }
+    
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-        // ...
+  
+        print(user.profile.email)
+        
         if let error = error {
-            // ...
+          
             print(error.localizedDescription)
             return
         }
@@ -91,7 +122,8 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate {
         guard let authentication = user.authentication else { return }
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                        accessToken: authentication.accessToken)
-        // ...
+
+        print(credential.description)
         
         Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
             if let error = error {
@@ -99,26 +131,39 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate {
                 print(error.localizedDescription)
                 return
             }
-            let leaveVC = self.storyboard?.instantiateViewController(withIdentifier: "LeavesID") as! LeavesViewController
-            self.navigationController?.pushViewController(leaveVC, animated: true)
-            print("Just SignedIn")
-            // User is signed in
-            // ...
+            var imageURL:URL?
+            if user.profile.hasImage {
+                imageURL = user.profile.imageURL(withDimension: 100)
+            }
+            self.insertUserFirebase(userID: (authResult?.user.uid)!, Email: user.profile.email, FName: user.profile.name, LName: nil, ContactNo: nil, imageURL: imageURL)
+            self.gotoLeaveVC()
         }
         
     }
     
-    //Sign Out
-    /*
-     let firebaseAuth = Auth.auth()
-     do {
-     try firebaseAuth.signOut()
-     } catch let signOutError as NSError {
-     print ("Error signing out: %@", signOutError)
-     }
-     
-     */
+    func insertUserFirebase(userID:String,Email:String,FName:String?,LName:String?,ContactNo:String?,imageURL:URL?){
+        
+        var UserDictionary: [String:Any] = ["Email":Email,"isVerified":false]
+        
+        if imageURL != nil {
+            UserDictionary["ProfileURL"] = imageURL!.absoluteString
+        }
 
+        if FName != nil {
+            UserDictionary["FirstName"] = FName
+        }
+        if LName != nil {
+            UserDictionary["LastName"] = LName
+        }
+        if ContactNo != nil {
+            UserDictionary["ContactNo"] = ContactNo
+        }
+        
+        var ref: DatabaseReference!
+        ref = Database.database().reference()
+        
+        ref.child("Users").child(userID).setValue(UserDictionary)
+    }
     
-    
+
 }
