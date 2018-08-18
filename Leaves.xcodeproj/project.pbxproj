@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0A7B303C211EE1EA0034D545 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B303B211EE1EA0034D545 /* SettingViewController.swift */; };
 		0A7B303F211EE3D60034D545 /* SettingCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B303E211EE3D60034D545 /* SettingCells.swift */; };
+		0AF9AB93212837E200F909C2 /* FirebaseActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9AB92212837E200F909C2 /* FirebaseActivity.swift */; };
 		331108ED5DADE9EE03888FB7 /* Pods_Leaves.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7277804FF0BC6DC9DCCC84E2 /* Pods_Leaves.framework */; };
 		37035C1B210ECDDE00ECF2F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C1A210ECDDE00ECF2F6 /* AppDelegate.swift */; };
 		37035C1D210ECDDE00ECF2F6 /* LeavesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C1C210ECDDE00ECF2F6 /* LeavesViewController.swift */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		0A7B303B211EE1EA0034D545 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		0A7B303E211EE3D60034D545 /* SettingCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCells.swift; sourceTree = "<group>"; };
+		0AF9AB92212837E200F909C2 /* FirebaseActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseActivity.swift; sourceTree = "<group>"; };
 		37035C17210ECDDE00ECF2F6 /* Leaves.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leaves.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37035C1A210ECDDE00ECF2F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37035C1C210ECDDE00ECF2F6 /* LeavesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeavesViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 				37035C1C210ECDDE00ECF2F6 /* LeavesViewController.swift */,
 				0A7B303B211EE1EA0034D545 /* SettingViewController.swift */,
 				37035C52210F0CF900ECF2F6 /* GetLeavesViewController.swift */,
+				0AF9AB92212837E200F909C2 /* FirebaseActivity.swift */,
 				37035C4E210EE64800ECF2F6 /* NewLeaveViewController.swift */,
 				37035C38210ECFB000ECF2F6 /* CoreDataController.swift */,
 				37035C4A210ED1A700ECF2F6 /* Classes.swift */,
@@ -295,6 +298,7 @@
 				37035C4B210ED1A700ECF2F6 /* Classes.swift in Sources */,
 				37035C4F210EE64800ECF2F6 /* NewLeaveViewController.swift in Sources */,
 				0A7B303C211EE1EA0034D545 /* SettingViewController.swift in Sources */,
+				0AF9AB93212837E200F909C2 /* FirebaseActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

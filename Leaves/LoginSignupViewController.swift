@@ -31,9 +31,10 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
         LoginSignupButton.setTitle("Log in", for: .normal)
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
-     
         googleButton()
-        
+        if isPageOpenByPopup {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(closeView(sender:)))
+        }
     }
 
     func googleButton(){
@@ -53,7 +54,6 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
             LoginSignupButton.setTitle("Log in", for: .normal)
         }else{
             LoginSignupButton.setTitle("Sign Up", for: .normal)
-            
         }
     }
     
@@ -105,7 +105,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
             self.navigationController?.dismiss(animated: true, completion: nil)
             return
         }
-        let leaveVC = self.storyboard?.instantiateViewController(withIdentifier: "LeaveID") as! LeavesViewController
+        let leaveVC = self.storyboard?.instantiateViewController(withIdentifier: "LeavesIDVC") as! LeavesViewController
         self.navigationController?.pushViewController(leaveVC, animated: true)
     }
     
@@ -162,8 +162,11 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
         var ref: DatabaseReference!
         ref = Database.database().reference()
         
-        ref.child("Users").child(userID).setValue(UserDictionary)
+        ref.child("users").child(userID).setValue(UserDictionary)
     }
     
-
+    @objc func closeView(sender:UIBarButtonItem){
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
 }

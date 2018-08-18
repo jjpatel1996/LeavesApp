@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-//LeavesID
+//LeavesIDVC
 class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDelegate, UITableViewDataSource {
 
     lazy var LeavesFetchResultController:NSFetchedResultsController<LeavesHistory> = {

@@ -29,19 +29,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
         
-        if Auth.auth().currentUser != nil {
-            print("User alreadt exist.")
-            // User is signed in.
-            // ...
-            //goto Leave VC
-        } else {
-            // No user is signed in.
-            // ...
-            if let rootVC = window?.rootViewController as? UINavigationController {
-                let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AuthID") as! LoginSignupViewController
-                rootVC.setViewControllers([loginVC], animated: true)
-            }
-        }
+//        if Auth.auth().currentUser != nil {
+//            print("User alreadt exist.").
+//        } else {
+//            print("User not exist")
+//            if let rootVC = window?.rootViewController as? UINavigationController {
+//                let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AuthID") as! LoginSignupViewController
+//                rootVC.setViewControllers([loginVC], animated: true)
+//            }
+//        }
         
         return true
     }

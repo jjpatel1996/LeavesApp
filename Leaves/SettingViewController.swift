@@ -39,40 +39,46 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     var settingSections = [SettingType]()
     var leaveCells:[EditLeaveType] = [.TotalWorkingLeaves,.RemainWorkingLeaves,.TotalSickLeaves,.RemainSickLeaves]
     var profilesCells:[Profiles] = [.ProfileImage,.EmailAddress,.Name,.ContactNo]
-    var hights = [CGFloat]()
+    var heightsForCells = [CGFloat]()
         
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Setting"
+        setup()
+    }
+
+    func setup(){
         SettingTableView.delegate = self
         SettingTableView.dataSource = self
-        
+        SettingTableView.register(UITableViewCell.self, forCellReuseIdentifier: "LoginSignUp")
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(closeView))
+    }
+    
+    func setupSections(){
+        settingSections.removeAll()
+        heightsForCells.removeAll()
         settingSections.append(SettingType.EditLeave)
-        hights.append(50)
+        heightsForCells.append(50)
         settingSections.append(SettingType.Sync)
-        hights.append(50)
+        heightsForCells.append(50)
         
         if Auth.auth().currentUser != nil {
             settingSections.insert(SettingType.Profile, at: 0)
-            hights.insert(120, at: 0)
+            heightsForCells.insert(120, at: 0)
             settingSections.append(SettingType.Logout)
-            hights.append(50)
+            heightsForCells.append(50)
         } else {
             settingSections.append(SettingType.LoginSignUp)
-            hights.append(50)
+            heightsForCells.append(50)
         }
+        SettingTableView.reloadData()
     }
-
-    var isFirstTime:Bool = true
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if isFirstTime {
-            isFirstTime = false
-        }else{
-            self.SettingTableView.reloadData()
-        }
+        setupSections()
     }
+
     
     @objc func closeView(){
         self.navigationController?.dismiss(animated: true, completion: nil)
@@ -126,12 +132,14 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return hights[indexPath.section]
+        return heightsForCells[indexPath.section]
     }
     
     func setupLoginSignupCell(indexPath:IndexPath) -> UITableViewCell {
         let cell = SettingTableView.dequeueReusableCell(withIdentifier: "LoginSignUp", for: indexPath)
         cell.textLabel?.text = "Login or Signup"
+        cell.textLabel?.textAlignment = .center
+        cell.textLabel?.textColor = UIColor.blueButtonColor()
         return cell
     }
     
@@ -144,7 +152,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc func logout(sender:UIButton){
         
         //Check Internet Connection
-        
         self.popupAlert(title: "Logou", message: "Are you sure want to logout?", actionTitles: ["Log out","Cancel"], actions: [
             {  logout in
                 
@@ -158,8 +165,9 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
-            //Where to go
-            
+            DispatchQueue.main.async {
+                self.setupSections()
+            }
         } catch let signOutError as NSError {
             self.popupAlertwithoutButton(title: "Error", message: "Unable to logout. Please try again after sometime.")
             print ("Error signing out: %@", signOutError)
@@ -169,8 +177,33 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     func setupProfileCell(indexPath:IndexPath) -> ProfileCell {
         let cell = SettingTableView.dequeueReusableCell(withIdentifier: "ProfileID", for: indexPath) as! ProfileCell
         cell.ProfileImage.image = #imageLiteral(resourceName: "UserProfile")
-        //get From Online?
+        getUserProfileImage { (UrlString) in
+            if let ProfileURL = UrlString {
+               // cell.ProfileImage.load(url: URL(fileURLWithPath: ProfileURL))
+                cell.ProfileImage.downloadedFrom(link: ProfileURL)
+            }
+        }
         return cell
+    }
+    
+    func getUserProfileImage(OnCompletion: @escaping((String?) -> Void))  {
+        
+        if let uid = Auth.auth().currentUser?.uid {
+            
+            var ref: DatabaseReference!
+            ref = Database.database().reference()
+            
+            ref.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                let value = snapshot.value as? NSDictionary
+                let userProfileURL = value?["ProfileURL"] as? String
+                OnCompletion(userProfileURL)
+            }) { (error) in
+                print(error.localizedDescription)
+                OnCompletion(nil)
+            }
+        }else{
+            OnCompletion(nil)
+        }
     }
     
     func setupSyncCell(indexPath:IndexPath) -> SyncCell {
@@ -230,3 +263,5 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
 }
+
+
