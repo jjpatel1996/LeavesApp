@@ -29,7 +29,14 @@ enum Profiles {
     case EmailAddress
     case Name
     case ContactNo
-     case ProfileImage
+    case ProfileImage
+}
+
+struct User {
+    var profileURL:String?
+    var UserName:String?
+    var emailAddress:String?
+    var ContactNo:String?
 }
 
 class SettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -39,8 +46,19 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     var settingSections = [SettingType]()
     var leaveCells:[EditLeaveType] = [.TotalWorkingLeaves,.RemainWorkingLeaves,.TotalSickLeaves,.RemainSickLeaves]
     var profilesCells:[Profiles] = [.ProfileImage,.EmailAddress,.Name,.ContactNo]
+    var profilesCellHeights:[CGFloat] = [120,46,46,46]
     var heightsForCells = [CGFloat]()
-        
+    
+    let ref = Database.database().reference()
+   
+    var userProfile:User? {
+        didSet {
+            if let index = settingSections.index(of: SettingType.Profile){
+                SettingTableView.reloadSections(IndexSet(integer: index), with: .fade)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Setting"
@@ -50,7 +68,9 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     func setup(){
         SettingTableView.delegate = self
         SettingTableView.dataSource = self
+        SettingTableView.tableFooterView = UIView()
         SettingTableView.register(UITableViewCell.self, forCellReuseIdentifier: "LoginSignUp")
+        SettingTableView.register(UITableViewCell.self, forCellReuseIdentifier: "UserDetails")
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(closeView))
     }
     
@@ -77,8 +97,29 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupSections()
+        loadUserProfile()
+        //Load Contact Details And Set it when availble
     }
-
+    
+    func loadUserProfile(){
+        //isVerified
+        if let uid = Auth.auth().currentUser?.uid {
+            ref.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                let value = snapshot.value as? NSDictionary
+                let userProfileURL = value?["ProfileURL"] as? String
+                let firstName = value?["FirstName"] as? String
+                //let lastName = value?["LastName"] as? String
+                //let isVerified = value?["isVerified"] as? Bool
+                let emailAddress = value?["Email"] as? String
+                let ContactNo = value?["ContactNo"] as? String
+                self.userProfile = User(profileURL: userProfileURL, UserName: firstName, emailAddress: emailAddress, ContactNo: ContactNo)
+                
+            }) { (error) in
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     
     @objc func closeView(){
         self.navigationController?.dismiss(animated: true, completion: nil)
@@ -97,7 +138,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         if settingSections[section] == .EditLeave {
             return leaveCells.count
         }else if settingSections[section] == .Profile {
-            return 1
+            return profilesCells.count
             //profilesCells.count
         }else{
             return 1
@@ -115,7 +156,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         case .Sync:
             return setupSyncCell(indexPath: indexPath)
         case .Profile:
-            return setupProfileCell(indexPath: indexPath)
+            return profilesCells[indexPath.row] == .ProfileImage ? setupProfileCell(indexPath: indexPath) : setupUserDetailsCell(indexPath: indexPath)
         case .LoginSignUp:
             return setupLoginSignupCell(indexPath: indexPath)
         default:
@@ -132,7 +173,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return heightsForCells[indexPath.section]
+        return settingSections[indexPath.section] == .Profile ? profilesCellHeights[indexPath.row] : heightsForCells[indexPath.section]
     }
     
     func setupLoginSignupCell(indexPath:IndexPath) -> UITableViewCell {
@@ -174,37 +215,55 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    func setupUserDetailsCell(indexPath:IndexPath) -> UITableViewCell {
+        
+        let cell = SettingTableView.dequeueReusableCell(withIdentifier: "UserDetails", for: indexPath)
+        
+        switch profilesCells[indexPath.row] {
+        case .ContactNo:
+            cell.textLabel?.text = "Contact Number"
+            cell.detailTextLabel?.text = userProfile?.ContactNo ?? "Not found"
+            break
+        case .EmailAddress:
+            cell.textLabel?.text = "Email Address"
+            cell.detailTextLabel?.text = userProfile?.emailAddress ?? "Not available"
+            break
+        case .Name:
+            cell.textLabel?.text = "Name"
+            cell.detailTextLabel?.text = userProfile?.UserName ?? "Not available"
+            break
+        default:
+            break
+        }
+        
+        return cell
+    }
+    
     func setupProfileCell(indexPath:IndexPath) -> ProfileCell {
+        
         let cell = SettingTableView.dequeueReusableCell(withIdentifier: "ProfileID", for: indexPath) as! ProfileCell
         cell.ProfileImage.image = #imageLiteral(resourceName: "UserProfile")
-        getUserProfileImage { (UrlString) in
-            if let ProfileURL = UrlString {
-               // cell.ProfileImage.load(url: URL(fileURLWithPath: ProfileURL))
-                cell.ProfileImage.downloadedFrom(link: ProfileURL)
-            }
+        if userProfile?.profileURL != nil {
+            cell.ProfileImage.downloadedFrom(link: userProfile!.profileURL!)
         }
         return cell
     }
     
-    func getUserProfileImage(OnCompletion: @escaping((String?) -> Void))  {
-        
-        if let uid = Auth.auth().currentUser?.uid {
-            
-            var ref: DatabaseReference!
-            ref = Database.database().reference()
-            
-            ref.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                let value = snapshot.value as? NSDictionary
-                let userProfileURL = value?["ProfileURL"] as? String
-                OnCompletion(userProfileURL)
-            }) { (error) in
-                print(error.localizedDescription)
-                OnCompletion(nil)
-            }
-        }else{
-            OnCompletion(nil)
-        }
-    }
+//    func getUserProfileImage(OnCompletion: @escaping((String?) -> Void))  {
+//
+//        if let uid = Auth.auth().currentUser?.uid {
+//            ref.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+//                let value = snapshot.value as? NSDictionary
+//                let userProfileURL = value?["ProfileURL"] as? String
+//                OnCompletion(userProfileURL)
+//            }) { (error) in
+//                print(error.localizedDescription)
+//                OnCompletion(nil)
+//            }
+//        }else{
+//            OnCompletion(nil)
+//        }
+//    }
     
     func setupSyncCell(indexPath:IndexPath) -> SyncCell {
         let cell = SettingTableView.dequeueReusableCell(withIdentifier: "SyncID", for: indexPath) as! SyncCell
