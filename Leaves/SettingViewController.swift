@@ -45,8 +45,8 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var settingSections = [SettingType]()
     var leaveCells:[EditLeaveType] = [.TotalWorkingLeaves,.RemainWorkingLeaves,.TotalSickLeaves,.RemainSickLeaves]
-    var profilesCells:[Profiles] = [.ProfileImage,.EmailAddress,.Name,.ContactNo]
-    var profilesCellHeights:[CGFloat] = [120,46,46,46]
+    var profilesCells:[Profiles] = [.ProfileImage,.EmailAddress,.ContactNo]
+    var profilesCellHeights:[CGFloat] = [UITableViewAutomaticDimension,UITableViewAutomaticDimension,UITableViewAutomaticDimension]
     var heightsForCells = [CGFloat]()
     
     let ref = Database.database().reference()
@@ -156,7 +156,8 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         case .Sync:
             return setupSyncCell(indexPath: indexPath)
         case .Profile:
-            return profilesCells[indexPath.row] == .ProfileImage ? setupProfileCell(indexPath: indexPath) : setupUserDetailsCell(indexPath: indexPath)
+            //return profilesCells[indexPath.row] == .ProfileImage ? setupProfileCell(indexPath: indexPath) : setupUserDetailsCell(indexPath: indexPath)
+            return setupUserDetailsCell(indexPath: indexPath)
         case .LoginSignUp:
             return setupLoginSignupCell(indexPath: indexPath)
         default:
@@ -173,6 +174,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        //return UITableViewAutomaticDimension
         return settingSections[indexPath.section] == .Profile ? profilesCellHeights[indexPath.row] : heightsForCells[indexPath.section]
     }
     
@@ -190,64 +192,48 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
-    @objc func logout(sender:UIButton){
-        
-        //Check Internet Connection
-        self.popupAlert(title: "Logou", message: "Are you sure want to logout?", actionTitles: ["Log out","Cancel"], actions: [
-            {  logout in
-                
-                self.FirebaseLogout()
-                
-            }, { cancel in return }
-            ])
-    }
-    
-    func FirebaseLogout() {
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-            DispatchQueue.main.async {
-                self.setupSections()
-            }
-        } catch let signOutError as NSError {
-            self.popupAlertwithoutButton(title: "Error", message: "Unable to logout. Please try again after sometime.")
-            print ("Error signing out: %@", signOutError)
-        }
-    }
-    
+
     func setupUserDetailsCell(indexPath:IndexPath) -> UITableViewCell {
         
-        let cell = SettingTableView.dequeueReusableCell(withIdentifier: "UserDetails", for: indexPath)
+        var cell:UITableViewCell!
         
         switch profilesCells[indexPath.row] {
         case .ContactNo:
-            cell.textLabel?.text = "Contact Number"
-            cell.detailTextLabel?.text = userProfile?.ContactNo ?? "Not found"
+            cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "UserDetails")
+            cell.textLabel?.text = "Phone number"
+            cell.detailTextLabel?.text = userProfile?.ContactNo ?? "Not added"
             break
         case .EmailAddress:
-            cell.textLabel?.text = "Email Address"
-            cell.detailTextLabel?.text = userProfile?.emailAddress ?? "Not available"
+            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "UserDetails")
+            cell.textLabel?.text = userProfile?.emailAddress ?? "Not available"
+            //cell.detailTextLabel?.text = "Email Address"
             break
-        case .Name:
-            cell.textLabel?.text = "Name"
-            cell.detailTextLabel?.text = userProfile?.UserName ?? "Not available"
+        case .ProfileImage:
+            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "UserDetails")
+            cell.textLabel?.text = userProfile?.UserName ?? "Not available"
+            cell.imageView?.image = #imageLiteral(resourceName: "UserProfile")
+            if userProfile?.profileURL != nil{
+            cell.imageView?.downloadedFrom(link: userProfile!.profileURL!)
+            }
             break
         default:
             break
         }
-        
-        return cell
-    }
-    
-    func setupProfileCell(indexPath:IndexPath) -> ProfileCell {
-        
-        let cell = SettingTableView.dequeueReusableCell(withIdentifier: "ProfileID", for: indexPath) as! ProfileCell
-        cell.ProfileImage.image = #imageLiteral(resourceName: "UserProfile")
-        if userProfile?.profileURL != nil {
-            cell.ProfileImage.downloadedFrom(link: userProfile!.profileURL!)
+        if cell != nil {
+            cell.selectionStyle = .none
         }
         return cell
     }
+    
+//    func setupProfileCell(indexPath:IndexPath) -> ProfileCell {
+//
+//        let cell = SettingTableView.dequeueReusableCell(withIdentifier: "ProfileID", for: indexPath) as! ProfileCell
+//        cell.ProfileImage.image = #imageLiteral(resourceName: "UserProfile")
+//        if userProfile?.profileURL != nil {
+//            cell.ProfileImage.downloadedFrom(link: userProfile!.profileURL!)
+//        }
+//        return cell
+//    }
     
 //    func getUserProfileImage(OnCompletion: @escaping((String?) -> Void))  {
 //
@@ -270,6 +256,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.ActivityIndicator.isHidden = true
         cell.Switch.isOn = LeavesHandler.isSyncON()
         cell.Switch.addTarget(self, action: #selector(switchTapped(sender:)), for: UIControlEvents.editingChanged)
+        cell.selectionStyle = .none
         return cell
     }
     
@@ -318,7 +305,33 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         cell.LeaveTitle.text = leaveTitle
         cell.LeaveEditTextfield.text = String(leaveValue)
+        cell.selectionStyle = .none
         return cell
+    }
+    
+    @objc func logout(sender:UIButton){
+        
+        //Check Internet Connection
+        self.popupAlert(title: "Logou", message: "Are you sure want to logout?", actionTitles: ["Log out","Cancel"], actions: [
+            {  logout in
+                
+                self.FirebaseLogout()
+                
+            }, { cancel in return }
+            ])
+    }
+    
+    func FirebaseLogout() {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            DispatchQueue.main.async {
+                self.setupSections()
+            }
+        } catch let signOutError as NSError {
+            self.popupAlertwithoutButton(title: "Error", message: "Unable to logout. Please try again after sometime.")
+            print ("Error signing out: %@", signOutError)
+        }
     }
     
 }
