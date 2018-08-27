@@ -25,7 +25,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     
     lazy var dateTimeFormaater:DateFormatter = {
         let dtFormatter = DateFormatter()
-        dtFormatter.dateFormat = "HH:mm:ss dd-MM-yyyy"
+        dtFormatter.dateFormat = "dd-MM-yyyy"
         return dtFormatter
     }()
     
@@ -147,7 +147,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         let leaveO = LeavesFetchResultController.object(at: IndexPath(row: indexPath.row, section: indexPath.section))
         cell.LeaveCount.text = "Total: \(leaveO.leave_count)"
         cell.LeaveTextView.text = leaveO.leave_description ?? "No Description written"
-        cell.LeaveDate.text = dateTimeFormaater.string(from: leaveO.leave_datetime! as Date)
+        cell.LeaveDate.text = "Leave taken on \(dateTimeFormaater.string(from: leaveO.leave_datetime! as Date))"
         return cell
     }
     
@@ -229,7 +229,7 @@ extension LeavesViewController: NSFetchedResultsControllerDelegate {
                 let leaveO = LeavesFetchResultController.object(at: indexPath!)
                 cell.LeaveCount.text = "Total: \(leaveO.leave_count)"
                 cell.LeaveTextView.text = leaveO.leave_description ?? ""
-                cell.LeaveDate.text = dateTimeFormaater.string(from: leaveO.leave_datetime! as Date)
+                cell.LeaveDate.text = "Leave taken on \(dateTimeFormaater.string(from: leaveO.leave_datetime! as Date))"
             }
             
         case .move:

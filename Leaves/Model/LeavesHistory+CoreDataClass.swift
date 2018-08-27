@@ -1,9 +1,8 @@
 //
 //  LeavesHistory+CoreDataClass.swift
-//  Leaves
+//  
 //
-//  Created by Jay Patel on 30/07/18.
-//  Copyright © 2018 Jay Patel. All rights reserved.
+//  Created by Jay Patel on 27/08/18.
 //
 //
 

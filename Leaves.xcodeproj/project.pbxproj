@@ -18,13 +18,13 @@
 		37035C25210ECDEF00ECF2F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37035C24210ECDEF00ECF2F6 /* Assets.xcassets */; };
 		37035C28210ECDEF00ECF2F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37035C26210ECDEF00ECF2F6 /* LaunchScreen.storyboard */; };
 		37035C39210ECFB000ECF2F6 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C38210ECFB000ECF2F6 /* CoreDataController.swift */; };
-		37035C46210ED0CA00ECF2F6 /* LeavesHistory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C42210ED0CA00ECF2F6 /* LeavesHistory+CoreDataClass.swift */; };
-		37035C47210ED0CA00ECF2F6 /* LeavesHistory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C43210ED0CA00ECF2F6 /* LeavesHistory+CoreDataProperties.swift */; };
 		37035C4B210ED1A700ECF2F6 /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C4A210ED1A700ECF2F6 /* Classes.swift */; };
 		37035C4D210ED54800ECF2F6 /* LeavesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C4C210ED54800ECF2F6 /* LeavesCell.swift */; };
 		37035C4F210EE64800ECF2F6 /* NewLeaveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C4E210EE64800ECF2F6 /* NewLeaveViewController.swift */; };
 		37035C51210F07CB00ECF2F6 /* LoginSignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C50210F07CB00ECF2F6 /* LoginSignupViewController.swift */; };
 		37035C53210F0CF900ECF2F6 /* GetLeavesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C52210F0CF900ECF2F6 /* GetLeavesViewController.swift */; };
+		37AF0D412133C18C00BDC278 /* LeavesHistory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AF0D3F2133C18C00BDC278 /* LeavesHistory+CoreDataProperties.swift */; };
+		37AF0D422133C18C00BDC278 /* LeavesHistory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AF0D402133C18C00BDC278 /* LeavesHistory+CoreDataClass.swift */; };
 		37B0140A2119649200B5B37B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 37B014092119649200B5B37B /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -41,13 +41,13 @@
 		37035C27210ECDEF00ECF2F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		37035C29210ECDEF00ECF2F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37035C38210ECFB000ECF2F6 /* CoreDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
-		37035C42210ED0CA00ECF2F6 /* LeavesHistory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeavesHistory+CoreDataClass.swift"; sourceTree = "<group>"; };
-		37035C43210ED0CA00ECF2F6 /* LeavesHistory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeavesHistory+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		37035C4A210ED1A700ECF2F6 /* Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
 		37035C4C210ED54800ECF2F6 /* LeavesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeavesCell.swift; sourceTree = "<group>"; };
 		37035C4E210EE64800ECF2F6 /* NewLeaveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLeaveViewController.swift; sourceTree = "<group>"; };
 		37035C50210F07CB00ECF2F6 /* LoginSignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupViewController.swift; sourceTree = "<group>"; };
 		37035C52210F0CF900ECF2F6 /* GetLeavesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLeavesViewController.swift; sourceTree = "<group>"; };
+		37AF0D3F2133C18C00BDC278 /* LeavesHistory+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LeavesHistory+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		37AF0D402133C18C00BDC278 /* LeavesHistory+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LeavesHistory+CoreDataClass.swift"; sourceTree = "<group>"; };
 		37B014092119649200B5B37B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7277804FF0BC6DC9DCCC84E2 /* Pods_Leaves.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Leaves.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF920AE570BE1E26F86F5D93 /* Pods-Leaves.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leaves.release.xcconfig"; path = "Pods/Target Support Files/Pods-Leaves/Pods-Leaves.release.xcconfig"; sourceTree = "<group>"; };
@@ -120,8 +120,8 @@
 		37035C37210ECF1800ECF2F6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				37035C42210ED0CA00ECF2F6 /* LeavesHistory+CoreDataClass.swift */,
-				37035C43210ED0CA00ECF2F6 /* LeavesHistory+CoreDataProperties.swift */,
+				37AF0D402133C18C00BDC278 /* LeavesHistory+CoreDataClass.swift */,
+				37AF0D3F2133C18C00BDC278 /* LeavesHistory+CoreDataProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -286,16 +286,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				37035C1D210ECDDE00ECF2F6 /* LeavesViewController.swift in Sources */,
-				37035C46210ED0CA00ECF2F6 /* LeavesHistory+CoreDataClass.swift in Sources */,
 				37035C51210F07CB00ECF2F6 /* LoginSignupViewController.swift in Sources */,
 				0A7B303F211EE3D60034D545 /* SettingCells.swift in Sources */,
 				37035C1B210ECDDE00ECF2F6 /* AppDelegate.swift in Sources */,
 				37035C39210ECFB000ECF2F6 /* CoreDataController.swift in Sources */,
 				37035C53210F0CF900ECF2F6 /* GetLeavesViewController.swift in Sources */,
 				37035C4D210ED54800ECF2F6 /* LeavesCell.swift in Sources */,
-				37035C47210ED0CA00ECF2F6 /* LeavesHistory+CoreDataProperties.swift in Sources */,
 				37035C23210ECDDE00ECF2F6 /* Leaves.xcdatamodeld in Sources */,
 				37035C4B210ED1A700ECF2F6 /* Classes.swift in Sources */,
+				37AF0D412133C18C00BDC278 /* LeavesHistory+CoreDataProperties.swift in Sources */,
+				37AF0D422133C18C00BDC278 /* LeavesHistory+CoreDataClass.swift in Sources */,
 				37035C4F210EE64800ECF2F6 /* NewLeaveViewController.swift in Sources */,
 				0A7B303C211EE1EA0034D545 /* SettingViewController.swift in Sources */,
 				0AF9AB93212837E200F909C2 /* FirebaseActivity.swift in Sources */,

@@ -24,6 +24,8 @@ class NewLeaveViewController: UIViewController {
     
     @IBOutlet weak var leaveTypeChanger: UISegmentedControl!
     
+    @IBOutlet weak var DatePicker: UIDatePicker!
+    
     var leaveType:LeaveType = .Sick
     
     var isNew:Bool = true
@@ -44,6 +46,8 @@ class NewLeaveViewController: UIViewController {
         loadTotalLeaves()
         leaveCountTextField.addTarget(self, action: #selector(textDidChanged(sender:)), for: UIControlEvents.editingChanged)
         DescriptionTextView.layer.cornerRadius = 8
+        DatePicker.date = Date()
+        DatePicker.addTarget(self, action: #selector(datePickerValueChanged(sender:)), for: .valueChanged)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -62,6 +66,8 @@ class NewLeaveViewController: UIViewController {
             IncreaseDecreaseStepper.value = Double(leave!.leave_count)
             SaveButton.setTitle("Update", for: .normal)
             leaveTypeChanger.isEnabled = false
+            DatePicker.isEnabled = false
+            DatePicker.date = leave!.leave_datetime ?? Date()   //Change
             
             if leave!.leave_type == LeaveType.Sick.rawValue {
                 leaveType = .Sick
@@ -80,6 +86,10 @@ class NewLeaveViewController: UIViewController {
     func loadTotalLeaves(){
         sickLeavesRemain = LeavesHandler.getRemainSickLeaves()
         workingLeavesRemain = LeavesHandler.getRemainWorkingLeaves()
+    }
+    
+    @objc func datePickerValueChanged(sender:UIDatePicker){
+        //Do we need this?
     }
     
     @objc func textDidChanged(sender:UITextField){
@@ -113,6 +123,11 @@ class NewLeaveViewController: UIViewController {
             leaveType = .Working
             IncreaseDecreaseStepper.maximumValue = Double(workingLeavesRemain)
         }
+        
+        if let currentSelectedLeave = Int(leaveCountTextField.text ?? "0"), currentSelectedLeave > Int(IncreaseDecreaseStepper.maximumValue) {
+            leaveCountTextField.text = String(Int(IncreaseDecreaseStepper.maximumValue))
+        }
+        
     }
     
     func updateCurrentLeaves(newLeaveCounts:Int){
@@ -154,7 +169,9 @@ class NewLeaveViewController: UIViewController {
             newLeave.dead = 0
             newLeave.leave_count = Int32(leaveCount)
             newLeave.leave_type = leaveType.rawValue
-            newLeave.leave_datetime = Date()
+            newLeave.leave_datetime = DatePicker.date
+            newLeave.leave_createdDTM = Date()
+            newLeave.leave_modifiedDTM = Date()
             newLeave.leave_description = DescriptionTextView.text
             
             do {
@@ -189,6 +206,7 @@ class NewLeaveViewController: UIViewController {
             leave!.leave_count = Int32(leaveCount)
             leave!.leave_type = leaveType.rawValue
             leave!.leave_description = DescriptionTextView.text
+            leave!.leave_modifiedDTM = Date()
             
             do {
                 try CoreDataStack.saveContext()

@@ -156,7 +156,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         case .Sync:
             return setupSyncCell(indexPath: indexPath)
         case .Profile:
-            //return profilesCells[indexPath.row] == .ProfileImage ? setupProfileCell(indexPath: indexPath) : setupUserDetailsCell(indexPath: indexPath)
             return setupUserDetailsCell(indexPath: indexPath)
         case .LoginSignUp:
             return setupLoginSignupCell(indexPath: indexPath)
