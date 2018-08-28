@@ -11,5 +11,5 @@ import CoreData
 
 @objc(LeavesHistory)
 public class LeavesHistory: NSManagedObject {
-
+    var uniqueFirebaseID: String?
 }

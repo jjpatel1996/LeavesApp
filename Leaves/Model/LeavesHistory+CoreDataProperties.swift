@@ -16,6 +16,7 @@ extension LeavesHistory {
         return NSFetchRequest<LeavesHistory>(entityName: "LeavesHistory")
     }
 
+    
     @NSManaged public var dead: Int16
     @NSManaged public var leave_count: Int32
     @NSManaged public var leave_datetime: Date?

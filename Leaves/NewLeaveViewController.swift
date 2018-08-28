@@ -48,6 +48,7 @@ class NewLeaveViewController: UIViewController {
         DescriptionTextView.layer.cornerRadius = 8
         DatePicker.date = Date()
         DatePicker.addTarget(self, action: #selector(datePickerValueChanged(sender:)), for: .valueChanged)
+        DatePicker.setValue(UIColor.white, forKeyPath: "textColor")
     }
     
     override func viewWillAppear(_ animated: Bool) {

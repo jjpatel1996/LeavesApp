@@ -13,7 +13,7 @@ import GoogleSignIn
 enum SettingType:String {
     case Profile = "Profile"
     case Sync = "Sync data online"
-    case Logout = "Logout from device"
+    case Logout = ""
     case EditLeave = "Total and remain leaves"
     case LoginSignUp = "Login/Signup" //Show LoginSignUp VC By Popup
 }
@@ -120,7 +120,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    
     @objc func closeView(){
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
@@ -223,32 +222,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         return cell
     }
-    
-//    func setupProfileCell(indexPath:IndexPath) -> ProfileCell {
-//
-//        let cell = SettingTableView.dequeueReusableCell(withIdentifier: "ProfileID", for: indexPath) as! ProfileCell
-//        cell.ProfileImage.image = #imageLiteral(resourceName: "UserProfile")
-//        if userProfile?.profileURL != nil {
-//            cell.ProfileImage.downloadedFrom(link: userProfile!.profileURL!)
-//        }
-//        return cell
-//    }
-    
-//    func getUserProfileImage(OnCompletion: @escaping((String?) -> Void))  {
-//
-//        if let uid = Auth.auth().currentUser?.uid {
-//            ref.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-//                let value = snapshot.value as? NSDictionary
-//                let userProfileURL = value?["ProfileURL"] as? String
-//                OnCompletion(userProfileURL)
-//            }) { (error) in
-//                print(error.localizedDescription)
-//                OnCompletion(nil)
-//            }
-//        }else{
-//            OnCompletion(nil)
-//        }
-//    }
     
     func setupSyncCell(indexPath:IndexPath) -> SyncCell {
         let cell = SettingTableView.dequeueReusableCell(withIdentifier: "SyncID", for: indexPath) as! SyncCell

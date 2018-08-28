@@ -25,6 +25,8 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
     
     @IBOutlet weak var lsChangeSegment: UISegmentedControl!
     
+    var firebaseActivity = FirebaseActivity()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         lsChangeSegment.selectedSegmentIndex = 0
@@ -77,7 +79,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                     self.gotoLeaveVC()
                     return
                 }
-                self.insertUserFirebase(userID: user!.user.uid, Email: email, FName: nil, LName: nil, ContactNo: nil, imageURL: nil)
+                self.firebaseActivity.insertUserFirebase(userID: user!.user.uid, Email: email, FName: nil, LName: nil, ContactNo: nil, imageURL: nil)
                 self.gotoLeaveVC()
             }
         }else{
@@ -93,21 +95,15 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                     self.gotoLeaveVC()
                     return
                 }
-                self.insertUserFirebase(userID: authResult!.user.uid, Email: email, FName: nil, LName: nil, ContactNo: nil, imageURL: nil)
+                self.firebaseActivity.insertUserFirebase(userID: authResult!.user.uid, Email: email, FName: nil, LName: nil, ContactNo: nil, imageURL: nil)
                 self.gotoLeaveVC()
             }
         }
         
+        //Update Total Leaves and total added leaves from here to fb
+        FirebaseActivity().UpdateTotalLeavesToFirebase()
     }
     
-    func gotoLeaveVC(){
-        if isPageOpenByPopup {
-            self.navigationController?.dismiss(animated: true, completion: nil)
-            return
-        }
-        let leaveVC = self.storyboard?.instantiateViewController(withIdentifier: "LeavesIDVC") as! LeavesViewController
-        self.navigationController?.pushViewController(leaveVC, animated: true)
-    }
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
   
@@ -135,35 +131,21 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
             if user.profile.hasImage {
                 imageURL = user.profile.imageURL(withDimension: 100)
             }
-            self.insertUserFirebase(userID: (authResult?.user.uid)!, Email: user.profile.email, FName: user.profile.name, LName: nil, ContactNo: nil, imageURL: imageURL)
+            self.firebaseActivity.insertUserFirebase(userID: (authResult?.user.uid)!, Email: user.profile.email, FName: user.profile.name, LName: nil, ContactNo: nil, imageURL: imageURL)
             self.gotoLeaveVC()
         }
         
     }
-    
-    func insertUserFirebase(userID:String,Email:String,FName:String?,LName:String?,ContactNo:String?,imageURL:URL?){
-        
-        var UserDictionary: [String:Any] = ["Email":Email,"isVerified":false]
-        
-        if imageURL != nil {
-            UserDictionary["ProfileURL"] = imageURL!.absoluteString
-        }
 
-        if FName != nil {
-            UserDictionary["FirstName"] = FName
+    func gotoLeaveVC(){
+        if isPageOpenByPopup {
+            self.navigationController?.dismiss(animated: true, completion: nil)
+            return
         }
-        if LName != nil {
-            UserDictionary["LastName"] = LName
-        }
-        if ContactNo != nil {
-            UserDictionary["ContactNo"] = ContactNo
-        }
-        
-        var ref: DatabaseReference!
-        ref = Database.database().reference()
-        
-        ref.child("users").child(userID).setValue(UserDictionary)
+        let leaveVC = self.storyboard?.instantiateViewController(withIdentifier: "LeavesIDVC") as! LeavesViewController
+        self.navigationController?.pushViewController(leaveVC, animated: true)
     }
+    
     
     @objc func closeView(sender:UIBarButtonItem){
         self.navigationController?.dismiss(animated: true, completion: nil)
