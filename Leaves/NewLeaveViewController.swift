@@ -41,6 +41,9 @@ class NewLeaveViewController: UIViewController {
     var workingLeavesRemain:Int = 0
     
     var remainTotalLeaveForCurrentSelectedLeave:Int = 0
+    
+    let firebase = FirebaseActivity()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadTotalLeaves()
@@ -131,17 +134,15 @@ class NewLeaveViewController: UIViewController {
         
     }
     
-    func updateCurrentLeaves(newLeaveCounts:Int){
-        
-        if leaveType == .Sick {
-            LeavesHandler.SetRemainSickLeaves(leaves: sickLeavesRemain-newLeaveCounts)
-        }else {
-            LeavesHandler.SetRemainWorkingLeaves(leaves: workingLeavesRemain-newLeaveCounts)
-        }
-        
+    @IBAction func SaveButtonTapped(_ sender: Any) {
+        SaveLeave()
     }
     
-    func saveNewLeave(){
+    @IBAction func CancelButtonTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func SaveLeave(){
         
         if isNew {
             
@@ -177,7 +178,8 @@ class NewLeaveViewController: UIViewController {
             
             do {
                 try CoreDataStack.saveContext()
-                updateCurrentLeaves(newLeaveCounts: Int(leaveCount))
+                SetLeaveCountInPrefrence(newLeaveCounts: Int(leaveCount))
+                saveLeaveInFirebase(leave: newLeave)
                 delegate?.LeavesSetted()
                 self.dismiss(animated: true, completion: nil)
             } catch {
@@ -211,7 +213,8 @@ class NewLeaveViewController: UIViewController {
             
             do {
                 try CoreDataStack.saveContext()
-                updateCurrentLeaves(newLeaveCounts: leaveCount-oldValue)
+                SetLeaveCountInPrefrence(newLeaveCounts: leaveCount-oldValue)
+                saveLeaveInFirebase(leave: leave!)
                 delegate?.LeavesSetted()
                 self.dismiss(animated: true, completion: nil)
             } catch {
@@ -221,14 +224,26 @@ class NewLeaveViewController: UIViewController {
         } 
     }
     
-    @IBAction func SaveButtonTapped(_ sender: Any) {
-        //Save in CoreData and Go back.
-        saveNewLeave()
+    func SetLeaveCountInPrefrence(newLeaveCounts:Int){
+        
+        if leaveType == .Sick {
+            LeavesHandler.SetRemainSickLeaves(leaves: sickLeavesRemain-newLeaveCounts)
+        }else {
+            LeavesHandler.SetRemainWorkingLeaves(leaves: workingLeavesRemain-newLeaveCounts)
+        }
+        
     }
     
-    @IBAction func CancelButtonTapped(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+    func saveLeaveInFirebase(leave:LeavesHistory){
+        if leave.uniqueFirebaseID == nil {
+            firebase.SaveLeave(leave: leave)
+        }else{
+            firebase.UpdateLeave(leaveUniqueID: leave.uniqueFirebaseID!, leave: leave)
+        }
     }
+    
+    
+    
     
     func showError() {
         

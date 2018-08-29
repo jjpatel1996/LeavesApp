@@ -48,9 +48,9 @@ class FirebaseActivity: NSObject {
         ref.child("users").child(userID).setValue(UserDictionary){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
-                print("Data could not be saved: \(error).")
+                print("insertUser could not be saved: \(error).")
             } else {
-                print("Data saved successfully!")
+                print("insertUser saved successfully!")
             }
         }
     }
@@ -66,9 +66,9 @@ class FirebaseActivity: NSObject {
         ref.child("TotalLeaves").child(UserID!).setValue(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
-                print("Data could not be saved: \(error).")
+                print("AddTotal could not be saved: \(error).")
             } else {
-                print("Data saved successfully!")
+                print("AddTotal saved successfully!")
             }
         }
         return true
@@ -80,15 +80,15 @@ class FirebaseActivity: NSObject {
         ref.child("TotalLeaves").child(UserID!).updateChildValues(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
-                print("Data could not be saved: \(error).")
+                print("updateTotal could not be saved: \(error).")
             } else {
-                print("Data saved successfully!")
+                print("updateTotal saved successfully!")
             }
         }
         return true
     }
     
-    func SetLeaves(leave:LeavesHistory){
+    func SaveLeave(leave:LeavesHistory){
         //Save in FB
         guard isUserExist() else { return }
             
@@ -106,9 +106,9 @@ class FirebaseActivity: NSObject {
         ref.child("Leaves").child(UserID!).childByAutoId().setValue(leave){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
-                print("Data could not be saved: \(error).")
+                print("SaveLeave could not be saved: \(error).")
             } else {
-                print("Data saved successfully!")
+                print("SaveLeave saved successfully!")
             }
         }
         
@@ -120,7 +120,7 @@ class FirebaseActivity: NSObject {
     }
     
     //Working or Sick.
-    func UpdateLeaves(leaveUniqueID:String,leave:LeavesHistory){
+    func UpdateLeave(leaveUniqueID:String,leave:LeavesHistory){
 
         guard isUserExist() else { return }
         
@@ -138,9 +138,9 @@ class FirebaseActivity: NSObject {
             ref.child("Leaves").child(UserID!).child(leaveUniqueID).updateChildValues(leave) {
                 (error:Error?, ref:DatabaseReference) in
                 if let error = error {
-                    print("Data could not be saved: \(error).")
+                    print("UpdateLeave could not be saved: \(error).")
                 } else {
-                    print("Data saved successfully!")
+                    print("UpdateLeave saved successfully!")
                 }
             }
         

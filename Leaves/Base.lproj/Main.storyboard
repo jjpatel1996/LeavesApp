@@ -109,10 +109,71 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EDC-lc-w7G" customClass="CardView" customModule="Leaves" customModuleProvider="target">
+                                            <rect key="frame" x="5" y="5" width="365" height="65"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For setup tell us how many leaves you get at your work place?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m19-kJ-c6u">
+                                                    <rect key="frame" x="8" y="8" width="287" height="49"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hEq-JY-8aQ">
+                                                    <rect key="frame" x="303" y="18" width="50" height="30"/>
+                                                    <color key="backgroundColor" red="0.097552962601184845" green="0.47868871688842773" blue="0.78524845838546753" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="50" id="bEV-oS-FGP"/>
+                                                        <constraint firstAttribute="height" constant="30" id="sum-hS-ASo"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                    <state key="normal" title="Add">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="15"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="SetupLeavesTapped:" destination="8zU-2A-nHN" eventType="touchUpInside" id="k9a-cZ-SjW"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.94358740480000003" green="0.94358740480000003" blue="0.94358740480000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstItem="m19-kJ-c6u" firstAttribute="top" secondItem="EDC-lc-w7G" secondAttribute="top" constant="8" id="6sK-E2-XZb"/>
+                                                <constraint firstItem="m19-kJ-c6u" firstAttribute="leading" secondItem="EDC-lc-w7G" secondAttribute="leading" constant="8" id="JZa-I2-dh0"/>
+                                                <constraint firstAttribute="bottom" secondItem="m19-kJ-c6u" secondAttribute="bottom" constant="8" id="MwD-kH-rJI"/>
+                                                <constraint firstItem="hEq-JY-8aQ" firstAttribute="leading" secondItem="m19-kJ-c6u" secondAttribute="trailing" constant="8" id="QgA-2J-qKd"/>
+                                                <constraint firstItem="hEq-JY-8aQ" firstAttribute="centerY" secondItem="EDC-lc-w7G" secondAttribute="centerY" id="RSE-q0-nOx"/>
+                                                <constraint firstAttribute="trailing" secondItem="hEq-JY-8aQ" secondAttribute="trailing" constant="12" id="zdf-AP-IMI"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="12"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="shadowOffsetWidth">
+                                                    <integer key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="shadowOffsetHeight">
+                                                    <integer key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                                    <real key="value" value="0.33000000000000002"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                                    <real key="value" value="2"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="EDC-lc-w7G" secondAttribute="bottom" constant="5" id="5o8-9M-S12"/>
+                                        <constraint firstItem="EDC-lc-w7G" firstAttribute="top" secondItem="XmH-9d-s0n" secondAttribute="top" constant="5" id="Fvn-LD-TYU"/>
+                                        <constraint firstAttribute="trailing" secondItem="EDC-lc-w7G" secondAttribute="trailing" constant="5" id="R0u-cM-adX"/>
                                         <constraint firstAttribute="bottom" secondItem="4et-8q-GlG" secondAttribute="bottom" constant="5" id="S0s-2F-u5w"/>
+                                        <constraint firstItem="EDC-lc-w7G" firstAttribute="leading" secondItem="XmH-9d-s0n" secondAttribute="leading" constant="5" id="Z2V-vS-2ew"/>
                                         <constraint firstItem="4et-8q-GlG" firstAttribute="top" secondItem="XmH-9d-s0n" secondAttribute="top" constant="5" id="frm-PZ-VOX"/>
                                         <constraint firstItem="4et-8q-GlG" firstAttribute="leading" secondItem="XmH-9d-s0n" secondAttribute="leading" constant="5" id="jbX-5s-uwt"/>
                                         <constraint firstAttribute="trailing" secondItem="4et-8q-GlG" secondAttribute="trailing" constant="5" id="sPX-E9-bY8"/>
@@ -235,14 +296,16 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="SetupView" destination="EDC-lc-w7G" id="Tx5-Kd-3jL"/>
                         <outlet property="SickLeaveLabel" destination="sN9-fJ-tvl" id="FL4-SI-GVN"/>
+                        <outlet property="TotalLeaveHeaderView" destination="4et-8q-GlG" id="ISz-iB-nlk"/>
                         <outlet property="WorkingLeaveLabel" destination="uJI-u0-t2U" id="MMh-Nw-nAL"/>
                         <outlet property="leaveTableView" destination="8NK-sq-uo2" id="TG3-la-gzK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6JB-yg-Tl9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="258" y="175"/>
+            <point key="canvasLocation" x="256.80000000000001" y="174.96251874062969"/>
         </scene>
         <!--New Leave View Controller-->
         <scene sceneID="B5L-xj-dkd">

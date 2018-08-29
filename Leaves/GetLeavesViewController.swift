@@ -44,29 +44,11 @@ class GetLeavesViewController: UIViewController, UITextFieldDelegate {
     
     func saveAndDismissView(){
         FirebaseActivity().UpdateTotalLeavesToFirebase()
+        LeavesHandler.DoneFirstTime()
         delegate?.LeavesSetted()
         self.dismiss(animated: true, completion: nil)
     }
-    
-    /*func saveInFirebase(SickLeave:Int,WorkingLeave:Int){
-        if fActivity.isUserExist() {
-            if !fActivity.setTotalLeaves(sickLeave: SickLeave, workingLeave: WorkingLeave) {
-                self.popupAlert(title: "Opps!!!!", message: "Unable to update to leaves", actionTitles: ["Try again","Dismiss"], actions: [
-                    { tryAgain in
-                       self.saveInFirebase(SickLeave: SickLeave, WorkingLeave: WorkingLeave)
-                    },
-                    { ok in
-                        self.saveAndDismissView()
-                    }])
-            }else{
-                saveAndDismissView()
-            }
-        }else{
-            //Don't save Online
-            saveAndDismissView()
-        }
-    }*/
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

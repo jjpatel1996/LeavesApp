@@ -40,6 +40,10 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     @IBOutlet weak var SickLeaveLabel: UILabel!
     @IBOutlet weak var WorkingLeaveLabel: UILabel!
     
+    @IBOutlet weak var SetupView: CardView!
+    @IBOutlet weak var TotalLeaveHeaderView: CardView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDesign()
@@ -49,19 +53,37 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupInitialProcess()
+    }
+    
+    func setupInitialProcess(){
         
         if LeavesHandler.isFirstTime() {
-            let GetLeavesVC = storyboard?.instantiateViewController(withIdentifier: "GetLeavesID") as! GetLeavesViewController
-            GetLeavesVC.delegate = self
-            self.present(GetLeavesVC, animated: true, completion: nil)
-            return
+            askForLoginSignup()
+            SetupView.isHidden = false
+            TotalLeaveHeaderView.isHidden = true
+        }else{
+            SetupView.isHidden = true
+            TotalLeaveHeaderView.isHidden = false
         }
-        
+    }
+    
+    func askForLoginSignup(){
+        self.popupAlert(title: "Login/Register", message: "Do you want to login or register? This will all you to sync data to server.", actionTitles: ["Cancel","Login"], actions: [ { cancel in }, { login in
+               self.gotoLoginPage()
+            } ])
     }
     
     func LeavesSetted() {
+        setupInitialProcess()
         fetchLeaves()
         self.leaveTableView.reloadData()
+    }
+    
+    func gotoLoginPage(){
+        let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "AuthID") as! LoginSignupViewController
+        loginVC.isPageOpenByPopup = true
+        self.present( UINavigationController(rootViewController: loginVC), animated: true, completion: nil)
     }
     
     func fetchLeaves(){
@@ -74,7 +96,6 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     }
 
     deinit {
-        //NotificationCenter.default.removeObserver(self)
         LeavesFetchResultController.delegate = nil
     }
     
@@ -89,6 +110,13 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         //Setting in future
         let settingVC = storyboard?.instantiateViewController(withIdentifier: "SettingVCID") as! SettingViewController
         self.present(UINavigationController(rootViewController: settingVC), animated: true, completion: nil)
+    }
+    
+    @IBAction func SetupLeavesTapped(_ sender: Any) {
+        let GetLeavesVC = storyboard?.instantiateViewController(withIdentifier: "GetLeavesID") as! GetLeavesViewController
+        GetLeavesVC.delegate = self
+        self.present(GetLeavesVC, animated: true, completion: nil)
+        return
     }
     
     func fetchData(){
@@ -123,7 +151,6 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
             }
             ])
     }
-    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         if LeavesFetchResultController.sections != nil {
@@ -208,7 +235,6 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     
 }
 extension LeavesViewController: NSFetchedResultsControllerDelegate {
-    
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         leaveTableView.beginUpdates()

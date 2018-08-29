@@ -224,15 +224,21 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func setupSyncCell(indexPath:IndexPath) -> SyncCell {
+        
         let cell = SettingTableView.dequeueReusableCell(withIdentifier: "SyncID", for: indexPath) as! SyncCell
         cell.ActivityIndicator.isHidden = true
-        cell.Switch.isOn = LeavesHandler.isSyncON()
+     
+        let isEnable = Auth.auth().currentUser != nil
+        cell.Switch.isEnabled = isEnable
+        cell.Switch.isOn = isEnable ? LeavesHandler.isSyncON() : false
         cell.Switch.addTarget(self, action: #selector(switchTapped(sender:)), for: UIControlEvents.editingChanged)
         cell.selectionStyle = .none
         return cell
     }
     
     @objc func switchTapped(sender:UISwitch){
+        
+        
         if sender.isOn {
             LeavesHandler.SetSync(isOn: true)
             //Sync Data
@@ -250,9 +256,11 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }else{
             LeavesHandler.SetSync(isOn: false)
         }
+        
     }
     
     func setupLeaveEditCell(indexPath:IndexPath) -> LeaveEditingCell {
+       
         let cell = SettingTableView.dequeueReusableCell(withIdentifier: "LeaveEditID", for: indexPath) as! LeaveEditingCell
         var leaveTitle:String!
         var leaveValue:Int!
@@ -279,6 +287,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.LeaveEditTextfield.text = String(leaveValue)
         cell.selectionStyle = .none
         return cell
+        
     }
     
     @objc func logout(sender:UIButton){
