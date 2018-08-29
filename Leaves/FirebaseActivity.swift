@@ -45,7 +45,7 @@ class FirebaseActivity: NSObject {
             UserDictionary["ContactNo"] = ContactNo
         }
     
-        ref.child("users").child(userID).setValue(UserDictionary){
+        ref.child(LeaveTableNames.User.rawValue).child(userID).setValue(UserDictionary){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
                 print("insertUser could not be saved: \(error).")
@@ -63,7 +63,7 @@ class FirebaseActivity: NSObject {
         
         guard isUserExist() else { return false }
         
-        ref.child("TotalLeaves").child(UserID!).setValue(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
+        ref.child(LeaveTableNames.User.rawValue).child(UserID!).setValue(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
                 print("AddTotal could not be saved: \(error).")
@@ -77,7 +77,7 @@ class FirebaseActivity: NSObject {
     func updateTotalLeaves(sickLeave:Int,workingLeave:Int) -> Bool {
         guard isUserExist() else { return false }
         
-        ref.child("TotalLeaves").child(UserID!).updateChildValues(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
+        ref.child(LeaveTableNames.TotalLeaves.rawValue).child(UserID!).updateChildValues(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
                 print("updateTotal could not be saved: \(error).")
@@ -95,7 +95,7 @@ class FirebaseActivity: NSObject {
         let dtFormatter = DateFormatter()
         dtFormatter.dateFormat = "HH:mm:ss dd-MM-yyyy"
         
-        let leave:[String : Any] = ["leaveType":leave.leave_type ?? "",
+        let leaveData:[String : Any] = ["leaveType":leave.leave_type ?? "",
                      "Description":leave.leave_description ?? "",
                      "Total":leave.leave_count,
                      "DateTime":dtFormatter.string(from: leave.leave_datetime!),
@@ -103,12 +103,15 @@ class FirebaseActivity: NSObject {
                      "modifiedDTM":dtFormatter.string(from: leave.leave_modifiedDTM!),
                      "dead":leave.dead,
                      ]
-        ref.child("Leaves").child(UserID!).childByAutoId().setValue(leave){
+        ref.child(LeaveTableNames.TotalLeaves.rawValue).child(UserID!).childByAutoId().setValue(leaveData){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
                 print("SaveLeave could not be saved: \(error).")
             } else {
                 print("SaveLeave saved successfully!")
+                leave.setUniqueID(key: ref.key)
+                print(ref.key)
+                
             }
         }
         
@@ -135,7 +138,7 @@ class FirebaseActivity: NSObject {
                                         "dead":leave.dead,
                                         ]
             
-            ref.child("Leaves").child(UserID!).child(leaveUniqueID).updateChildValues(leave) {
+            ref.child(LeaveTableNames.Leaves.rawValue).child(UserID!).child(leaveUniqueID).updateChildValues(leave) {
                 (error:Error?, ref:DatabaseReference) in
                 if let error = error {
                     print("UpdateLeave could not be saved: \(error).")
@@ -151,7 +154,7 @@ class FirebaseActivity: NSObject {
         
         guard isUserExist() else { return }
         
-        ref.child("Leaves").child(UserID!).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child(LeaveTableNames.Leaves.rawValue).child(UserID!).observeSingleEvent(of: .value, with: { (snapshot) in
             // Get user value
             print(snapshot.value ??  "Not found")
             if let IDPair = snapshot.value as? [String:NSDictionary] {
@@ -165,7 +168,7 @@ class FirebaseActivity: NSObject {
     
     func getCurrentTotalLeaves(userID:String, completion: @escaping ((_ SickLeave:String?, _ WorkingLeave:String?) -> Void)){
     
-       ref.child("TotalLeaves").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
+       ref.child(LeaveTableNames.TotalLeaves.rawValue).child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
                 // Get user value
         print(snapshot.value ??  "Not found")
 

@@ -2,7 +2,7 @@
 //  LeavesHistory+CoreDataClass.swift
 //  
 //
-//  Created by Jay Patel on 27/08/18.
+//  Created by Jay Patel on 29/08/18.
 //
 //
 
@@ -11,5 +11,10 @@ import CoreData
 
 @objc(LeavesHistory)
 public class LeavesHistory: NSManagedObject {
-    var uniqueFirebaseID: String?
+
+    func setUniqueID(key:String){
+        self.uniqueFirebaseID = key
+        try? CoreDataStack.saveContext()
+    }
+    
 }

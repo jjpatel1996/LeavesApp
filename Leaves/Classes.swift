@@ -9,6 +9,13 @@
 import Foundation
 import UIKit
 
+enum LeaveTableNames: String {
+    case TotalLeaves = "Total_leaves"
+    case Leaves = "Leaves"
+    case User = "User"
+}
+
+
 extension UIImageView {
     func load(url: URL) {
         DispatchQueue.global().async { [weak self] in
@@ -42,75 +49,6 @@ extension UIImageView {
         guard let url = URL(string: link) else { return }
         downloadedFrom(url: url, contentMode: mode)
     }
-}
-
-public class LeavesHandler {
-    
-    static func isSyncON() -> Bool {
-        return UserDefaults.standard.bool(forKey: "Sync")
-    }
-    
-    static func SetSync(isOn:Bool) {
-        let storage = UserDefaults.standard
-        storage.set(isOn, forKey: "Sync")
-        storage.synchronize()
-    }
-    
-    static func isFirstTime() -> Bool {
-        let storage = UserDefaults.standard
-        return storage.integer(forKey: "FirstTime") == 0
-    }
-    
-    static func DoneFirstTime() {
-        let storage = UserDefaults.standard
-        storage.set(1, forKey: "FirstTime")
-        storage.synchronize()
-    }
-    
-    static func getSickLeaves()  -> Int {
-        let storage = UserDefaults.standard
-        return storage.integer(forKey: "SickLeave")
-    }
-    
-    static func getWorkingLeaves() -> Int {
-        let storage = UserDefaults.standard
-        return storage.integer(forKey: "WorkingLeave")
-    }
-    
-    static func SetSickLeaves(leaves:Int) {
-        let storage = UserDefaults.standard
-        storage.set(leaves, forKey: "SickLeave")
-        storage.synchronize()
-    }
-    
-    static func SetWorkingLeaves(leaves:Int) {
-        let storage = UserDefaults.standard
-        storage.set(leaves, forKey: "WorkingLeave")
-        storage.synchronize()
-    }
-
-    static func getRemainSickLeaves()  -> Int {
-        let storage = UserDefaults.standard
-        return storage.integer(forKey: "RemainSickLeave")
-    }
-    
-    static func getRemainWorkingLeaves() -> Int {
-        let storage = UserDefaults.standard
-        return storage.integer(forKey: "RemainWorkingLeave")
-    }
-    
-    static func SetRemainSickLeaves(leaves:Int) {
-        let storage = UserDefaults.standard
-        storage.set(leaves, forKey: "RemainSickLeave")
-        storage.synchronize()
-    }
-    
-    static func SetRemainWorkingLeaves(leaves:Int) {
-        let storage = UserDefaults.standard
-        storage.set(leaves, forKey: "RemainWorkingLeave")
-        storage.synchronize()
-    }
-    
 }
 
 

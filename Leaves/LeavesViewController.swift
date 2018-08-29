@@ -43,7 +43,6 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     @IBOutlet weak var SetupView: CardView!
     @IBOutlet weak var TotalLeaveHeaderView: CardView!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDesign()
