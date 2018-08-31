@@ -44,7 +44,6 @@ class GetLeavesViewController: UIViewController, UITextFieldDelegate {
     
     func saveAndDismissView(){
         FirebaseActivity().UpdateTotalLeavesToFirebase()
-        LeavesHandler.DoneFirstTime()
         delegate?.LeavesSetted()
         self.dismiss(animated: true, completion: nil)
     }

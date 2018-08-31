@@ -104,7 +104,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     func loadUserProfile(){
         //isVerified
         if let uid = Auth.auth().currentUser?.uid {
-            ref.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            ref.child(LeaveTableNames.User.rawValue).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 let value = snapshot.value as? NSDictionary
                 let userProfileURL = value?["ProfileURL"] as? String
                 let firstName = value?["FirstName"] as? String

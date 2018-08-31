@@ -58,7 +58,10 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     func setupInitialProcess(){
         
         if LeavesHandler.isFirstTime() {
+            LeavesHandler.DoneFirstTime()
             askForLoginSignup()
+        }
+        if totalSickLeaves == 0 && totalWorkingLeaves == 0 {
             SetupView.isHidden = false
             TotalLeaveHeaderView.isHidden = true
         }else{
@@ -68,15 +71,15 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     }
     
     func askForLoginSignup(){
-        self.popupAlert(title: "Login/Register", message: "Do you want to login or register? This will all you to sync data to server.", actionTitles: ["Cancel","Login"], actions: [ { cancel in }, { login in
+        self.popupAlert(title: "Login/Register", message: "Do you want to login or register? This will allow you to sync data to server.", actionTitles: ["Cancel","Login"], actions: [ { cancel in }, { login in
                self.gotoLoginPage()
             } ])
     }
     
     func LeavesSetted() {
-        setupInitialProcess()
         fetchLeaves()
-        self.leaveTableView.reloadData()
+        setupInitialProcess()
+        //self.leaveTableView.reloadData()
     }
     
     func gotoLoginPage(){
@@ -216,6 +219,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
             let addLeaveBackCount = leave.leave_count
             
             print("Added Back \(addLeaveBackCount) For \(leave.leave_type ?? "leave not found")")
+            
             if leave.leave_type == LeaveType.Sick.rawValue {
                 LeavesHandler.SetRemainSickLeaves(leaves: self.RemainSickLeaves + Int(addLeaveBackCount))
             }else{
@@ -224,7 +228,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
             
             CoreDataStack.managedObjectContext.delete(leave)
             try CoreDataStack.saveContext()
-            
+            FirebaseActivity().DeleteLeave(leave: leave)
             fetchLeaves()
             
         } catch {

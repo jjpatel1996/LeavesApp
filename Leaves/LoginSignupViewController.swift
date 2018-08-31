@@ -67,54 +67,62 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
         
         let email = EmailTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         
+        self.StartloadingScreen()
+        
         if lsChangeSegment.selectedSegmentIndex == 0 { //Login
+          
             Auth.auth().signIn(withEmail: email, password: PasswordTextField.text!) { (user, error) in
+                
+                self.StoploadingScreen()
                 if let error = error {
-      
                     print(error.localizedDescription)
                     self.popupAlertwithoutButton(title: "Error", message: error.localizedDescription)
                     return
                 }
+                
                 guard user != nil else {
-                    self.gotoLeaveVC()
+                    self.popupAlertwithoutButton(title: "Error", message: "User not found.")
                     return
                 }
+                
                 self.firebaseActivity.insertUserFirebase(userID: user!.user.uid, Email: email, FName: nil, LName: nil, ContactNo: nil, imageURL: nil)
+                FirebaseActivity().UpdateTotalLeavesToFirebase()
                 self.gotoLeaveVC()
             }
+       
         }else{
+            
             Auth.auth().createUser(withEmail: email, password: PasswordTextField.text!) { (authResult, error) in
+                
+                self.StoploadingScreen()
+                
                 if let error = error {
-           
                     print(error.localizedDescription)
                     self.popupAlertwithoutButton(title: "Error", message: error.localizedDescription)
                     return
                 }
                 
                 guard authResult != nil else {
-                    self.gotoLeaveVC()
+                    self.popupAlertwithoutButton(title: "Error", message: "Unable to get result.")
                     return
                 }
+                
                 self.firebaseActivity.insertUserFirebase(userID: authResult!.user.uid, Email: email, FName: nil, LName: nil, ContactNo: nil, imageURL: nil)
                 self.gotoLeaveVC()
             }
+            
         }
-        
-        //Update Total Leaves and total added leaves from here to fb
-        FirebaseActivity().UpdateTotalLeavesToFirebase()
     }
-    
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
   
-        print(user.profile.email)
-        
         if let error = error {
           
             print(error.localizedDescription)
             return
         }
         
+        print(user.profile.email)
         guard let authentication = user.authentication else { return }
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                        accessToken: authentication.accessToken)

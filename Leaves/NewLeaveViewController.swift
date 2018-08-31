@@ -238,7 +238,7 @@ class NewLeaveViewController: UIViewController {
         if leave.uniqueFirebaseID == nil {
             firebase.SaveLeave(leave: leave)
         }else{
-            firebase.UpdateLeave(leaveUniqueID: leave.uniqueFirebaseID!, leave: leave)
+            firebase.UpdateLeave(leave: leave)
         }
     }
     

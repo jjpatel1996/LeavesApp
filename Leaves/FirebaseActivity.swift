@@ -23,8 +23,7 @@ class FirebaseActivity: NSObject {
     }
     
     func saveNewUser() {
-    
-        
+        //
     }
     
     func insertUserFirebase(userID:String,Email:String,FName:String?,LName:String?,ContactNo:String?,imageURL:URL?){
@@ -38,9 +37,11 @@ class FirebaseActivity: NSObject {
         if FName != nil {
             UserDictionary["FirstName"] = FName
         }
+        
         if LName != nil {
             UserDictionary["LastName"] = LName
         }
+        
         if ContactNo != nil {
             UserDictionary["ContactNo"] = ContactNo
         }
@@ -59,11 +60,12 @@ class FirebaseActivity: NSObject {
         return  Auth.auth().currentUser != nil
     }
     
+    
     func setTotalLeaves(sickLeave:Int,workingLeave:Int) -> Bool {
         
         guard isUserExist() else { return false }
         
-        ref.child(LeaveTableNames.User.rawValue).child(UserID!).setValue(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
+        ref.child(LeaveTableNames.TotalLeaves.rawValue).child(UserID!).setValue(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
                 print("AddTotal could not be saved: \(error).")
@@ -103,7 +105,7 @@ class FirebaseActivity: NSObject {
                      "modifiedDTM":dtFormatter.string(from: leave.leave_modifiedDTM!),
                      "dead":leave.dead,
                      ]
-        ref.child(LeaveTableNames.TotalLeaves.rawValue).child(UserID!).childByAutoId().setValue(leaveData){
+        ref.child(LeaveTableNames.Leaves.rawValue).child(UserID!).childByAutoId().setValue(leaveData){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
                 print("SaveLeave could not be saved: \(error).")
@@ -123,14 +125,16 @@ class FirebaseActivity: NSObject {
     }
     
     //Working or Sick.
-    func UpdateLeave(leaveUniqueID:String,leave:LeavesHistory){
+    func UpdateLeave(leave:LeavesHistory){
 
         guard isUserExist() else { return }
+        
+        guard leave.uniqueFirebaseID != nil else { return }
         
             let dtFormatter = DateFormatter()
             dtFormatter.dateFormat = "HH:mm:ss dd-MM-yyyy"
             
-            let leave:[String : Any] = ["leaveType":leave.leave_type ?? "",
+            let leaveData:[String : Any] = ["leaveType":leave.leave_type ?? "",
                                         "Description":leave.leave_description ?? "",
                                         "Total":leave.leave_count,
                                         "DateTime":dtFormatter.string(from: leave.leave_datetime!),
@@ -138,7 +142,7 @@ class FirebaseActivity: NSObject {
                                         "dead":leave.dead,
                                         ]
             
-            ref.child(LeaveTableNames.Leaves.rawValue).child(UserID!).child(leaveUniqueID).updateChildValues(leave) {
+            ref.child(LeaveTableNames.Leaves.rawValue).child(UserID!).child(leave.uniqueFirebaseID!).updateChildValues(leaveData) {
                 (error:Error?, ref:DatabaseReference) in
                 if let error = error {
                     print("UpdateLeave could not be saved: \(error).")
@@ -146,6 +150,23 @@ class FirebaseActivity: NSObject {
                     print("UpdateLeave saved successfully!")
                 }
             }
+        
+    }
+    
+    func DeleteLeave(leave:LeavesHistory){
+        
+        guard isUserExist() else { return }
+        
+        guard leave.uniqueFirebaseID != nil else { return }
+        
+        ref.child(LeaveTableNames.Leaves.rawValue).child(UserID!).child(leave.uniqueFirebaseID!).removeValue(){
+            (error:Error?, ref:DatabaseReference) in
+            if let error = error {
+                print("DeleteLeave could not be deleted: \(error).")
+            } else {
+                print("Delete Leave Successfully!")
+            }
+        }
         
     }
     
@@ -197,7 +218,6 @@ class FirebaseActivity: NSObject {
                 LeavesHandler.SetRemainSickLeaves(leaves: Int(Sick!)!)
                 LeavesHandler.SetWorkingLeaves(leaves: Int(Working!)!)
                 LeavesHandler.SetRemainWorkingLeaves(leaves: Int(Working!)!)
-                LeavesHandler.DoneFirstTime()
                 
             }else{
              

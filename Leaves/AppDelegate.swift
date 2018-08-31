@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
         
-        FirebaseActivity().UpdateTotalLeavesToFirebase()
+ //       FirebaseActivity().UpdateTotalLeavesToFirebase()
         
 //        if Auth.auth().currentUser != nil {
 //            print("User alreadt exist.").
