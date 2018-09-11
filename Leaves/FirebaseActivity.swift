@@ -26,27 +26,15 @@ class FirebaseActivity: NSObject {
         //
     }
     
-    func insertUserFirebase(userID:String,Email:String,FName:String?,LName:String?,ContactNo:String?,imageURL:URL?){
+    func insertUserFirebase(userID:String,user:User){
         
-        var UserDictionary: [String:Any] = ["Email":Email,"isVerified":false]
+        var UserData: [String:Any] = [:]
+        UserData["ContactNo"] = user.ContactNo
+        UserData["FirstName"] = user.UserName
+        UserData["ProfileURL"] = user.profileURL
+        UserData["Email"] = user.emailAddress
         
-        if imageURL != nil {
-            UserDictionary["ProfileURL"] = imageURL!.absoluteString
-        }
-        
-        if FName != nil {
-            UserDictionary["FirstName"] = FName
-        }
-        
-        if LName != nil {
-            UserDictionary["LastName"] = LName
-        }
-        
-        if ContactNo != nil {
-            UserDictionary["ContactNo"] = ContactNo
-        }
-    
-        ref.child(LeaveTableNames.User.rawValue).child(userID).setValue(UserDictionary){
+        ref.child(LeaveTableNames.User.rawValue).child(userID).setValue(UserData){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
                 print("insertUser could not be saved: \(error).")
@@ -55,6 +43,26 @@ class FirebaseActivity: NSObject {
             }
         }
     }
+    
+    func UpdateUserInfo(userID:String,user:User){
+        
+        var UserDictionary: [String:Any] = [:]
+        UserDictionary["ContactNo"] = user.ContactNo
+        UserDictionary["FirstName"] = user.UserName
+        UserDictionary["ProfileURL"] = user.profileURL
+        UserDictionary["Email"] = user.emailAddress
+        
+        ref.child(LeaveTableNames.User.rawValue).child(userID).updateChildValues(UserDictionary){
+            (error:Error?, ref:DatabaseReference) in
+            if let error = error {
+                print("insertUser could not be saved: \(error).")
+            } else {
+                print("insertUser saved successfully!")
+            }
+        }
+        
+    }
+    
     
     func isUserExist() -> Bool {
         return  Auth.auth().currentUser != nil

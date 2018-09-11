@@ -866,6 +866,116 @@
             </objects>
             <point key="canvasLocation" x="916" y="931"/>
         </scene>
+        <!--Edit Profile View Controller-->
+        <scene sceneID="Jpp-f4-lW0">
+            <objects>
+                <viewController storyboardIdentifier="EditProfileID" id="fIi-ji-Q6R" customClass="EditProfileViewController" customModule="Leaves" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="u2W-lx-bP7">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kjL-KU-ELf">
+                                <rect key="frame" x="37.5" y="167" width="300" height="333.5"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="UserProfile" translatesAutoresizingMaskIntoConstraints="NO" id="3yT-ju-uu5">
+                                        <rect key="frame" x="90" y="-60" width="120" height="120"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="120" id="OSu-Ot-b4Z"/>
+                                            <constraint firstAttribute="width" constant="120" id="S8d-aq-maN"/>
+                                        </constraints>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1VI-rS-HOl">
+                                        <rect key="frame" x="15" y="110.5" width="270" height="114"/>
+                                        <subviews>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="First name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0gq-xl-VwJ">
+                                                <rect key="frame" x="0.0" y="0.0" width="270" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="Klb-Hl-lP8"/>
+                                                </constraints>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="words" keyboardType="namePhonePad" keyboardAppearance="alert" textContentType="name"/>
+                                            </textField>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Email address" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iZ3-j0-mcg">
+                                                <rect key="frame" x="0.0" y="42" width="270" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="z0P-DC-NmD"/>
+                                                </constraints>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                                <textInputTraits key="textInputTraits" keyboardType="emailAddress" keyboardAppearance="alert" textContentType="email"/>
+                                            </textField>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Phone number" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d1W-Fr-WwW">
+                                                <rect key="frame" x="0.0" y="84" width="270" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="ezf-JS-o7K"/>
+                                                </constraints>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                                <textInputTraits key="textInputTraits" keyboardType="phonePad" keyboardAppearance="alert" textContentType="tel"/>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f7y-SV-r9m">
+                                        <rect key="frame" x="-15" y="-15" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="1gZ-vJ-w1r"/>
+                                            <constraint firstAttribute="width" constant="30" id="j5a-ra-nQm"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="27"/>
+                                        <state key="normal" title="X">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="CloseView:" destination="fIi-ji-Q6R" eventType="touchUpInside" id="dEI-3r-e7f"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="om3-nt-QUE">
+                                        <rect key="frame" x="283" y="-15" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="4Ey-UL-piA"/>
+                                            <constraint firstAttribute="width" constant="30" id="qWe-fw-99p"/>
+                                        </constraints>
+                                        <state key="normal" image="icons8-checkmark-52"/>
+                                        <connections>
+                                            <action selector="SaveTapped:" destination="fIi-ji-Q6R" eventType="touchUpInside" id="2Gn-AF-Str"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="3yT-ju-uu5" firstAttribute="top" secondItem="kjL-KU-ELf" secondAttribute="top" constant="-60" id="SnG-55-J1Y"/>
+                                    <constraint firstItem="om3-nt-QUE" firstAttribute="top" secondItem="kjL-KU-ELf" secondAttribute="top" constant="-15" id="e4b-nh-KXl"/>
+                                    <constraint firstItem="1VI-rS-HOl" firstAttribute="centerX" secondItem="kjL-KU-ELf" secondAttribute="centerX" id="fna-xV-2Dj"/>
+                                    <constraint firstItem="1VI-rS-HOl" firstAttribute="centerY" secondItem="kjL-KU-ELf" secondAttribute="centerY" id="gRx-or-Sga"/>
+                                    <constraint firstItem="1VI-rS-HOl" firstAttribute="width" secondItem="kjL-KU-ELf" secondAttribute="width" multiplier="0.9" id="gjc-u2-ObH"/>
+                                    <constraint firstAttribute="trailing" secondItem="om3-nt-QUE" secondAttribute="trailing" constant="-13" id="ksu-fO-oCl"/>
+                                    <constraint firstItem="f7y-SV-r9m" firstAttribute="leading" secondItem="kjL-KU-ELf" secondAttribute="leading" constant="-15" id="ofV-BO-dzf"/>
+                                    <constraint firstItem="3yT-ju-uu5" firstAttribute="centerX" secondItem="kjL-KU-ELf" secondAttribute="centerX" id="qnA-fp-mYI"/>
+                                    <constraint firstItem="f7y-SV-r9m" firstAttribute="top" secondItem="kjL-KU-ELf" secondAttribute="top" constant="-15" id="u8Q-jp-Nnp"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="0.3027801513671875" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="kjL-KU-ELf" firstAttribute="width" secondItem="u2W-lx-bP7" secondAttribute="width" multiplier="0.8" id="2wD-3i-PHc"/>
+                            <constraint firstItem="kjL-KU-ELf" firstAttribute="height" secondItem="u2W-lx-bP7" secondAttribute="height" multiplier="0.5" id="7cE-HR-a5g"/>
+                            <constraint firstItem="kjL-KU-ELf" firstAttribute="centerY" secondItem="u2W-lx-bP7" secondAttribute="centerY" id="h3j-b0-acW"/>
+                            <constraint firstItem="kjL-KU-ELf" firstAttribute="centerX" secondItem="u2W-lx-bP7" secondAttribute="centerX" id="sl4-sK-FlI"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="eeD-sq-dzD"/>
+                    </view>
+                    <connections>
+                        <outlet property="EmailAddressTextfield" destination="iZ3-j0-mcg" id="SgP-1K-Q2k"/>
+                        <outlet property="PhoneNumberTextfield" destination="d1W-Fr-WwW" id="oJv-3F-AkF"/>
+                        <outlet property="ProfileView" destination="3yT-ju-uu5" id="vMt-7J-FF5"/>
+                        <outlet property="UserNameTextfield" destination="0gq-xl-VwJ" id="fPr-cl-EsI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XC0-to-za9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1653.5999999999999" y="930.58470764617698"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="ohJ-1H-Uwq">
             <objects>
@@ -888,5 +998,7 @@
     </scenes>
     <resources>
         <image name="Setting" width="24" height="24"/>
+        <image name="UserProfile" width="512" height="512"/>
+        <image name="icons8-checkmark-52" width="52" height="52"/>
     </resources>
 </document>

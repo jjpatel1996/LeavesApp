@@ -168,6 +168,14 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
              let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "AuthID") as! LoginSignupViewController
             loginVC.isPageOpenByPopup = true
             self.present( UINavigationController(rootViewController: loginVC), animated: true, completion: nil)
+        }else if settingSections[indexPath.section] == .Profile {
+            //Go To Edit Page?
+            let editProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "EditProfileID") as! EditProfileViewController
+            editProfileVC.user = self.userProfile
+//            if let image = tableView.cellForRow(at: indexPath)?.imageView?.image {
+//                editProfileVC.ProfileView.image = image
+//            }
+            self.present(editProfileVC, animated: true, completion: nil)
         }
     }
 
@@ -190,7 +198,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
-
     func setupUserDetailsCell(indexPath:IndexPath) -> UITableViewCell {
         
         var cell:UITableViewCell!
@@ -210,7 +217,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "UserDetails")
             cell.textLabel?.text = userProfile?.UserName ?? "Not available"
             cell.imageView?.image = #imageLiteral(resourceName: "UserProfile")
-            if userProfile?.profileURL != nil{
+            if userProfile?.profileURL != nil {
             cell.imageView?.downloadedFrom(link: userProfile!.profileURL!)
             }
             break
