@@ -25,14 +25,17 @@ enum EditLeaveType {
     case RemainWorkingLeaves
 }
 
-enum Profiles {
-    case EmailAddress
-    case Name
-    case ContactNo
-    case ProfileImage
+enum Profiles :String {
+    case EmailAddress = "Email Address"
+    case Name = "Name"
+    case ContactNo = "Contact Number"
+    case ProfileImage = "Profile Image"
+    case Age = "Age"
+    case BirthdayDate = "Birthday Date"
+    case GenderType  = "Gender"
 }
 
-struct User {
+struct UserDetail {
     var profileURL:String?
     var UserName:String?
     var emailAddress:String?
@@ -45,13 +48,12 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var settingSections = [SettingType]()
     var leaveCells:[EditLeaveType] = [.TotalWorkingLeaves,.RemainWorkingLeaves,.TotalSickLeaves,.RemainSickLeaves]
-    var profilesCells:[Profiles] = [.ProfileImage,.EmailAddress,.ContactNo]
     var profilesCellHeights:[CGFloat] = [UITableViewAutomaticDimension,UITableViewAutomaticDimension,UITableViewAutomaticDimension]
     var heightsForCells = [CGFloat]()
     
     let ref = Database.database().reference()
    
-    var userProfile:User? {
+    var userProfile:UserDetail? {
         didSet {
             if let index = settingSections.index(of: SettingType.Profile){
                 SettingTableView.reloadSections(IndexSet(integer: index), with: .fade)
@@ -63,6 +65,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         self.title = "Setting"
         setup()
+        loadUserProfile()
     }
 
     func setup(){
@@ -71,25 +74,20 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         SettingTableView.tableFooterView = UIView()
         SettingTableView.register(UITableViewCell.self, forCellReuseIdentifier: "LoginSignUp")
         SettingTableView.register(UITableViewCell.self, forCellReuseIdentifier: "UserDetails")
+        SettingTableView.register(UINib(nibName: "ProfileHeaderCell", bundle: nil), forHeaderFooterViewReuseIdentifier: "ProfileSectionHeader")
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(closeView))
     }
     
     func setupSections(){
         settingSections.removeAll()
-        heightsForCells.removeAll()
         settingSections.append(SettingType.EditLeave)
-        heightsForCells.append(50)
         settingSections.append(SettingType.Sync)
-        heightsForCells.append(50)
         
         if Auth.auth().currentUser != nil {
             settingSections.insert(SettingType.Profile, at: 0)
-            heightsForCells.insert(120, at: 0)
             settingSections.append(SettingType.Logout)
-            heightsForCells.append(50)
         } else {
             settingSections.append(SettingType.LoginSignUp)
-            heightsForCells.append(50)
         }
         SettingTableView.reloadData()
     }
@@ -97,12 +95,11 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupSections()
-        loadUserProfile()
-        //Load Contact Details And Set it when availble
     }
     
+    //Save User Info In database and Fetch it from db
     func loadUserProfile(){
-        //isVerified
+        
         if let uid = Auth.auth().currentUser?.uid {
             ref.child(LeaveTableNames.User.rawValue).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 let value = snapshot.value as? NSDictionary
@@ -112,21 +109,17 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                 //let isVerified = value?["isVerified"] as? Bool
                 let emailAddress = value?["Email"] as? String
                 let ContactNo = value?["ContactNo"] as? String
-                self.userProfile = User(profileURL: userProfileURL, UserName: firstName, emailAddress: emailAddress, ContactNo: ContactNo)
+                self.userProfile = UserDetail(profileURL: userProfileURL, UserName: firstName, emailAddress: emailAddress, ContactNo: ContactNo)
                 
             }) { (error) in
                 print(error.localizedDescription)
+                //Not Found
             }
         }
     }
     
     @objc func closeView(){
         self.navigationController?.dismiss(animated: true, completion: nil)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -136,16 +129,23 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if settingSections[section] == .EditLeave {
             return leaveCells.count
-        }else if settingSections[section] == .Profile {
-            return profilesCells.count
-            //profilesCells.count
         }else{
             return 1
         }
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if settingSections[section] == .Profile {
+            let header = ProfileHeader(user: self.userProfile, frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
+            return header
+        }else{
+           return nil
+        }
+        
+    }
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return settingSections[section].rawValue
+        return settingSections[section] != .Profile ? settingSections[section].rawValue : nil
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -169,19 +169,24 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             loginVC.isPageOpenByPopup = true
             self.present( UINavigationController(rootViewController: loginVC), animated: true, completion: nil)
         }else if settingSections[indexPath.section] == .Profile {
-            //Go To Edit Page?
-            let editProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "EditProfileID") as! EditProfileViewController
-            editProfileVC.user = self.userProfile
-//            if let image = tableView.cellForRow(at: indexPath)?.imageView?.image {
-//                editProfileVC.ProfileView.image = image
-//            }
-            self.present(editProfileVC, animated: true, completion: nil)
+            if self.userProfile != nil {
+                let editProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "EditProfileID") as! EditProfileViewController
+                editProfileVC.user = self.userProfile
+                self.navigationController?.pushViewController(editProfileVC, animated: true)
+            }
         }
     }
 
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if settingSections[section] == .Profile {
+            return  CGFloat(100)
+        }else{
+            return tableView.estimatedRowHeight
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        //return UITableViewAutomaticDimension
-        return settingSections[indexPath.section] == .Profile ? profilesCellHeights[indexPath.row] : heightsForCells[indexPath.section]
+        return 50
     }
     
     func setupLoginSignupCell(indexPath:IndexPath) -> UITableViewCell {
@@ -200,33 +205,9 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func setupUserDetailsCell(indexPath:IndexPath) -> UITableViewCell {
         
-        var cell:UITableViewCell!
-        
-        switch profilesCells[indexPath.row] {
-        case .ContactNo:
-            cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "UserDetails")
-            cell.textLabel?.text = "Phone number"
-            cell.detailTextLabel?.text = userProfile?.ContactNo ?? "Not added"
-            break
-        case .EmailAddress:
-            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "UserDetails")
-            cell.textLabel?.text = userProfile?.emailAddress ?? "Not available"
-            //cell.detailTextLabel?.text = "Email Address"
-            break
-        case .ProfileImage:
-            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "UserDetails")
-            cell.textLabel?.text = userProfile?.UserName ?? "Not available"
-            cell.imageView?.image = #imageLiteral(resourceName: "UserProfile")
-            if userProfile?.profileURL != nil {
-            cell.imageView?.downloadedFrom(link: userProfile!.profileURL!)
-            }
-            break
-        default:
-            break
-        }
-        if cell != nil {
-            cell.selectionStyle = .none
-        }
+        let cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "UserDetails")
+        cell.textLabel?.text = "Edit Profile"
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
     
@@ -244,7 +225,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @objc func switchTapped(sender:UISwitch){
-        
         
         if sender.isOn {
             LeavesHandler.SetSync(isOn: true)

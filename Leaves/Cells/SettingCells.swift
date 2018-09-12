@@ -8,6 +8,46 @@
 
 import UIKit
 
+//EditProfileFieldID,
+class ProfileTextFieldCell: UITableViewCell {
+    
+    @IBOutlet weak var profileTextField: UITextField!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        // Configure the view for the selected state
+    }
+    
+}
+
+//ProfileID
+class ProfileImageCell: UITableViewCell {
+    
+    @IBOutlet weak var ProfileImageView: UIImageView!
+    
+    @IBOutlet weak var EditProfileImageButton: UIButton!
+    
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    
+    }
+    
+}
+
+
+
 //SyncID
 class SyncCell: UITableViewCell {
 
@@ -68,20 +108,3 @@ class LeaveEditingCell: UITableViewCell {
     
 }
 
-//ProfileID
-class ProfileCell: UITableViewCell {
-
-    @IBOutlet weak var ProfileImage: UIImageView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
-    
-}

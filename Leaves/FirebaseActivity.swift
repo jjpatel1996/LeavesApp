@@ -26,7 +26,7 @@ class FirebaseActivity: NSObject {
         //
     }
     
-    func insertUserFirebase(userID:String,user:User){
+    func insertUserFirebase(userID:String,user:UserDetail){
         
         var UserData: [String:Any] = [:]
         UserData["ContactNo"] = user.ContactNo
@@ -44,7 +44,7 @@ class FirebaseActivity: NSObject {
         }
     }
     
-    func UpdateUserInfo(userID:String,user:User){
+    func UpdateUserInfo(userID:String,user:UserDetail){
         
         var UserDictionary: [String:Any] = [:]
         UserDictionary["ContactNo"] = user.ContactNo

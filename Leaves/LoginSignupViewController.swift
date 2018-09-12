@@ -85,7 +85,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                     return
                 }
                 
-                let userDetails = User(profileURL: nil, UserName: nil, emailAddress: email, ContactNo: nil)
+                let userDetails = UserDetail(profileURL: nil, UserName: nil, emailAddress: email, ContactNo: nil)
                 self.firebaseActivity.insertUserFirebase(userID: user!.user.uid, user: userDetails)
                 FirebaseActivity().UpdateTotalLeavesToFirebase()
                 self.gotoLeaveVC()
@@ -108,7 +108,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                     return
                 }
                 
-                let userDetails = User(profileURL: nil, UserName: nil, emailAddress: email, ContactNo: nil)
+                let userDetails = UserDetail(profileURL: nil, UserName: nil, emailAddress: email, ContactNo: nil)
                 self.firebaseActivity.insertUserFirebase(userID: authResult!.user.uid, user: userDetails)
                 self.gotoLeaveVC()
             }
@@ -142,7 +142,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                 imageURL = user.profile.imageURL(withDimension: 100)
             }
             
-            let userDetails = User(profileURL: imageURL?.absoluteString, UserName: user.profile.name, emailAddress: user.profile.email, ContactNo: nil)
+            let userDetails = UserDetail(profileURL: imageURL?.absoluteString, UserName: user.profile.name, emailAddress: user.profile.email, ContactNo: nil)
             self.firebaseActivity.insertUserFirebase(userID: authResult!.user.uid, user: userDetails)
             self.gotoLeaveVC()
         }
