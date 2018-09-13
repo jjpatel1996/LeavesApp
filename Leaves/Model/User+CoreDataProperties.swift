@@ -23,5 +23,6 @@ extension User {
     @NSManaged public var age: Int64
     @NSManaged public var birthday: Date?
     @NSManaged public var gender: String?
+    @NSManaged public var profileURL: String?
 
 }

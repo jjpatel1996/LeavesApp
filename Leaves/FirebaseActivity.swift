@@ -63,16 +63,13 @@ class FirebaseActivity: NSObject {
         
     }
     
-    
     func isUserExist() -> Bool {
         return  Auth.auth().currentUser != nil
     }
     
-    
     func setTotalLeaves(sickLeave:Int,workingLeave:Int) -> Bool {
         
         guard isUserExist() else { return false }
-        
         ref.child(LeaveTableNames.TotalLeaves.rawValue).child(UserID!).setValue(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {

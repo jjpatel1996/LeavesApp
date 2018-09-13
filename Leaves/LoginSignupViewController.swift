@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import CoreData
 
 //AuthID
 class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
@@ -88,7 +89,11 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                 let userDetails = UserDetail(profileURL: nil, UserName: nil, emailAddress: email, ContactNo: nil)
                 self.firebaseActivity.insertUserFirebase(userID: user!.user.uid, user: userDetails)
                 FirebaseActivity().UpdateTotalLeavesToFirebase()
-                self.gotoLeaveVC()
+                if Utility.SaveUpdateUserInfo(userDetails: userDetails, downloadImage: true) {
+                    self.gotoLeaveVC()
+                }else{
+                    self.popupAlertwithoutButton(title: "Error", message: "Something went wrong")
+                }
             }
        
         }else{
@@ -110,7 +115,11 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                 
                 let userDetails = UserDetail(profileURL: nil, UserName: nil, emailAddress: email, ContactNo: nil)
                 self.firebaseActivity.insertUserFirebase(userID: authResult!.user.uid, user: userDetails)
-                self.gotoLeaveVC()
+                if Utility.SaveUpdateUserInfo(userDetails: userDetails, downloadImage: true){
+                    self.gotoLeaveVC()
+                }else{
+                    self.popupAlertwithoutButton(title: "Error", message: "Something went wrong")
+                }
             }
             
         }
@@ -119,7 +128,6 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
   
         if let error = error {
-          
             print(error.localizedDescription)
             return
         }
@@ -144,10 +152,16 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
             
             let userDetails = UserDetail(profileURL: imageURL?.absoluteString, UserName: user.profile.name, emailAddress: user.profile.email, ContactNo: nil)
             self.firebaseActivity.insertUserFirebase(userID: authResult!.user.uid, user: userDetails)
-            self.gotoLeaveVC()
+            
+            if Utility.SaveUpdateUserInfo(userDetails: userDetails, downloadImage: true) {
+              self.gotoLeaveVC()
+            }else{
+                self.popupAlertwithoutButton(title: "Error", message: "Something went wrong")
+            }
         }
         
     }
+
 
     func gotoLeaveVC(){
         if isPageOpenByPopup {
@@ -162,5 +176,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
     @objc func closeView(sender:UIBarButtonItem){
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
+    
+
     
 }

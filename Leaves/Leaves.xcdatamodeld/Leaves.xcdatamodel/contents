@@ -17,9 +17,10 @@
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="gender" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profileURL" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="LeavesHistory" positionX="-63" positionY="-18" width="128" height="165"/>
-        <element name="User" positionX="-63" positionY="45" width="128" height="135"/>
+        <element name="User" positionX="-63" positionY="45" width="128" height="150"/>
     </elements>
 </model>

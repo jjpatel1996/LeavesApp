@@ -51,8 +51,6 @@ class EditProfileViewController: UITableViewController, UITextFieldDelegate {
     }
 
     
-    
-    
     //Set Delegate
     @objc func SaveTapped(_ sender: Any) {
         self.view.endEditing(true)
@@ -60,6 +58,7 @@ class EditProfileViewController: UITableViewController, UITextFieldDelegate {
         //Check Internet Connect First.
         if let userID = Auth.auth().currentUser?.uid {
             FirebaseActivity().UpdateUserInfo(userID: userID, user: user!)
+            _ = Utility.SaveUpdateUserInfo(userDetails: user!, downloadImage: false)
             self.closeView()
         }else{
             self.popupAlert(title: "Error", message: "No user found. Please login or try again for update details.", actionTitles: ["Okay"], actions: [{ ok in

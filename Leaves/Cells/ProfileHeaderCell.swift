@@ -46,10 +46,18 @@ class ProfileHeader: UIView {
         
         nameLabel.text = user?.UserName
         emailLabel.text = user?.emailAddress
-        if user != nil && user!.profileURL != nil {
-            profileImageview.downloadedFrom(link: user!.profileURL!)
-        }
         
+        //get From local first
+        let ProfilePicPath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("Profile.png")
+        
+        if FileManager.default.fileExists(atPath: ProfilePicPath) {
+            profileImageview.image = UIImage(contentsOfFile: ProfilePicPath)
+        }else{
+            if user != nil && user!.profileURL != nil {
+                profileImageview.downloadedFrom(link: user!.profileURL!)
+            }
+        }
+
         NSLayoutConstraint.activate([
             profileImageview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12),
             profileImageview.centerYAnchor.constraint(equalTo: self.centerYAnchor),

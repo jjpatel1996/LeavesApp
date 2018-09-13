@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import CoreData
+
 
 enum SettingType:String {
     case Profile = "Profile"
@@ -61,11 +63,12 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Setting"
         setup()
-        loadUserProfile()
+        
     }
 
     func setup(){
@@ -92,12 +95,30 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         SettingTableView.reloadData()
     }
     
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupSections()
+        if Auth.auth().currentUser?.uid != nil {
+           getUserDetails()
+        }
     }
     
-    //Save User Info In database and Fetch it from db
+    func getUserDetails(){
+        let fetchRequest:NSFetchRequest<User> = User.fetchRequest()
+        
+        do {
+            let fetchedResults = try CoreDataStack.managedObjectContext.fetch(fetchRequest)
+            guard fetchedResults.count > 0 else { self.loadUserProfile(); return }
+            let userObject: User = fetchedResults[0]
+            self.userProfile = UserDetail(profileURL: userObject.profileURL, UserName: userObject.name, emailAddress: userObject.email, ContactNo: userObject.contactNo)
+            
+        } catch let error as NSError {
+            print(error.description)
+            loadUserProfile()
+        }
+    }
+    
     func loadUserProfile(){
         
         if let uid = Auth.auth().currentUser?.uid {
