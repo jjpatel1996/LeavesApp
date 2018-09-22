@@ -47,7 +47,7 @@ class NewLeaveViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadTotalLeaves()
-        leaveCountTextField.addTarget(self, action: #selector(textDidChanged(sender:)), for: UIControlEvents.editingChanged)
+        leaveCountTextField.addTarget(self, action: #selector(textDidChanged(sender:)), for: UIControl.Event.editingChanged)
         DescriptionTextView.layer.cornerRadius = 8
         DatePicker.date = Date()
         DatePicker.addTarget(self, action: #selector(datePickerValueChanged(sender:)), for: .valueChanged)

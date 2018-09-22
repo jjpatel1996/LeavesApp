@@ -50,7 +50,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var settingSections = [SettingType]()
     var leaveCells:[EditLeaveType] = [.TotalWorkingLeaves,.RemainWorkingLeaves,.TotalSickLeaves,.RemainSickLeaves]
-    var profilesCellHeights:[CGFloat] = [UITableViewAutomaticDimension,UITableViewAutomaticDimension,UITableViewAutomaticDimension]
+    var profilesCellHeights:[CGFloat] = [UITableView.automaticDimension,UITableView.automaticDimension,UITableView.automaticDimension]
     var heightsForCells = [CGFloat]()
     
     let ref = Database.database().reference()
@@ -226,7 +226,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func setupUserDetailsCell(indexPath:IndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "UserDetails")
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.value1, reuseIdentifier: "UserDetails")
         cell.textLabel?.text = "Edit Profile"
         cell.accessoryType = .disclosureIndicator
         return cell
@@ -240,7 +240,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         let isEnable = Auth.auth().currentUser != nil
         cell.Switch.isEnabled = isEnable
         cell.Switch.isOn = isEnable ? LeavesHandler.isSyncON() : false
-        cell.Switch.addTarget(self, action: #selector(switchTapped(sender:)), for: UIControlEvents.editingChanged)
+        cell.Switch.addTarget(self, action: #selector(switchTapped(sender:)), for: UIControl.Event.editingChanged)
         cell.selectionStyle = .none
         return cell
     }

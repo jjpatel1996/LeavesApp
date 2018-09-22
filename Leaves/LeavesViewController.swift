@@ -199,7 +199,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         return  LeavesFetchResultController.sections![section].name
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             self.popupAlert(title: "Delete Leave", message: "It will also affect to leaves count.", actionTitles: ["Cancel","Delete"], actions: [
                 { cancel in },

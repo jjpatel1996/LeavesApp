@@ -36,7 +36,7 @@ class Utility:NSObject {
                     try fm.removeItem(atPath: profilePathToSave)
                 }
                 
-                let imageData = UIImageJPEGRepresentation(image, 1.0)
+                let imageData = image.jpegData(compressionQuality: 1.0)
                 
                 if fm.createFile(atPath: profilePathToSave as String, contents: imageData, attributes: nil) {
                     print("File Saved")
@@ -108,7 +108,7 @@ extension UIImageView {
 }
 
 extension UIImageView {
-    func downloadedFrom(url: URL, contentMode mode: UIViewContentMode = .scaleAspectFit) {
+    func downloadedFrom(url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
         contentMode = mode
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard
@@ -124,7 +124,7 @@ extension UIImageView {
             }
             }.resume()
     }
-    func downloadedFrom(link: String, contentMode mode: UIViewContentMode = .scaleAspectFit) {
+    func downloadedFrom(link: String, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
         guard let url = URL(string: link) else { return }
         downloadedFrom(url: url, contentMode: mode)
     }
@@ -237,7 +237,7 @@ extension UIViewController {
                 window.addSubview(backView)
                 
                 let activityIndicator :UIActivityIndicatorView = UIActivityIndicatorView()
-                activityIndicator.activityIndicatorViewStyle = .whiteLarge
+                activityIndicator.style = .whiteLarge
                 activityIndicator.color = UIColor.white
                 activityIndicator.frame = CGRect(x: 21.5, y: 21.5, width: 37, height: 37)
                 activityIndicator.tag = 123456
@@ -390,12 +390,12 @@ extension UIViewController {
 
 extension UIAlertAction {
     
-    convenience init(title: String?, style: UIAlertActionStyle, image: UIImage, handler: ((UIAlertAction) -> Void)? = nil) {
+    convenience init(title: String?, style: UIAlertAction.Style, image: UIImage, handler: ((UIAlertAction) -> Void)? = nil) {
         self.init(title: title, style: style, handler: handler)
         self.actionImage = image
     }
     
-    convenience init?(title: String?, style: UIAlertActionStyle, imageNamed imageName: String, handler: ((UIAlertAction) -> Void)? = nil) {
+    convenience init?(title: String?, style: UIAlertAction.Style, imageNamed imageName: String, handler: ((UIAlertAction) -> Void)? = nil) {
         if let image = UIImage(named: imageName) {
             self.init(title: title, style: style, image: image, handler: handler)
         } else {
