@@ -24,14 +24,6 @@ class ProfileHeader: UIView {
         return EmailLabel
     }()
     
-    var profileImageview:UIImageView = {
-       let profile = UIImageView(image: #imageLiteral(resourceName: "UserProfile"))
-       profile.translatesAutoresizingMaskIntoConstraints = false
-       profile.layer.cornerRadius = 35
-       profile.layer.masksToBounds = true
-       return profile
-    }()
-    
     init(user:UserDetail?, frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.themeColor()
@@ -42,30 +34,12 @@ class ProfileHeader: UIView {
         stackView.distribution = .fillEqually
         
         addSubview(stackView)
-        addSubview(profileImageview)
         
         nameLabel.text = user?.UserName
         emailLabel.text = user?.emailAddress
         
-        //get From local first
-        let ProfilePicPath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("Profile.png")
-        
-        if FileManager.default.fileExists(atPath: ProfilePicPath) {
-            profileImageview.image = UIImage(contentsOfFile: ProfilePicPath)
-        }else{
-            if user != nil && user!.profileURL != nil {
-                profileImageview.downloadedFrom(link: user!.profileURL!)
-            }
-        }
-
         NSLayoutConstraint.activate([
-            profileImageview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12),
-            profileImageview.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            profileImageview.widthAnchor.constraint(equalToConstant: 70),
-            profileImageview.heightAnchor.constraint(equalToConstant: 70)])
-        
-        NSLayoutConstraint.activate([
-            stackView.trailingAnchor.constraint(equalTo: profileImageview.leadingAnchor, constant: 8),
+            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 8),
             stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             stackView.heightAnchor.constraint(equalToConstant: 64),
             stackView.centerYAnchor.constraint(equalTo: self.centerYAnchor)])

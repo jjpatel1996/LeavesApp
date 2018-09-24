@@ -86,7 +86,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                     return
                 }
                 
-                let userDetails = UserDetail(profileURL: nil, UserName: nil, emailAddress: email, ContactNo: nil)
+                let userDetails = UserDetail(UserName: nil, emailAddress: email)
                 self.firebaseActivity.insertUserFirebase(userID: user!.user.uid, user: userDetails)
                 FirebaseActivity().UpdateTotalLeavesToFirebase()
                 if Utility.SaveUpdateUserInfo(userDetails: userDetails, downloadImage: true) {
@@ -113,7 +113,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                     return
                 }
                 
-                let userDetails = UserDetail(profileURL: nil, UserName: nil, emailAddress: email, ContactNo: nil)
+                let userDetails =  UserDetail(UserName: nil, emailAddress: email)
                 self.firebaseActivity.insertUserFirebase(userID: authResult!.user.uid, user: userDetails)
                 if Utility.SaveUpdateUserInfo(userDetails: userDetails, downloadImage: true){
                     self.gotoLeaveVC()
@@ -145,12 +145,8 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                 print(error.localizedDescription)
                 return
             }
-            var imageURL:URL?
-            if user.profile.hasImage {
-                imageURL = user.profile.imageURL(withDimension: 100)
-            }
-            
-            let userDetails = UserDetail(profileURL: imageURL?.absoluteString, UserName: user.profile.name, emailAddress: user.profile.email, ContactNo: nil)
+
+            let userDetails = UserDetail(UserName: user.profile.name, emailAddress: user.profile.email)
             self.firebaseActivity.insertUserFirebase(userID: authResult!.user.uid, user: userDetails)
             
             if Utility.SaveUpdateUserInfo(userDetails: userDetails, downloadImage: true) {

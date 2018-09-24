@@ -14,11 +14,11 @@ class EditProfileViewController: UITableViewController, UITextFieldDelegate {
 
     var user:UserDetail?
     
-    var userFieldList:[[Profiles]] = [[Profiles.ProfileImage],[Profiles.Name],[Profiles.EmailAddress,Profiles.ContactNo],[Profiles.Age,Profiles.BirthdayDate,Profiles.GenderType]]
+    var userFieldList:[[Profiles]] = [[Profiles.Name],[Profiles.EmailAddress]]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.title = "Edit Profile"
+        self.title = "Edit Profile"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(SaveTapped(_:)))
         self.tableView.tableFooterView = UIView()
     }
@@ -41,11 +41,6 @@ class EditProfileViewController: UITableViewController, UITextFieldDelegate {
             break
         case .Name:
             user?.UserName = textField.text
-            break
-        case .ContactNo:
-            user?.ContactNo = textField.text
-            break
-        default:
             break
         }
     }
@@ -85,14 +80,6 @@ class EditProfileViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if userFieldList[indexPath.section][indexPath.row] == .ProfileImage {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileID", for: indexPath) as! ProfileImageCell
-            if user?.profileURL != nil {
-                cell.ProfileImageView.downloadedFrom(link: user!.profileURL!)
-            }
-            cell.EditProfileImageButton.addTarget(self, action: #selector(addImageTapped(sender:)), for: .touchUpInside)
-            return cell
-        }else{
             //All Textfield
             let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileFieldID", for: indexPath) as! ProfileTextFieldCell
             cell.profileTextField.placeholder = userFieldList[indexPath.section][indexPath.row].rawValue
@@ -107,29 +94,12 @@ class EditProfileViewController: UITableViewController, UITextFieldDelegate {
                 cell.profileTextField.text = user?.UserName
                 cell.profileTextField.isEnabled = true
                 break
-            case .BirthdayDate:
-//                cell.profileTextField.text = user?.emailAddress
-                break
-            case .Age:
-//                cell.profileTextField.text = user?.emailAddress
-                break
-            case .GenderType:
-//                cell.profileTextField.text = user?.emailAddress
-                break
-            case .ContactNo:
-                cell.profileTextField.text = user?.ContactNo
-                cell.profileTextField.isEnabled = true
-                
-                break
-            default:
-                break
             }
             return cell
-        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return userFieldList[indexPath.section][indexPath.row] == .ProfileImage ? 100 : 44
+        return 44
     }
     
     

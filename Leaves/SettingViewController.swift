@@ -30,18 +30,11 @@ enum EditLeaveType {
 enum Profiles :String {
     case EmailAddress = "Email Address"
     case Name = "Name"
-    case ContactNo = "Contact Number"
-    case ProfileImage = "Profile Image"
-    case Age = "Age"
-    case BirthdayDate = "Birthday Date"
-    case GenderType  = "Gender"
 }
 
 struct UserDetail {
-    var profileURL:String?
     var UserName:String?
     var emailAddress:String?
-    var ContactNo:String?
 }
 
 class SettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -111,7 +104,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             let fetchedResults = try CoreDataStack.managedObjectContext.fetch(fetchRequest)
             guard fetchedResults.count > 0 else { self.loadUserProfile(); return }
             let userObject: User = fetchedResults[0]
-            self.userProfile = UserDetail(profileURL: userObject.profileURL, UserName: userObject.name, emailAddress: userObject.email, ContactNo: userObject.contactNo)
+            self.userProfile = UserDetail(UserName: userObject.name, emailAddress: userObject.email)
             
         } catch let error as NSError {
             print(error.description)
@@ -124,13 +117,11 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let uid = Auth.auth().currentUser?.uid {
             ref.child(LeaveTableNames.User.rawValue).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 let value = snapshot.value as? NSDictionary
-                let userProfileURL = value?["ProfileURL"] as? String
                 let firstName = value?["FirstName"] as? String
                 //let lastName = value?["LastName"] as? String
                 //let isVerified = value?["isVerified"] as? Bool
                 let emailAddress = value?["Email"] as? String
-                let ContactNo = value?["ContactNo"] as? String
-                self.userProfile = UserDetail(profileURL: userProfileURL, UserName: firstName, emailAddress: emailAddress, ContactNo: ContactNo)
+                self.userProfile = UserDetail(UserName: firstName, emailAddress: emailAddress)
                 
             }) { (error) in
                 print(error.localizedDescription)
