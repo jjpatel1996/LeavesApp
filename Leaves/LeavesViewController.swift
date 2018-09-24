@@ -48,11 +48,16 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         setupDesign()
         fetchData()
         fetchLeaves()
+        syncData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupInitialProcess()
+    }
+    
+    func syncData(){
+        FirebaseActivity.init().syncAllLeavesToDB()
     }
     
     func setupInitialProcess(){

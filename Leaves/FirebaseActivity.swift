@@ -10,6 +10,7 @@ import Foundation
 import Firebase
 import GoogleSignIn
 import UIKit
+import CoreData
 
 
 class FirebaseActivity: NSObject {
@@ -20,10 +21,6 @@ class FirebaseActivity: NSObject {
     
     override init() {
         UserID = Auth.auth().currentUser?.uid
-    }
-    
-    func saveNewUser() {
-        //
     }
     
     func insertUserFirebase(userID:String,user:UserDetail){
@@ -233,6 +230,30 @@ class FirebaseActivity: NSObject {
             }
         }
     
+    }
+    
+    func syncAllLeavesToDB(){
+        
+        guard isUserExist() else { return }
+        
+        let fetchRequest:NSFetchRequest<LeavesHistory> = LeavesHistory.fetchRequest()
+
+        do {
+            
+            let fetchedResults = try CoreDataStack.managedObjectContext.fetch(fetchRequest)
+            guard fetchedResults.count > 0 else { return }
+
+            for leave in fetchedResults {
+                if leave.uniqueFirebaseID == nil {
+                    SaveLeave(leave: leave)
+                }
+            }
+        
+        } catch let error as NSError {
+            print(error.description)
+            
+        }
+        
     }
     
 }
