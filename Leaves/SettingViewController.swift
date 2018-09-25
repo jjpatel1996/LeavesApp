@@ -76,7 +76,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func setupSections(){
         settingSections.removeAll()
-        settingSections.append(SettingType.EditLeave)
+//        settingSections.append(SettingType.EditLeave)
         settingSections.append(SettingType.Sync)
         
         if Auth.auth().currentUser != nil {

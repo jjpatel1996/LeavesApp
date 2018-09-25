@@ -10,13 +10,17 @@ import UIKit
 import IQKeyboardManagerSwift
 import Firebase
 import GoogleSignIn
+import Reachability
+
+var isReachable = true
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 
     var window: UIWindow?
 
-
+    var reachability:Reachability?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
         IQKeyboardManager.shared.enable = true
@@ -25,25 +29,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance().delegate = self
     
         UINavigationBar.appearance().barTintColor =  UIColor.themeColor()
-//        UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         
- //       FirebaseActivity().UpdateTotalLeavesToFirebase()
-        
-//        if Auth.auth().currentUser != nil {
-//            print("User alreadt exist.").
-//        } else {
-//            print("User not exist")
-//            if let rootVC = window?.rootViewController as? UINavigationController {
-//                let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AuthID") as! LoginSignupViewController
-//                rootVC.setViewControllers([loginVC], animated: true)
-//            }
-//        }
-        
+        internetObserver()
         return true
     }
 
+    func internetObserver(){
+        reachability = Reachability()!
+        
+        reachability?.whenReachable = { reachability in
+            print("Reachable")
+            isReachable = true
+        }
+        reachability?.whenUnreachable = { _ in
+            print("Unreachable")
+            isReachable = false
+        }
+        
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+            
+        }
+    }
+    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return GIDSignIn.sharedInstance().handle(url,
                                                  sourceApplication:options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,

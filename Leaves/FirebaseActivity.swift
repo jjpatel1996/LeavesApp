@@ -25,6 +25,8 @@ class FirebaseActivity: NSObject {
     
     func insertUserFirebase(userID:String,user:UserDetail){
         
+        guard isReachable else { return }
+        
         var UserData: [String:Any] = [:]
         UserData["FirstName"] = user.UserName
         UserData["Email"] = user.emailAddress
@@ -39,7 +41,9 @@ class FirebaseActivity: NSObject {
         }
     }
     
-    func UpdateUserInfo(userID:String,user:UserDetail){
+    func UpdateUserInfo(userID:String,user:UserDetail) -> Bool {
+        
+        guard isReachable else { return false }
         
         var UserDictionary: [String:Any] = [:]
         UserDictionary["FirstName"] = user.UserName
@@ -53,16 +57,19 @@ class FirebaseActivity: NSObject {
                 print("insertUser saved successfully!")
             }
         }
-        
+        return true //Use Closure for update value
     }
     
     func isUserExist() -> Bool {
-        return  Auth.auth().currentUser != nil
+        return Auth.auth().currentUser != nil
     }
     
     func setTotalLeaves(sickLeave:Int,workingLeave:Int) -> Bool {
         
+        guard isReachable else { return false }
+        
         guard isUserExist() else { return false }
+        
         ref.child(LeaveTableNames.TotalLeaves.rawValue).child(UserID!).setValue(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
@@ -75,6 +82,8 @@ class FirebaseActivity: NSObject {
     }
     
     func updateTotalLeaves(sickLeave:Int,workingLeave:Int) -> Bool {
+        
+        guard isReachable else { return false }
         guard isUserExist() else { return false }
         
         ref.child(LeaveTableNames.TotalLeaves.rawValue).child(UserID!).updateChildValues(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
@@ -89,7 +98,8 @@ class FirebaseActivity: NSObject {
     }
     
     func SaveLeave(leave:LeavesHistory){
-        //Save in FB
+        
+        guard isReachable else { return }
         guard isUserExist() else { return }
             
         let dtFormatter = DateFormatter()
@@ -125,6 +135,7 @@ class FirebaseActivity: NSObject {
     //Working or Sick.
     func UpdateLeave(leave:LeavesHistory){
 
+        guard isReachable else { return }
         guard isUserExist() else { return }
         
         guard leave.uniqueFirebaseID != nil else { return }
@@ -153,6 +164,7 @@ class FirebaseActivity: NSObject {
     
     func DeleteLeave(leave:LeavesHistory){
         
+        guard isReachable else { return }
         guard isUserExist() else { return }
         
         guard leave.uniqueFirebaseID != nil else { return }
@@ -171,6 +183,7 @@ class FirebaseActivity: NSObject {
     // Return all leaves for viewController
     func getAllLeaves(){
         
+        guard isReachable else { return }
         guard isUserExist() else { return }
         
         ref.child(LeaveTableNames.Leaves.rawValue).child(UserID!).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -187,6 +200,11 @@ class FirebaseActivity: NSObject {
     
     func getCurrentTotalLeaves(userID:String, completion: @escaping ((_ SickLeave:String?, _ WorkingLeave:String?) -> Void)){
     
+        guard isReachable else {
+            completion(nil, nil)
+            return
+        }
+        
        ref.child(LeaveTableNames.TotalLeaves.rawValue).child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
                 // Get user value
         print(snapshot.value ??  "Not found")
@@ -206,6 +224,7 @@ class FirebaseActivity: NSObject {
     
     func UpdateTotalLeavesToFirebase(){
 
+        guard isReachable else { return }
         guard let userID = Auth.auth().currentUser?.uid else { return }
         
         getCurrentTotalLeaves(userID: userID) { (Sick, Working) in
@@ -230,6 +249,7 @@ class FirebaseActivity: NSObject {
     
     func syncAllLeavesToDB(){
         
+        guard isReachable else { return }
         guard isUserExist() else { return }
         
         let fetchRequest:NSFetchRequest<LeavesHistory> = LeavesHistory.fetchRequest()

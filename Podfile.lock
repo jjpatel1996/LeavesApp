@@ -54,6 +54,7 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - ReachabilitySwift (4.2.1)
 
 DEPENDENCIES:
   - Firebase/Auth
@@ -61,6 +62,7 @@ DEPENDENCIES:
   - Firebase/Database
   - GoogleSignIn
   - IQKeyboardManagerSwift
+  - ReachabilitySwift
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -77,6 +79,7 @@ SPEC REPOS:
     - IQKeyboardManagerSwift
     - leveldb-library
     - nanopb
+    - ReachabilitySwift
 
 SPEC CHECKSUMS:
   Firebase: 25ed0412036d7d008568d1fb4d2e9d81ea8a0a2c
@@ -92,7 +95,8 @@ SPEC CHECKSUMS:
   IQKeyboardManagerSwift: 04e8679f85e496bb2c474eeb9284052f1b3c391c
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  ReachabilitySwift: 35720ffea59c1c76d15f885be77fd33e33985427
 
-PODFILE CHECKSUM: 8350a30fc5c62b4aec24eaed7b1c52817722a2d0
+PODFILE CHECKSUM: 6110a41a7ac958f29a395786d115371c4a5fc9ed
 
 COCOAPODS: 1.5.0

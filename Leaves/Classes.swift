@@ -69,11 +69,6 @@ class Utility:NSObject {
         
             newUser.name = userDetails.UserName
             newUser.email = userDetails.emailAddress
-            newUser.profileURL = userDetails.profileURL
-            newUser.contactNo = userDetails.ContactNo
-            if downloadImage {
-               Utility.downloadAndSaveProfileImage(profilePath: userDetails.profileURL)
-            }
             try CoreDataStack.saveContext()
         } catch {
             print(error.localizedDescription)
@@ -298,6 +293,17 @@ extension UIViewController {
         DispatchQueue.main.asyncAfter(deadline: when){
             alert.dismiss(animated: true, completion: nil)
         }
+    }
+    
+    func popupAlertWithoutHandler(title: String?, message: String?, actionTitles:[String?]) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        for title in actionTitles {
+            let action = UIAlertAction(title: title, style: .default, handler: nil)
+            alert.addAction(action)
+        }
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     func popupActionSheet(title: String?, message: String?, actionTitles:[String?],navigationItem:UINavigationItem,actions:[((UIAlertAction) -> Void)?]) {

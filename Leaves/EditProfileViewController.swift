@@ -50,9 +50,16 @@ class EditProfileViewController: UITableViewController, UITextFieldDelegate {
     @objc func SaveTapped(_ sender: Any) {
         self.view.endEditing(true)
         
-        //Check Internet Connect First.
+        guard isReachable else {
+            self.popupAlertWithoutHandler(title: "Error", message: "No internet connect found", actionTitles: ["Ok"])
+            return
+        }
+        
         if let userID = Auth.auth().currentUser?.uid {
-            FirebaseActivity().UpdateUserInfo(userID: userID, user: user!)
+            guard FirebaseActivity().UpdateUserInfo(userID: userID, user: user!) else {
+                self.popupAlertWithoutHandler(title: "Error", message: "Unable to update details.", actionTitles: ["Okay"])
+                return
+            }
             _ = Utility.SaveUpdateUserInfo(userDetails: user!, downloadImage: false)
             self.closeView()
         }else{

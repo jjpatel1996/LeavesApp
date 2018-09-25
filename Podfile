@@ -8,7 +8,8 @@ target 'Leaves' do
   pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
-pod 'GoogleSignIn'
+  pod 'ReachabilitySwift'
+  pod 'GoogleSignIn'
   # Pods for Leaves
 
 end

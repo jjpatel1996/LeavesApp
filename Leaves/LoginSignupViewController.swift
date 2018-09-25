@@ -62,7 +62,22 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
     
     @IBAction func LoginSignupPressed(_ sender: Any) {
        
-        guard EmailTextField.text != nil && PasswordTextField != nil else {
+        guard isReachable else {
+            self.popupAlertWithoutHandler(title: "Error", message: "No internet connect found", actionTitles: ["Ok"])
+            return
+        }
+        
+        guard EmailTextField.text != nil && PasswordTextField.text != nil else {
+            return
+        }
+        
+        guard !EmailTextField.text!.isEmpty else {
+            self.popupAlertWithoutHandler(title: "Error", message: "Email Address can't be empty", actionTitles: ["Ok"])
+            return
+        }
+        
+        guard !PasswordTextField.text!.isEmpty else {
+            self.popupAlertWithoutHandler(title: "Error", message: "Password can't be empty", actionTitles: ["Ok"])
             return
         }
         
@@ -77,12 +92,12 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                 self.StoploadingScreen()
                 if let error = error {
                     print(error.localizedDescription)
-                    self.popupAlertwithoutButton(title: "Error", message: error.localizedDescription)
+                    self.popupAlertWithoutHandler(title: "Error", message: error.localizedDescription, actionTitles: ["Ok"])
                     return
                 }
                 
                 guard user != nil else {
-                    self.popupAlertwithoutButton(title: "Error", message: "User not found.")
+                    self.popupAlertWithoutHandler(title: "Error", message: "User not found.", actionTitles: ["Ok"])
                     return
                 }
                 
@@ -92,7 +107,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                 if Utility.SaveUpdateUserInfo(userDetails: userDetails, downloadImage: true) {
                     self.gotoLeaveVC()
                 }else{
-                    self.popupAlertwithoutButton(title: "Error", message: "Something went wrong")
+                    self.popupAlertWithoutHandler(title: "Error", message: "Something went wrong", actionTitles: ["Ok"])
                 }
             }
        
