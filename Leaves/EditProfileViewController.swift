@@ -60,7 +60,7 @@ class EditProfileViewController: UITableViewController, UITextFieldDelegate {
                 self.popupAlertWithoutHandler(title: "Error", message: "Unable to update details.", actionTitles: ["Okay"])
                 return
             }
-            _ = Utility.SaveUpdateUserInfo(userDetails: user!, downloadImage: false)
+            _ = Utility.SaveUpdateUserInfo(userDetails: user!)
             self.closeView()
         }else{
             self.popupAlert(title: "Error", message: "No user found. Please login or try again for update details.", actionTitles: ["Okay"], actions: [{ ok in

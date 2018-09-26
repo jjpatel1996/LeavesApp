@@ -102,6 +102,56 @@ class FirebaseActivity: NSObject {
         return true
     }
     
+    func getCurrentTotalLeaves(userID:String, completion: @escaping ((_ SickLeave:String?, _ WorkingLeave:String?) -> Void)){
+        
+        guard isReachable else {
+            completion(nil, nil)
+            return
+        }
+        
+        ref.child(LeaveTableNames.TotalLeaves.rawValue).child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
+            // Get user value
+            print(snapshot.value ??  "Not found")
+            
+            if let data = snapshot.value as? NSDictionary {
+                completion(data["SickLeave"] as? String, data["WorkingLeave"] as? String)
+            }else{
+                completion(nil, nil)
+            }
+            
+        }) { (error) in
+            print(error.localizedDescription)
+            completion(nil, nil)
+        }
+        
+    }
+    
+    func UpdateTotalLeavesToFirebase(){
+        
+        guard isReachable else { return }
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        guard LeavesHandler.isSyncON() else { return }
+        
+        getCurrentTotalLeaves(userID: userID) { (Sick, Working) in
+            
+            if Sick != nil && Working != nil {
+                
+                LeavesHandler.SetSickLeaves(leaves: Int(Sick!)!)
+                LeavesHandler.SetRemainSickLeaves(leaves: Int(Sick!)!)
+                LeavesHandler.SetWorkingLeaves(leaves: Int(Working!)!)
+                LeavesHandler.SetRemainWorkingLeaves(leaves: Int(Working!)!)
+                
+            }else{
+                
+                let totalSickLeaves = LeavesHandler.getSickLeaves() + LeavesHandler.getRemainSickLeaves()
+                let totalWorkingLeaves = LeavesHandler.getWorkingLeaves() + LeavesHandler.getRemainWorkingLeaves()
+                _ = self.setTotalLeaves(sickLeave: totalSickLeaves, workingLeave: totalWorkingLeaves)
+                
+            }
+        }
+        
+    }
+    
     //MARK:-----------Leave--------------
     
     func SaveLeave(leave:LeavesHistory){
@@ -189,7 +239,7 @@ class FirebaseActivity: NSObject {
         
     }
     
-    // Return all leaves for viewController
+   
     func getAllLeaves(){
         
         guard isReachable else { return }
@@ -207,55 +257,7 @@ class FirebaseActivity: NSObject {
     }
     
     
-    func getCurrentTotalLeaves(userID:String, completion: @escaping ((_ SickLeave:String?, _ WorkingLeave:String?) -> Void)){
     
-        guard isReachable else {
-            completion(nil, nil)
-            return
-        }
-        
-       ref.child(LeaveTableNames.TotalLeaves.rawValue).child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
-                // Get user value
-        print(snapshot.value ??  "Not found")
-
-        if let data = snapshot.value as? NSDictionary {
-           completion(data["SickLeave"] as? String, data["WorkingLeave"] as? String)
-        }else{
-            completion(nil, nil)
-        }
-        
-       }) { (error) in
-            print(error.localizedDescription)
-            completion(nil, nil)
-        }
-        
-    }
-    
-    func UpdateTotalLeavesToFirebase(){
-
-        guard isReachable else { return }
-        guard let userID = Auth.auth().currentUser?.uid else { return }
-        guard LeavesHandler.isSyncON() else { return }
-        
-        getCurrentTotalLeaves(userID: userID) { (Sick, Working) in
-            
-            if Sick != nil && Working != nil {
-        
-                LeavesHandler.SetSickLeaves(leaves: Int(Sick!)!)
-                LeavesHandler.SetRemainSickLeaves(leaves: Int(Sick!)!)
-                LeavesHandler.SetWorkingLeaves(leaves: Int(Working!)!)
-                LeavesHandler.SetRemainWorkingLeaves(leaves: Int(Working!)!)
-                
-            }else{
-             
-                let totalSickLeaves = LeavesHandler.getSickLeaves() + LeavesHandler.getRemainSickLeaves()
-                let totalWorkingLeaves = LeavesHandler.getWorkingLeaves() + LeavesHandler.getRemainWorkingLeaves()
-                _ = self.setTotalLeaves(sickLeave: totalSickLeaves, workingLeave: totalWorkingLeaves)
-                
-            }
-        }
-    
-    }
     
     func syncAllLeavesToDB(){
         
@@ -281,6 +283,84 @@ class FirebaseActivity: NSObject {
                 print(error.description)
             }
         }
+        
+    }
+    
+    func syncLeavesFromFirebaseToApp(){
+        
+        guard isReachable else { return }
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        
+        //get From Local DB
+        var currentLeaveList = [LeavesHistory]()
+        let fetchRequest:NSFetchRequest<LeavesHistory> = LeavesHistory.fetchRequest()
+        do {
+            let fetchedResults = try CoreDataStack.managedObjectContext.fetch(fetchRequest)
+            if fetchedResults.count > 0 {
+               currentLeaveList = fetchedResults
+            }
+        } catch {
+            print(error.localizedDescription)
+            return
+        }
+        
+        //get From Server DB
+        ref.child(LeaveTableNames.Leaves.rawValue).child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            print(snapshot.childrenCount)
+           
+            if let IDPair = snapshot.value as? [String:NSDictionary] {
+                
+                for leaveObject in IDPair {
+                    
+                    var newLeave:LeavesHistory!
+                    if #available(iOS 10.0, *) {
+                        newLeave = LeavesHistory(entity: LeavesHistory.entity(), insertInto: CoreDataStack.managedObjectContext)
+                    } else {
+                        let entity = NSEntityDescription.entity(forEntityName: "LeavesHistory", in: CoreDataStack.managedObjectContext)!
+                        newLeave = LeavesHistory(entity: entity, insertInto: CoreDataStack.managedObjectContext)
+                    }
+                    
+                    guard let createdDTMS = leaveObject.value["createdDTM"] as? String else { continue }
+                    guard let createdDTM = Utility.getDateFromString(dateInString: createdDTMS) else { continue }
+                    
+                    guard !currentLeaveList.contains(where: { $0.leave_createdDTM == createdDTM }) else { continue }
+                  
+                
+                    guard let DateTimeS = leaveObject.value["DateTime"] as? String else { continue }
+                    guard let DateTime = Utility.getDateFromString(dateInString: DateTimeS) else { continue }
+                    
+                    guard let modifiedDTMS = leaveObject.value["modifiedDTM"] as? String else { continue }  //String Fromate
+                    guard let modifiedDTM = Utility.getDateFromString(dateInString: modifiedDTMS) else { continue } //Date Formate
+                    
+                    guard let leaveCount = leaveObject.value["Total"] as? Int32 else { continue }
+                    guard let dead = leaveObject.value["dead"] as? Int16 else { continue }
+                    guard let leaveType = leaveObject.value["leaveType"] as? String else { continue }
+                    guard let Description = leaveObject.value["Description"] as? String else { continue }
+                    
+                    
+                    newLeave.dead = dead
+                    newLeave.leave_count = leaveCount
+                    newLeave.leave_type = leaveType
+                    newLeave.leave_datetime = DateTime
+                    newLeave.leave_createdDTM = createdDTM
+                    newLeave.leave_modifiedDTM = modifiedDTM
+                    newLeave.leave_description = Description
+                    newLeave.uniqueFirebaseID = leaveObject.key
+                    
+                }
+                
+                do {
+                    try CoreDataStack.saveContext()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+        
         
     }
     

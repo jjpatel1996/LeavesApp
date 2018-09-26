@@ -10,6 +10,11 @@ import Foundation
 import UIKit
 import CoreData
 
+
+protocol NotifyDelegate {
+    func notify()
+}
+
 class Utility:NSObject {
     
     class func downloadAndSaveProfileImage(profilePath:String?){
@@ -50,7 +55,7 @@ class Utility:NSObject {
         
     }
     
-    class func SaveUpdateUserInfo(userDetails:UserDetail,downloadImage:Bool) -> Bool {
+    class func SaveUpdateUserInfo(userDetails:UserDetail) -> Bool {
      
         do {
             
@@ -77,7 +82,12 @@ class Utility:NSObject {
         return true
     }
     
-    
+    class func getDateFromString(dateInString:String) -> Date? {
+        let dtFormatter = DateFormatter()
+        dtFormatter.dateFormat = "HH:mm:ss dd-MM-yyyy"
+        //
+        return dtFormatter.date(from: dateInString)
+    }
 }
 
 

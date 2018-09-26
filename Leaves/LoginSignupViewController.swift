@@ -17,13 +17,11 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
     var signInButton: GIDSignInButton!
     
     var isPageOpenByPopup:Bool = false
+    var delegate:NotifyDelegate?
     
     @IBOutlet weak var EmailTextField: UITextField!
-    
     @IBOutlet weak var PasswordTextField: UITextField!
-    
     @IBOutlet weak var LoginSignupButton: UIButton!
-    
     @IBOutlet weak var lsChangeSegment: UISegmentedControl!
     
     var firebaseActivity = FirebaseActivity()
@@ -104,7 +102,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                 let userDetails = UserDetail(UserName: nil, emailAddress: email)
                 self.firebaseActivity.insertUserFirebase(userID: user!.user.uid, user: userDetails)
                 FirebaseActivity().UpdateTotalLeavesToFirebase()
-                if Utility.SaveUpdateUserInfo(userDetails: userDetails, downloadImage: true) {
+                if Utility.SaveUpdateUserInfo(userDetails: userDetails) {
                     self.gotoLeaveVC()
                 }else{
                     self.popupAlertWithoutHandler(title: "Error", message: "Something went wrong", actionTitles: ["Ok"])
@@ -130,7 +128,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                 
                 let userDetails =  UserDetail(UserName: nil, emailAddress: email)
                 self.firebaseActivity.insertUserFirebase(userID: authResult!.user.uid, user: userDetails)
-                if Utility.SaveUpdateUserInfo(userDetails: userDetails, downloadImage: true){
+                if Utility.SaveUpdateUserInfo(userDetails: userDetails){
                     self.gotoLeaveVC()
                 }else{
                     self.popupAlertwithoutButton(title: "Error", message: "Something went wrong")
@@ -164,7 +162,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
             let userDetails = UserDetail(UserName: user.profile.name, emailAddress: user.profile.email)
             self.firebaseActivity.insertUserFirebase(userID: authResult!.user.uid, user: userDetails)
             
-            if Utility.SaveUpdateUserInfo(userDetails: userDetails, downloadImage: true) {
+            if Utility.SaveUpdateUserInfo(userDetails: userDetails) {
               self.gotoLeaveVC()
             }else{
                 self.popupAlertwithoutButton(title: "Error", message: "Something went wrong")
@@ -176,6 +174,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
 
     func gotoLeaveVC(){
         if isPageOpenByPopup {
+            delegate?.notify()
             self.navigationController?.dismiss(animated: true, completion: nil)
             return
         }

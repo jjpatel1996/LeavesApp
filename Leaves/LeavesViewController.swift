@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 //LeavesIDVC
-class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDelegate, UITableViewDataSource {
+class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDelegate, UITableViewDataSource, NotifyDelegate {
 
     lazy var LeavesFetchResultController:NSFetchedResultsController<LeavesHistory> = {
         
@@ -35,7 +35,6 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     var totalWorkingLeaves:Int = 0
     var RemainSickLeaves:Int = 0
     var RemainWorkingLeaves:Int = 0
-    
     
     @IBOutlet weak var SickLeaveLabel: UILabel!
     @IBOutlet weak var WorkingLeaveLabel: UILabel!
@@ -90,7 +89,13 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     func gotoLoginPage(){
         let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "AuthID") as! LoginSignupViewController
         loginVC.isPageOpenByPopup = true
+        loginVC.delegate = self
         self.present( UINavigationController(rootViewController: loginVC), animated: true, completion: nil)
+    }
+    
+    func notify() {
+        
+
     }
     
     func fetchLeaves(){

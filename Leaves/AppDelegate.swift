@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         
         internetObserver()
+        FirebaseActivity.init().syncLeavesFromFirebaseToApp()
         return true
     }
 
