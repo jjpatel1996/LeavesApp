@@ -39,6 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func internetObserver(){
         reachability = Reachability()!
         
+        if reachability!.connection == Reachability.Connection.none {
+            isReachable = false
+        }
+        
         reachability?.whenReachable = { reachability in
             print("Reachable")
             isReachable = true

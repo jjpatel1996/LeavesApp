@@ -31,6 +31,7 @@
 		37B35DB821490E47002D50F6 /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B35DB621490E47002D50F6 /* User+CoreDataClass.swift */; };
 		37B35DB921490E47002D50F6 /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B35DB721490E47002D50F6 /* User+CoreDataProperties.swift */; };
 		37B35DBB214914E4002D50F6 /* ProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B35DBA214914E4002D50F6 /* ProfileHeaderCell.swift */; };
+		37DA7F0F215B4E8A00D2FE4C /* EditTotalLeaveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DA7F0E215B4E8A00D2FE4C /* EditTotalLeaveViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		37B35DB621490E47002D50F6 /* User+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
 		37B35DB721490E47002D50F6 /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		37B35DBA214914E4002D50F6 /* ProfileHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCell.swift; sourceTree = "<group>"; };
+		37DA7F0E215B4E8A00D2FE4C /* EditTotalLeaveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTotalLeaveViewController.swift; sourceTree = "<group>"; };
 		7277804FF0BC6DC9DCCC84E2 /* Pods_Leaves.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Leaves.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF920AE570BE1E26F86F5D93 /* Pods-Leaves.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leaves.release.xcconfig"; path = "Pods/Target Support Files/Pods-Leaves/Pods-Leaves.release.xcconfig"; sourceTree = "<group>"; };
 		C05DB761FE5BCFE6FE920279 /* Pods-Leaves.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leaves.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Leaves/Pods-Leaves.debug.xcconfig"; sourceTree = "<group>"; };
@@ -112,12 +114,9 @@
 				37035C1C210ECDDE00ECF2F6 /* LeavesViewController.swift */,
 				0A7B303B211EE1EA0034D545 /* SettingViewController.swift */,
 				37B35DA82147DA0D002D50F6 /* EditProfileViewController.swift */,
+				37DA7F0E215B4E8A00D2FE4C /* EditTotalLeaveViewController.swift */,
 				37035C52210F0CF900ECF2F6 /* GetLeavesViewController.swift */,
 				37035C4E210EE64800ECF2F6 /* NewLeaveViewController.swift */,
-				0AF9AB92212837E200F909C2 /* FirebaseActivity.swift */,
-				37035C38210ECFB000ECF2F6 /* CoreDataController.swift */,
-				37035C4A210ED1A700ECF2F6 /* Classes.swift */,
-				378710492136C77B0066930A /* LeavesHandler.swift */,
 				0A7B303D211EE3BA0034D545 /* Cells */,
 				37035C37210ECF1800ECF2F6 /* Model */,
 				37035C1E210ECDDE00ECF2F6 /* Main.storyboard */,
@@ -133,6 +132,10 @@
 		37035C37210ECF1800ECF2F6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0AF9AB92212837E200F909C2 /* FirebaseActivity.swift */,
+				37035C38210ECFB000ECF2F6 /* CoreDataController.swift */,
+				37035C4A210ED1A700ECF2F6 /* Classes.swift */,
+				378710492136C77B0066930A /* LeavesHandler.swift */,
 				37B35DB621490E47002D50F6 /* User+CoreDataClass.swift */,
 				37B35DB721490E47002D50F6 /* User+CoreDataProperties.swift */,
 				378710462136C5A30066930A /* LeavesHistory+CoreDataClass.swift */,
@@ -311,6 +314,7 @@
 				37B35DA92147DA0D002D50F6 /* EditProfileViewController.swift in Sources */,
 				37B35DBB214914E4002D50F6 /* ProfileHeaderCell.swift in Sources */,
 				37035C1D210ECDDE00ECF2F6 /* LeavesViewController.swift in Sources */,
+				37DA7F0F215B4E8A00D2FE4C /* EditTotalLeaveViewController.swift in Sources */,
 				37035C51210F07CB00ECF2F6 /* LoginSignupViewController.swift in Sources */,
 				0A7B303F211EE3D60034D545 /* SettingCells.swift in Sources */,
 				37035C1B210ECDDE00ECF2F6 /* AppDelegate.swift in Sources */,
@@ -475,7 +479,10 @@
 				DEVELOPMENT_TEAM = 5ZZE3DZVHL;
 				INFOPLIST_FILE = Leaves/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Jay-Patel.Leaves";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -492,7 +499,10 @@
 				DEVELOPMENT_TEAM = 5ZZE3DZVHL;
 				INFOPLIST_FILE = Leaves/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Jay-Patel.Leaves";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;

@@ -47,12 +47,12 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         super.viewDidLoad()
         setupDesign()
         fetchData()
-        fetchLeaves()
         syncData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        fetchLeaves()
         setupInitialProcess()
     }
     
@@ -102,6 +102,13 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         WorkingLeaveLabel.text = "\(totalWorkingLeaves-RemainWorkingLeaves) taken | \(RemainWorkingLeaves) remain"
     }
 
+    @objc func gotoEditLeave(){
+        
+        let editTotalLeaveVC = self.storyboard?.instantiateViewController(withIdentifier: "EditTotalLeaveID") as! EditTotalLeaveViewController
+        self.navigationController?.pushViewController(editTotalLeaveVC, animated: true)
+    
+    }
+    
     deinit {
         LeavesFetchResultController.delegate = nil
     }
@@ -146,6 +153,8 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         self.leaveTableView.tableFooterView = UIView()
         leaveTableView.delegate = self
         leaveTableView.dataSource = self
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(gotoEditLeave))
+        TotalLeaveHeaderView.addGestureRecognizer(tapGesture)
     }
     
     func showError() {

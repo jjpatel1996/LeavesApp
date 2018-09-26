@@ -378,7 +378,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kJz-ej-LU8">
                                         <rect key="frame" x="8" y="212" width="80" height="15"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="80" id="TB9-zP-61k"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="TB9-zP-61k"/>
                                             <constraint firstAttribute="height" constant="15" id="Yjc-vg-dgr"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
@@ -596,6 +596,51 @@
             </objects>
             <point key="canvasLocation" x="1654" y="175"/>
         </scene>
+        <!--Edit Total Leave View Controller-->
+        <scene sceneID="KLQ-T6-ZVR">
+            <objects>
+                <tableViewController storyboardIdentifier="EditTotalLeaveID" id="ESn-Q5-qGT" customClass="EditTotalLeaveViewController" customModule="Leaves" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="EAm-1o-2Sy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditTextFieldID" rowHeight="50" id="4nT-Ml-rhc" customClass="EditTotalLeaveCell" customModule="Leaves" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4nT-Ml-rhc" id="eBn-LU-dNo">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Leave" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eLA-P6-u7V">
+                                            <rect key="frame" x="12" y="5" width="355" height="39.5"/>
+                                            <color key="textColor" red="0.23624935750000001" green="0.54800730939999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="eLA-P6-u7V" firstAttribute="top" secondItem="eBn-LU-dNo" secondAttribute="top" constant="5" id="Br9-Lu-DQc"/>
+                                        <constraint firstAttribute="bottom" secondItem="eLA-P6-u7V" secondAttribute="bottom" constant="5" id="jYW-Tm-3Pd"/>
+                                        <constraint firstAttribute="trailing" secondItem="eLA-P6-u7V" secondAttribute="trailing" constant="8" id="qNe-65-D3h"/>
+                                        <constraint firstItem="eLA-P6-u7V" firstAttribute="leading" secondItem="eBn-LU-dNo" secondAttribute="leading" constant="12" id="wpa-qQ-ORa"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="leaveTextField" destination="eLA-P6-u7V" id="zfc-OQ-Frt"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="ESn-Q5-qGT" id="HD0-Xk-QMD"/>
+                            <outlet property="delegate" destination="ESn-Q5-qGT" id="7Wh-FR-5EA"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="38p-FW-7dn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2338" y="175"/>
+        </scene>
         <!--Login Signup View Controller-->
         <scene sceneID="UY7-sB-fRk">
             <objects>
@@ -760,7 +805,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sync" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AP2-Zk-CnB">
                                                     <rect key="frame" x="12" y="5" width="60" height="39.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="60" id="inz-WO-l5c"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="inz-WO-l5c"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                     <color key="textColor" red="0.16078431369999999" green="0.48627450979999998" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -860,7 +905,7 @@
                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XK6-Dk-Cef">
                                             <rect key="frame" x="12" y="5" width="355" height="39.5"/>
                                             <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
                                     </subviews>

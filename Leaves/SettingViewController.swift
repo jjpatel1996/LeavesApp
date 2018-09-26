@@ -20,12 +20,7 @@ enum SettingType:String {
     case LoginSignUp = "Login/Signup" //Show LoginSignUp VC By Popup
 }
 
-enum EditLeaveType {
-    case TotalWorkingLeaves
-    case TotalSickLeaves
-    case RemainSickLeaves
-    case RemainWorkingLeaves
-}
+
 
 enum Profiles :String {
     case EmailAddress = "Email Address"
@@ -231,7 +226,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         let isEnable = Auth.auth().currentUser != nil
         cell.Switch.isEnabled = isEnable
         cell.Switch.isOn = isEnable ? LeavesHandler.isSyncON() : false
-        cell.Switch.addTarget(self, action: #selector(switchTapped(sender:)), for: UIControl.Event.editingChanged)
+        cell.Switch.addTarget(self, action: #selector(switchTapped(sender:)), for: UIControl.Event.valueChanged)
         cell.selectionStyle = .none
         return cell
     }
@@ -239,17 +234,21 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc func switchTapped(sender:UISwitch){
         
         if sender.isOn {
+          
             LeavesHandler.SetSync(isOn: true)
-            //Sync Data
+            FirebaseActivity.init().syncAllLeavesToDB()
+            
             guard let cell = sender.superview?.superview as? SyncCell else {
                 return
             }
+            cell.Switch.isHidden = true
             cell.ActivityIndicator.isHidden = false
             cell.ActivityIndicator.startAnimating()
             
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
                 cell.ActivityIndicator.stopAnimating()
                 cell.ActivityIndicator.isHidden = true
+                cell.Switch.isHidden = false
             }
             
         }else{

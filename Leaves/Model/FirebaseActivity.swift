@@ -16,12 +16,14 @@ import CoreData
 class FirebaseActivity: NSObject {
     
     var ref = Database.database().reference()
-    
+
     var UserID:String?
     
     override init() {
         UserID = Auth.auth().currentUser?.uid
     }
+    
+    //MARK:-----------User--------------
     
     func insertUserFirebase(userID:String,user:UserDetail){
         
@@ -64,11 +66,13 @@ class FirebaseActivity: NSObject {
         return Auth.auth().currentUser != nil
     }
     
+    //MARK:-----------Total Leave--------------
+    
     func setTotalLeaves(sickLeave:Int,workingLeave:Int) -> Bool {
         
         guard isReachable else { return false }
-        
         guard isUserExist() else { return false }
+        guard LeavesHandler.isSyncON() else { return false }
         
         ref.child(LeaveTableNames.TotalLeaves.rawValue).child(UserID!).setValue(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
             (error:Error?, ref:DatabaseReference) in
@@ -85,6 +89,7 @@ class FirebaseActivity: NSObject {
         
         guard isReachable else { return false }
         guard isUserExist() else { return false }
+        guard LeavesHandler.isSyncON() else { return false }
         
         ref.child(LeaveTableNames.TotalLeaves.rawValue).child(UserID!).updateChildValues(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
             (error:Error?, ref:DatabaseReference) in
@@ -97,11 +102,14 @@ class FirebaseActivity: NSObject {
         return true
     }
     
+    //MARK:-----------Leave--------------
+    
     func SaveLeave(leave:LeavesHistory){
         
         guard isReachable else { return }
         guard isUserExist() else { return }
-            
+        guard LeavesHandler.isSyncON() else { return }
+        
         let dtFormatter = DateFormatter()
         dtFormatter.dateFormat = "HH:mm:ss dd-MM-yyyy"
         
@@ -137,6 +145,7 @@ class FirebaseActivity: NSObject {
 
         guard isReachable else { return }
         guard isUserExist() else { return }
+        guard LeavesHandler.isSyncON() else { return }
         
         guard leave.uniqueFirebaseID != nil else { return }
         
@@ -166,7 +175,7 @@ class FirebaseActivity: NSObject {
         
         guard isReachable else { return }
         guard isUserExist() else { return }
-        
+        guard LeavesHandler.isSyncON() else { return }
         guard leave.uniqueFirebaseID != nil else { return }
         
         ref.child(LeaveTableNames.Leaves.rawValue).child(UserID!).child(leave.uniqueFirebaseID!).removeValue(){
@@ -226,6 +235,7 @@ class FirebaseActivity: NSObject {
 
         guard isReachable else { return }
         guard let userID = Auth.auth().currentUser?.uid else { return }
+        guard LeavesHandler.isSyncON() else { return }
         
         getCurrentTotalLeaves(userID: userID) { (Sick, Working) in
             
@@ -251,23 +261,25 @@ class FirebaseActivity: NSObject {
         
         guard isReachable else { return }
         guard isUserExist() else { return }
-        
+        guard LeavesHandler.isSyncON() else { return }
+     
         let fetchRequest:NSFetchRequest<LeavesHistory> = LeavesHistory.fetchRequest()
-
-        do {
-            
-            let fetchedResults = try CoreDataStack.managedObjectContext.fetch(fetchRequest)
-            guard fetchedResults.count > 0 else { return }
-
-            for leave in fetchedResults {
-                if leave.uniqueFirebaseID == nil {
-                    SaveLeave(leave: leave)
+      
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
+            do {
+                
+                let fetchedResults = try CoreDataStack.managedObjectContext.fetch(fetchRequest)
+                guard fetchedResults.count > 0 else { return }
+                
+                for leave in fetchedResults {
+                    if leave.uniqueFirebaseID == nil {
+                        self.SaveLeave(leave: leave)
+                    }
                 }
+                
+            } catch let error as NSError {
+                print(error.description)
             }
-        
-        } catch let error as NSError {
-            print(error.description)
-            
         }
         
     }
