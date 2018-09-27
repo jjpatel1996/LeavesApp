@@ -221,6 +221,7 @@ class FirebaseActivity: NSObject {
         
     }
     
+    //Don't Delete Just Set Dead = 1 User UpdateLeave Method
     func DeleteLeave(leave:LeavesHistory){
         
         guard isReachable else { return }
@@ -256,9 +257,7 @@ class FirebaseActivity: NSObject {
         }
     }
     
-    
-    
-    
+
     func syncAllLeavesToDB(){
         
         guard isReachable else { return }
@@ -286,6 +285,29 @@ class FirebaseActivity: NSObject {
         
     }
     
+    
+    func syncTotalLeaveFromFirebaseToApp(completion:((_ isUpdated:Bool) -> ())?){
+        
+        guard isReachable else { completion?(false); return }
+        guard let userID = Auth.auth().currentUser?.uid else { completion?(false); return }
+        
+        //Set Total Working and Sick leave if Local is empty.
+        if LeavesHandler.getWorkingLeaves() == 0 && LeavesHandler.getSickLeaves() == 0 {
+            getCurrentTotalLeaves(userID: userID) { (SickLeave, WorkingLeave) in
+                if WorkingLeave != nil && SickLeave != nil {
+                    guard let workingLeaveInt = Int(WorkingLeave!), let sickLeaveInt = Int(SickLeave!) else {
+                        completion?(false)
+                        return
+                    }
+                    //Update it
+                    LeavesHandler.SetSickLeaves(leaves: sickLeaveInt)
+                    LeavesHandler.SetWorkingLeaves(leaves: workingLeaveInt)
+                    completion?(true)
+                }
+            }
+        }
+    }
+    
     func syncLeavesFromFirebaseToApp(){
         
         guard isReachable else { return }
@@ -294,6 +316,8 @@ class FirebaseActivity: NSObject {
         //get From Local DB
         var currentLeaveList = [LeavesHistory]()
         let fetchRequest:NSFetchRequest<LeavesHistory> = LeavesHistory.fetchRequest()
+        //fetchRequest.predicate = NSPredicate(format: "dead = %@", argumentArray: [0])
+        
         do {
             let fetchedResults = try CoreDataStack.managedObjectContext.fetch(fetchRequest)
             if fetchedResults.count > 0 {
@@ -303,15 +327,17 @@ class FirebaseActivity: NSObject {
             print(error.localizedDescription)
             return
         }
-        
-        //get From Server DB
+    
+//        //get From Server DB
         ref.child(LeaveTableNames.Leaves.rawValue).child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
-            
+
             print(snapshot.childrenCount)
            
             if let IDPair = snapshot.value as? [String:NSDictionary] {
                 
                 for leaveObject in IDPair {
+                
+                    guard (leaveObject.value["dead"] as! Int) == 0 else { continue }
                     
                     var newLeave:LeavesHistory!
                     if #available(iOS 10.0, *) {

@@ -17,7 +17,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         let fetchRequest:NSFetchRequest<LeavesHistory> = LeavesHistory.fetchRequest()
         let sort1 = NSSortDescriptor(key: #keyPath(LeavesHistory.leave_datetime), ascending: false)
         fetchRequest.sortDescriptors = [sort1]
-        
+        fetchRequest.predicate = NSPredicate(format: "dead == %@", argumentArray: [0])
         let fetchRequestController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.managedObjectContext, sectionNameKeyPath: #keyPath(LeavesHistory.leave_type), cacheName: nil)
         fetchRequestController.delegate = self
         return fetchRequestController
@@ -42,11 +42,14 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     @IBOutlet weak var SetupView: CardView!
     @IBOutlet weak var TotalLeaveHeaderView: CardView!
     
+    var firebaseActivity:FirebaseActivity!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        firebaseActivity = FirebaseActivity.init()
         setupDesign()
         fetchData()
-        syncData()
+        firebaseActivity.syncAllLeavesToDB()    //Sync All not synced Local Leaves to server.
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,8 +58,37 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         setupInitialProcess()
     }
     
-    func syncData(){
-        FirebaseActivity.init().syncAllLeavesToDB()
+    func setupDesign(){
+        
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 30))
+        label.textAlignment = .center
+        label.text = "Leaves"
+        label.textColor = UIColor.white
+        label.adjustsFontSizeToFitWidth = true
+        label.font = UIFont(name: "Arial-Bold", size: 27)
+        self.navigationItem.titleView = label
+        self.leaveTableView.tableFooterView = UIView()
+        leaveTableView.delegate = self
+        leaveTableView.dataSource = self
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(gotoEditLeave))
+        TotalLeaveHeaderView.addGestureRecognizer(tapGesture)
+    }
+    
+    func fetchData(){
+        do {
+            try LeavesFetchResultController.performFetch()
+        }catch{
+            self.showError()
+        }
+    }
+    
+    func fetchLeaves(){
+        totalSickLeaves = LeavesHandler.getSickLeaves()
+        totalWorkingLeaves = LeavesHandler.getWorkingLeaves()
+        RemainSickLeaves = LeavesHandler.getRemainSickLeaves()
+        RemainWorkingLeaves = LeavesHandler.getRemainWorkingLeaves()
+        SickLeaveLabel.text = "\(totalSickLeaves-RemainSickLeaves) taken | \(RemainSickLeaves) remain"
+        WorkingLeaveLabel.text = "\(totalWorkingLeaves-RemainWorkingLeaves) taken | \(RemainWorkingLeaves) remain"
     }
     
     func setupInitialProcess(){
@@ -94,72 +126,46 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     }
     
     func notify() {
-        
-
-    }
-    
-    func fetchLeaves(){
-        totalSickLeaves = LeavesHandler.getSickLeaves()
-        totalWorkingLeaves = LeavesHandler.getWorkingLeaves()
-        RemainSickLeaves = LeavesHandler.getRemainSickLeaves()
-        RemainWorkingLeaves = LeavesHandler.getRemainWorkingLeaves()
-        SickLeaveLabel.text = "\(totalSickLeaves-RemainSickLeaves) taken | \(RemainSickLeaves) remain"
-        WorkingLeaveLabel.text = "\(totalWorkingLeaves-RemainWorkingLeaves) taken | \(RemainWorkingLeaves) remain"
-    }
-
-    @objc func gotoEditLeave(){
-        
-        let editTotalLeaveVC = self.storyboard?.instantiateViewController(withIdentifier: "EditTotalLeaveID") as! EditTotalLeaveViewController
-        self.navigationController?.pushViewController(editTotalLeaveVC, animated: true)
-    
-    }
-    
-    deinit {
-        LeavesFetchResultController.delegate = nil
-    }
-    
-    @IBAction func newLeave(_ sender: Any) {
-        let newVC = storyboard?.instantiateViewController(withIdentifier: "NewLeaveViewID") as! NewLeaveViewController
-        newVC.delegate = self
-        newVC.isNew = true
-        self.present(newVC, animated: true, completion: nil)
-    }
-    
-    @IBAction func settingTapped(_ sender: Any) {
-        //Setting in future
-        let settingVC = storyboard?.instantiateViewController(withIdentifier: "SettingVCID") as! SettingViewController
-        self.present(UINavigationController(rootViewController: settingVC), animated: true, completion: nil)
-    }
-    
-    @IBAction func SetupLeavesTapped(_ sender: Any) {
-        let GetLeavesVC = storyboard?.instantiateViewController(withIdentifier: "GetLeavesID") as! GetLeavesViewController
-        GetLeavesVC.delegate = self
-        self.present(GetLeavesVC, animated: true, completion: nil)
-        return
-    }
-    
-    func fetchData(){
-        do {
-            try LeavesFetchResultController.performFetch()
-        }catch{
-            self.showError()
+        firebaseActivity.syncLeavesFromFirebaseToApp()
+        firebaseActivity.syncTotalLeaveFromFirebaseToApp { [weak self] (isUpdated) in
+            guard let Strong = self else { return }
+            Strong.fetchLeaves()
+            Strong.setupInitialProcess()
         }
     }
     
-    func setupDesign(){
+    @objc func gotoEditLeave(){
+        let editTotalLeaveVC = self.storyboard?.instantiateViewController(withIdentifier: "EditTotalLeaveID") as! EditTotalLeaveViewController
+        self.navigationController?.pushViewController(editTotalLeaveVC, animated: true)
+    }
+    
+    func deleteLeave(indexPath:IndexPath){
+        //LeavesFetchResultController.sections![section]
         
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 30))
-        label.textAlignment = .center
-        label.text = "Leaves"
-        label.textColor = UIColor.white
-        label.adjustsFontSizeToFitWidth = true
-        label.font = UIFont(name: "Arial-Bold", size: 27)
-        self.navigationItem.titleView = label
-        self.leaveTableView.tableFooterView = UIView()
-        leaveTableView.delegate = self
-        leaveTableView.dataSource = self
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(gotoEditLeave))
-        TotalLeaveHeaderView.addGestureRecognizer(tapGesture)
+        let leave = LeavesFetchResultController.object(at: indexPath)
+        
+        do {
+            
+            let addLeaveBackCount = leave.leave_count
+            
+            print("Added Back \(addLeaveBackCount) For \(leave.leave_type ?? "leave not found")")
+            
+            if leave.leave_type == LeaveType.Sick.rawValue {
+                LeavesHandler.SetRemainSickLeaves(leaves: self.RemainSickLeaves + Int(addLeaveBackCount))
+            }else{
+                LeavesHandler.SetRemainWorkingLeaves(leaves: self.RemainWorkingLeaves + Int(addLeaveBackCount))
+            }
+            
+            leave.dead = 1
+//            CoreDataStack.managedObjectContext.delete(leave)
+            try CoreDataStack.saveContext()
+//            FirebaseActivity().DeleteLeave(leave: leave)
+            FirebaseActivity().UpdateLeave(leave: leave)
+            fetchLeaves()
+            
+        } catch {
+            self.showError()
+        }
     }
     
     func showError() {
@@ -173,6 +179,32 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
             ])
     }
     
+    deinit {
+        LeavesFetchResultController.delegate = nil
+    }
+    
+    //MARK:------------All Actions------------------
+    @IBAction func newLeave(_ sender: Any) {
+        let newVC = storyboard?.instantiateViewController(withIdentifier: "NewLeaveViewID") as! NewLeaveViewController
+        newVC.delegate = self
+        newVC.isNew = true
+        self.present(newVC, animated: true, completion: nil)
+    }
+    
+    @IBAction func settingTapped(_ sender: Any) {
+        let settingVC = storyboard?.instantiateViewController(withIdentifier: "SettingVCID") as! SettingViewController
+        self.present(UINavigationController(rootViewController: settingVC), animated: true, completion: nil)
+    }
+    
+    @IBAction func SetupLeavesTapped(_ sender: Any) {
+        let GetLeavesVC = storyboard?.instantiateViewController(withIdentifier: "GetLeavesID") as! GetLeavesViewController
+        GetLeavesVC.delegate = self
+        self.present(GetLeavesVC, animated: true, completion: nil)
+        return
+    }
+
+    
+    //MARK:------------TableView Methods------------------
     func numberOfSections(in tableView: UITableView) -> Int {
         if LeavesFetchResultController.sections != nil {
           return LeavesFetchResultController.sections!.count
@@ -227,33 +259,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
                 }])
         }
     }
-    
-    func deleteLeave(indexPath:IndexPath){
-        //LeavesFetchResultController.sections![section]
-        
-        let leave = LeavesFetchResultController.object(at: indexPath)
-        
-        do {
-            
-            let addLeaveBackCount = leave.leave_count
-            
-            print("Added Back \(addLeaveBackCount) For \(leave.leave_type ?? "leave not found")")
-            
-            if leave.leave_type == LeaveType.Sick.rawValue {
-                LeavesHandler.SetRemainSickLeaves(leaves: self.RemainSickLeaves + Int(addLeaveBackCount))
-            }else{
-                LeavesHandler.SetRemainWorkingLeaves(leaves: self.RemainWorkingLeaves + Int(addLeaveBackCount))
-            }
-            
-            CoreDataStack.managedObjectContext.delete(leave)
-            try CoreDataStack.saveContext()
-            FirebaseActivity().DeleteLeave(leave: leave)
-            fetchLeaves()
-            
-        } catch {
-            self.showError()
-        }
-    }
+
     
 }
 extension LeavesViewController: NSFetchedResultsControllerDelegate {

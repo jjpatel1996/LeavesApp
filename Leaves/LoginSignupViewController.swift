@@ -171,8 +171,8 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
         
     }
 
-
     func gotoLeaveVC(){
+        LeavesHandler.SetSync(isOn: true)
         if isPageOpenByPopup {
             delegate?.notify()
             self.navigationController?.dismiss(animated: true, completion: nil)

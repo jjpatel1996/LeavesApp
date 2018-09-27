@@ -31,8 +31,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         UINavigationBar.appearance().barTintColor =  UIColor.themeColor()
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+    
+        
+        if LeavesHandler.isAppRunFirstTime() {
+            //Delete User if already existed.
+            try? Auth.auth().signOut()
+            LeavesHandler.FirstTimeRun()
+        }
+        
         
         internetObserver()
+        FirebaseActivity.init().syncTotalLeaveFromFirebaseToApp(completion: nil)
         FirebaseActivity.init().syncLeavesFromFirebaseToApp()
         return true
     }
