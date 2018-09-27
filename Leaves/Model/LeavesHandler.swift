@@ -17,7 +17,7 @@ public class LeavesHandler {
     
     static func FirstTimeRun(){
         let storage = UserDefaults.standard
-        storage.set(true, forKey: "FirstTime")
+        storage.set(false, forKey: "FirstTime")
         storage.synchronize()
     }
     

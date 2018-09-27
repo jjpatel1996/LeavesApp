@@ -20,8 +20,6 @@ enum SettingType:String {
     case LoginSignUp = "Login/Signup" //Show LoginSignUp VC By Popup
 }
 
-
-
 enum Profiles :String {
     case EmailAddress = "Email Address"
     case Name = "Name"
@@ -32,7 +30,7 @@ struct UserDetail {
     var emailAddress:String?
 }
 
-class SettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NotifyDelegate {
 
     @IBOutlet weak var SettingTableView: UITableView!
     
@@ -42,7 +40,8 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     var heightsForCells = [CGFloat]()
     
     let ref = Database.database().reference()
-   
+    let fA = FirebaseActivity.init()
+    
     var userProfile:UserDetail? {
         didSet {
             if let index = settingSections.index(of: SettingType.Profile){
@@ -91,7 +90,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func getUserDetails(){
+    func getUserDetails(){ //Offline Fetch
         let fetchRequest:NSFetchRequest<User> = User.fetchRequest()
         
         do {
@@ -106,7 +105,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func loadUserProfile(){
+    func loadUserProfile(){ //Online Fetch
         
         if let uid = Auth.auth().currentUser?.uid {
             ref.child(LeaveTableNames.User.rawValue).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -122,6 +121,16 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                 //Not Found
             }
         }
+    }
+    
+    func notify() {
+        syncData()
+    }
+    
+    func syncData(){
+        fA.syncAllLeavesToDB()
+        fA.syncTotalLeaveFromFirebaseToApp(completion: nil)
+        fA.syncLeavesFromFirebaseToApp()
     }
     
     @objc func closeView(){
@@ -173,6 +182,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         if settingSections[indexPath.section] == .LoginSignUp {
              let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "AuthID") as! LoginSignupViewController
             loginVC.isPageOpenByPopup = true
+            loginVC.delegate = self
             self.present( UINavigationController(rootViewController: loginVC), animated: true, completion: nil)
         }else if settingSections[indexPath.section] == .Profile {
             if self.userProfile != nil {
@@ -235,8 +245,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         if sender.isOn {
           
             LeavesHandler.SetSync(isOn: true)
-            FirebaseActivity.init().syncAllLeavesToDB()
-            
+            syncData()
             guard let cell = sender.superview?.superview as? SyncCell else {
                 return
             }

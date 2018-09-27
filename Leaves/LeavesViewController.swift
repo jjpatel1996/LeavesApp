@@ -227,7 +227,12 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         let leaveO = LeavesFetchResultController.object(at: IndexPath(row: indexPath.row, section: indexPath.section))
         cell.LeaveCount.text = "Total: \(leaveO.leave_count)"
         cell.LeaveTextView.text = leaveO.leave_description ?? "No Description written"
-        cell.LeaveDate.text = "Leave taken on \(dateTimeFormaater.string(from: leaveO.leave_datetime! as Date))"
+        if let leaveDate = leaveO.leave_datetime {
+            let dateString = dateTimeFormaater.string(from: leaveDate)
+            cell.LeaveDate.text = "Leave taken on \(dateString)"
+        }else {
+            cell.LeaveDate.text = "Date not found"
+        }
         return cell
     }
     
