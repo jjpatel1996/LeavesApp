@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A00B0E0215F96A0002258B4 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00B0DF215F96A0002258B4 /* Utility.swift */; };
+		0A00B0E2215F9718002258B4 /* AllExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00B0E1215F9718002258B4 /* AllExtensions.swift */; };
 		0A7B303C211EE1EA0034D545 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B303B211EE1EA0034D545 /* SettingViewController.swift */; };
 		0A7B303F211EE3D60034D545 /* SettingCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B303E211EE3D60034D545 /* SettingCells.swift */; };
 		0AF9AB93212837E200F909C2 /* FirebaseActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF9AB92212837E200F909C2 /* FirebaseActivity.swift */; };
@@ -35,6 +37,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A00B0DF215F96A0002258B4 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		0A00B0E1215F9718002258B4 /* AllExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllExtensions.swift; sourceTree = "<group>"; };
 		0A7B303B211EE1EA0034D545 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		0A7B303E211EE3D60034D545 /* SettingCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCells.swift; sourceTree = "<group>"; };
 		0AF9AB92212837E200F909C2 /* FirebaseActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseActivity.swift; sourceTree = "<group>"; };
@@ -135,6 +139,8 @@
 				0AF9AB92212837E200F909C2 /* FirebaseActivity.swift */,
 				37035C38210ECFB000ECF2F6 /* CoreDataController.swift */,
 				37035C4A210ED1A700ECF2F6 /* Classes.swift */,
+				0A00B0E1215F9718002258B4 /* AllExtensions.swift */,
+				0A00B0DF215F96A0002258B4 /* Utility.swift */,
 				378710492136C77B0066930A /* LeavesHandler.swift */,
 				37B35DB621490E47002D50F6 /* User+CoreDataClass.swift */,
 				37B35DB721490E47002D50F6 /* User+CoreDataProperties.swift */,
@@ -314,6 +320,7 @@
 				37B35DA92147DA0D002D50F6 /* EditProfileViewController.swift in Sources */,
 				37B35DBB214914E4002D50F6 /* ProfileHeaderCell.swift in Sources */,
 				37035C1D210ECDDE00ECF2F6 /* LeavesViewController.swift in Sources */,
+				0A00B0E2215F9718002258B4 /* AllExtensions.swift in Sources */,
 				37DA7F0F215B4E8A00D2FE4C /* EditTotalLeaveViewController.swift in Sources */,
 				37035C51210F07CB00ECF2F6 /* LoginSignupViewController.swift in Sources */,
 				0A7B303F211EE3D60034D545 /* SettingCells.swift in Sources */,
@@ -325,6 +332,7 @@
 				37B35DB821490E47002D50F6 /* User+CoreDataClass.swift in Sources */,
 				37035C4D210ED54800ECF2F6 /* LeavesCell.swift in Sources */,
 				37035C23210ECDDE00ECF2F6 /* Leaves.xcdatamodeld in Sources */,
+				0A00B0E0215F96A0002258B4 /* Utility.swift in Sources */,
 				37035C4B210ED1A700ECF2F6 /* Classes.swift in Sources */,
 				378710472136C5A30066930A /* LeavesHistory+CoreDataProperties.swift in Sources */,
 				378710482136C5A30066930A /* LeavesHistory+CoreDataClass.swift in Sources */,

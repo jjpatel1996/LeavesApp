@@ -12,12 +12,12 @@ import UIKit
 public class LeavesHandler {
     
     static func isAppRunFirstTime() -> Bool {
-        return UserDefaults.standard.bool(forKey: "FirstTime")
+        return UserDefaults.standard.bool(forKey: "FirstTimeApp")
     }
     
     static func FirstTimeRun(){
         let storage = UserDefaults.standard
-        storage.set(false, forKey: "FirstTime")
+        storage.set(false, forKey: "FirstTimeApp")
         storage.synchronize()
     }
     

@@ -143,8 +143,8 @@ class FirebaseActivity: NSObject {
                 
             }else{
                 
-                let totalSickLeaves = LeavesHandler.getSickLeaves() + LeavesHandler.getRemainSickLeaves()
-                let totalWorkingLeaves = LeavesHandler.getWorkingLeaves() + LeavesHandler.getRemainWorkingLeaves()
+                let totalSickLeaves = LeavesHandler.getSickLeaves()
+                let totalWorkingLeaves = LeavesHandler.getWorkingLeaves()
                 _ = self.setTotalLeaves(sickLeave: totalSickLeaves, workingLeave: totalWorkingLeaves)
                 
             }
