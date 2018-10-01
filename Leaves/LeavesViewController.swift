@@ -49,7 +49,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         firebaseActivity = FirebaseActivity.init()
         setupDesign()
         fetchData()
-        firebaseActivity.syncAllLeavesToDB()    //Sync All not synced Local Leaves to server.
+        firebaseActivity.syncAllLeavesToFirebase()    //Sync All not synced Local Leaves to server.
     }
     
     override func viewWillAppear(_ animated: Bool) {

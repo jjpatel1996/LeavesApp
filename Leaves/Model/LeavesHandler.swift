@@ -21,16 +21,6 @@ public class LeavesHandler {
         storage.synchronize()
     }
     
-    static func isSyncON() -> Bool {
-        return UserDefaults.standard.bool(forKey: "Sync")
-    }
-    
-    static func SetSync(isOn:Bool) {
-        let storage = UserDefaults.standard
-        storage.set(isOn, forKey: "Sync")
-        storage.synchronize()
-    }
-    
     static func isFirstTime() -> Bool {
         let storage = UserDefaults.standard
         return storage.integer(forKey: "FirstTime") == 0
@@ -53,12 +43,14 @@ public class LeavesHandler {
     }
     
     static func SetSickLeaves(leaves:Int) {
+        print("Set Sick Leave" + String(leaves))
         let storage = UserDefaults.standard
         storage.set(leaves, forKey: "SickLeave")
         storage.synchronize()
     }
     
     static func SetWorkingLeaves(leaves:Int) {
+        print("Set Working Leave" + String(leaves))
         let storage = UserDefaults.standard
         storage.set(leaves, forKey: "WorkingLeave")
         storage.synchronize()
@@ -75,12 +67,14 @@ public class LeavesHandler {
     }
     
     static func SetRemainSickLeaves(leaves:Int) {
+        print("Set Remain Sick Leave" + String(leaves))
         let storage = UserDefaults.standard
         storage.set(leaves, forKey: "RemainSickLeave")
         storage.synchronize()
     }
     
     static func SetRemainWorkingLeaves(leaves:Int) {
+        print("Set Remain Working Leave" + String(leaves))
         let storage = UserDefaults.standard
         storage.set(leaves, forKey: "RemainWorkingLeave")
         storage.synchronize()

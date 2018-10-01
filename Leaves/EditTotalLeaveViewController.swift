@@ -44,6 +44,11 @@ class EditTotalLeaveViewController: UITableViewController, UITextFieldDelegate {
         if editButton.title == "Edit" {
             editButton.title = "Save"
         }else{
+            guard totalSickLeaves != 0 || totalWorkingLeaves != 0 else {
+                self.popupAlertWithoutHandler(title: "Message", message: "Leaves count can't be empty", actionTitles: ["Ok"])
+                return
+            }
+            
             self.view.endEditing(true)
             editButton.title = "Edit"
             

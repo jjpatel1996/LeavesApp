@@ -72,8 +72,6 @@ class FirebaseActivity: NSObject {
         
         guard isReachable else { return false }
         guard isUserExist() else { return false }
-        guard LeavesHandler.isSyncON() else { return false }
-        
         ref.child(LeaveTableNames.TotalLeaves.rawValue).child(UserID!).setValue(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
@@ -89,8 +87,7 @@ class FirebaseActivity: NSObject {
         
         guard isReachable else { return false }
         guard isUserExist() else { return false }
-        guard LeavesHandler.isSyncON() else { return false }
-        
+   
         ref.child(LeaveTableNames.TotalLeaves.rawValue).child(UserID!).updateChildValues(["SickLeave":sickLeave,"WorkingLeave":workingLeave]){
             (error:Error?, ref:DatabaseReference) in
             if let error = error {
@@ -102,7 +99,7 @@ class FirebaseActivity: NSObject {
         return true
     }
     
-    func getCurrentTotalLeaves(userID:String, completion: @escaping ((_ SickLeave:String?, _ WorkingLeave:String?) -> Void)){
+    func getCurrentTotalLeaves(userID:String, completion: @escaping ((_ SickLeave:Int?, _ WorkingLeave:Int?) -> Void)){
         
         guard isReachable else {
             completion(nil, nil)
@@ -114,7 +111,7 @@ class FirebaseActivity: NSObject {
             print(snapshot.value ??  "Not found")
             
             if let data = snapshot.value as? NSDictionary {
-                completion(data["SickLeave"] as? String, data["WorkingLeave"] as? String)
+                completion(data["SickLeave"] as? Int, data["WorkingLeave"] as? Int)
             }else{
                 completion(nil, nil)
             }
@@ -129,26 +126,26 @@ class FirebaseActivity: NSObject {
     func UpdateTotalLeavesToFirebase(){
         
         guard isReachable else { return }
-        guard let userID = Auth.auth().currentUser?.uid else { return }
-        guard LeavesHandler.isSyncON() else { return }
+        guard isUserExist() else  { return }
+//        guard let userID = Auth.auth().currentUser?.uid else { return }
         
-        getCurrentTotalLeaves(userID: userID) { (Sick, Working) in
+//        getCurrentTotalLeaves(userID: userID) { (Sick, Working) in
+        
+//            if Sick != nil && Working != nil {
+//
+//                LeavesHandler.SetSickLeaves(leaves: Sick!)
+//                LeavesHandler.SetRemainSickLeaves(leaves: Sick!)
+//                LeavesHandler.SetWorkingLeaves(leaves: Working!)
+//                LeavesHandler.SetRemainWorkingLeaves(leaves: Working!)
+//
+//            }else{
             
-            if Sick != nil && Working != nil {
-                
-                LeavesHandler.SetSickLeaves(leaves: Int(Sick!)!)
-                LeavesHandler.SetRemainSickLeaves(leaves: Int(Sick!)!)
-                LeavesHandler.SetWorkingLeaves(leaves: Int(Working!)!)
-                LeavesHandler.SetRemainWorkingLeaves(leaves: Int(Working!)!)
-                
-            }else{
-                
                 let totalSickLeaves = LeavesHandler.getSickLeaves()
                 let totalWorkingLeaves = LeavesHandler.getWorkingLeaves()
-                _ = self.setTotalLeaves(sickLeave: totalSickLeaves, workingLeave: totalWorkingLeaves)
+                _ = self.setTotalLeaves(sickLeave: totalSickLeaves, workingLeave: totalWorkingLeaves)   //Set Total leave to server
                 
-            }
-        }
+//            }
+//        }
         
     }
     
@@ -158,7 +155,6 @@ class FirebaseActivity: NSObject {
         
         guard isReachable else { return }
         guard isUserExist() else { return }
-        guard LeavesHandler.isSyncON() else { return }
         
         let dtFormatter = DateFormatter()
         dtFormatter.dateFormat = "HH:mm:ss dd-MM-yyyy"
@@ -195,7 +191,6 @@ class FirebaseActivity: NSObject {
 
         guard isReachable else { return }
         guard isUserExist() else { return }
-        guard LeavesHandler.isSyncON() else { return }
         
         guard leave.uniqueFirebaseID != nil else { return }
         
@@ -226,7 +221,6 @@ class FirebaseActivity: NSObject {
         
         guard isReachable else { return }
         guard isUserExist() else { return }
-        guard LeavesHandler.isSyncON() else { return }
         guard leave.uniqueFirebaseID != nil else { return }
         
         ref.child(LeaveTableNames.Leaves.rawValue).child(UserID!).child(leave.uniqueFirebaseID!).removeValue(){
@@ -257,12 +251,11 @@ class FirebaseActivity: NSObject {
         }
     }
     
-
-    func syncAllLeavesToDB(){
+    //MARK:- Sync to Firebase.
+    func syncAllLeavesToFirebase(){
         
         guard isReachable else { return }
         guard isUserExist() else { return }
-        guard LeavesHandler.isSyncON() else { return }
      
         let fetchRequest:NSFetchRequest<LeavesHistory> = LeavesHistory.fetchRequest()
       
@@ -285,7 +278,7 @@ class FirebaseActivity: NSObject {
         
     }
     
-    
+    //MARK:- Sync total leave from firebase
     func syncTotalLeaveFromFirebaseToApp(completion:((_ isUpdated:Bool) -> ())?){
         
         guard isReachable else { completion?(false); return }
@@ -295,19 +288,16 @@ class FirebaseActivity: NSObject {
         if LeavesHandler.getWorkingLeaves() == 0 && LeavesHandler.getSickLeaves() == 0 {
             getCurrentTotalLeaves(userID: userID) { (SickLeave, WorkingLeave) in
                 if WorkingLeave != nil && SickLeave != nil {
-                    guard let workingLeaveInt = Int(WorkingLeave!), let sickLeaveInt = Int(SickLeave!) else {
-                        completion?(false)
-                        return
-                    }
                     //Update it
-                    LeavesHandler.SetSickLeaves(leaves: sickLeaveInt)
-                    LeavesHandler.SetWorkingLeaves(leaves: workingLeaveInt)
+                    LeavesHandler.SetSickLeaves(leaves: SickLeave!)
+                    LeavesHandler.SetWorkingLeaves(leaves: WorkingLeave!)
                     completion?(true)
                 }
             }
         }
     }
     
+    //MARK:- Sync leaves from firebase
     func syncLeavesFromFirebaseToApp(){
         
         guard isReachable else { return }
@@ -328,24 +318,16 @@ class FirebaseActivity: NSObject {
             return
         }
     
-//        //get From Server DB
+        //get From Server DB
         ref.child(LeaveTableNames.Leaves.rawValue).child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
 
-            print(snapshot.childrenCount)
+            print("Leaves count at server \(snapshot.childrenCount)")
            
             if let IDPair = snapshot.value as? [String:NSDictionary] {
                 
                 for leaveObject in IDPair {
                 
                     guard (leaveObject.value["dead"] as! Int) == 0 else { continue }
-                    
-                    var newLeave:LeavesHistory!
-                    if #available(iOS 10.0, *) {
-                        newLeave = LeavesHistory(entity: LeavesHistory.entity(), insertInto: CoreDataStack.managedObjectContext)
-                    } else {
-                        let entity = NSEntityDescription.entity(forEntityName: "LeavesHistory", in: CoreDataStack.managedObjectContext)!
-                        newLeave = LeavesHistory(entity: entity, insertInto: CoreDataStack.managedObjectContext)
-                    }
                     
                     guard let createdDTMS = leaveObject.value["createdDTM"] as? String else { continue }
                     guard let createdDTM = Utility.getDateFromString(dateInString: createdDTMS) else { continue }
@@ -364,6 +346,14 @@ class FirebaseActivity: NSObject {
                     guard let leaveType = leaveObject.value["leaveType"] as? String else { continue }
                     guard let Description = leaveObject.value["Description"] as? String else { continue }
                     
+                    
+                    var newLeave:LeavesHistory!
+                    if #available(iOS 10.0, *) {
+                        newLeave = LeavesHistory(entity: LeavesHistory.entity(), insertInto: CoreDataStack.managedObjectContext)
+                    } else {
+                        let entity = NSEntityDescription.entity(forEntityName: "LeavesHistory", in: CoreDataStack.managedObjectContext)!
+                        newLeave = LeavesHistory(entity: entity, insertInto: CoreDataStack.managedObjectContext)
+                    }
                     
                     newLeave.dead = dead
                     newLeave.leave_count = leaveCount

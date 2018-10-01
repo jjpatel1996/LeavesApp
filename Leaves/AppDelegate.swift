@@ -84,12 +84,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
         // ...
-        print(user.profile.email)
-        
+    
         if let error = error {
             print(error.localizedDescription)
             return
         }
+        
+        print(user.profile.email)
         
         guard let authentication = user.authentication else { return }
         print(authentication)

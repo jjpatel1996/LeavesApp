@@ -70,7 +70,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     func setupSections(){
         settingSections.removeAll()
 //        settingSections.append(SettingType.EditLeave)
-        settingSections.append(SettingType.Sync)
         
         if Auth.auth().currentUser != nil {
             settingSections.insert(SettingType.Profile, at: 0)
@@ -128,7 +127,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func syncData(){
-        fA.syncAllLeavesToDB()
+        fA.syncAllLeavesToFirebase()
         fA.syncTotalLeaveFromFirebaseToApp(completion: nil)
         fA.syncLeavesFromFirebaseToApp()
     }
@@ -167,8 +166,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch settingSections[indexPath.section] {
         case .EditLeave:
             return setupLeaveEditCell(indexPath: indexPath)
-        case .Sync:
-            return setupSyncCell(indexPath: indexPath)
         case .Profile:
             return setupUserDetailsCell(indexPath: indexPath)
         case .LoginSignUp:
@@ -225,44 +222,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.textLabel?.text = "Edit Profile"
         cell.accessoryType = .disclosureIndicator
         return cell
-    }
-    
-    func setupSyncCell(indexPath:IndexPath) -> SyncCell {
-        
-        let cell = SettingTableView.dequeueReusableCell(withIdentifier: "SyncID", for: indexPath) as! SyncCell
-        cell.ActivityIndicator.isHidden = true
-     
-        let isEnable = Auth.auth().currentUser != nil
-        cell.Switch.isEnabled = isEnable
-        cell.Switch.isOn = isEnable ? LeavesHandler.isSyncON() : false
-        cell.Switch.addTarget(self, action: #selector(switchTapped(sender:)), for: UIControl.Event.valueChanged)
-        cell.selectionStyle = .none
-        return cell
-    }
-    
-    @objc func switchTapped(sender:UISwitch){
-        
-        if sender.isOn {
-          
-            LeavesHandler.SetSync(isOn: true)
-            syncData()
-            guard let cell = sender.superview?.superview as? SyncCell else {
-                return
-            }
-            cell.Switch.isHidden = true
-            cell.ActivityIndicator.isHidden = false
-            cell.ActivityIndicator.startAnimating()
-            
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-                cell.ActivityIndicator.stopAnimating()
-                cell.ActivityIndicator.isHidden = true
-                cell.Switch.isHidden = false
-            }
-            
-        }else{
-            LeavesHandler.SetSync(isOn: false)
-        }
-        
     }
     
     func setupLeaveEditCell(indexPath:IndexPath) -> LeaveEditingCell {

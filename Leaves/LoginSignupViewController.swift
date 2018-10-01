@@ -101,7 +101,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
                 
                 let userDetails = UserDetail(UserName: nil, emailAddress: email)
                 self.firebaseActivity.insertUserFirebase(userID: user!.user.uid, user: userDetails)
-                FirebaseActivity().UpdateTotalLeavesToFirebase()
+                
                 if Utility.SaveUpdateUserInfo(userDetails: userDetails) {
                     self.gotoLeaveVC()
                 }else{
@@ -171,8 +171,7 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
         
     }
 
-    func gotoLeaveVC(){
-        LeavesHandler.SetSync(isOn: true)
+    func gotoLeaveVC(){       
         if isPageOpenByPopup {
             delegate?.notify()
             self.navigationController?.dismiss(animated: true, completion: nil)
