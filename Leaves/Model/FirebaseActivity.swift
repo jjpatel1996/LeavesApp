@@ -318,6 +318,17 @@ class FirebaseActivity: NSObject {
             return
         }
     
+        var takenWorkingLeave = 0
+        var takenSickLeave = 0
+        
+        _ = currentLeaveList.map({
+            if $0.leave_type == LeaveType.Working.rawValue {
+                takenWorkingLeave += Int($0.leave_count)
+            }else{
+                takenSickLeave += Int($0.leave_count)
+            }
+        })
+        
         //get From Server DB
         ref.child(LeaveTableNames.Leaves.rawValue).child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
 
@@ -364,10 +375,18 @@ class FirebaseActivity: NSObject {
                     newLeave.leave_description = Description
                     newLeave.uniqueFirebaseID = leaveObject.key
                     
+                    if leaveType == LeaveType.Working.rawValue {
+                        takenWorkingLeave += Int(leaveCount)
+                    }else{
+                        takenSickLeave += Int(leaveCount)
+                    }
+                    
                 }
                 
                 do {
                     try CoreDataStack.saveContext()
+                    LeavesHandler.SetRemainSickLeaves(leaves: LeavesHandler.getSickLeaves() - takenSickLeave)
+                    LeavesHandler.SetRemainWorkingLeaves(leaves: LeavesHandler.getWorkingLeaves() - takenWorkingLeave)
                 } catch {
                     print(error.localizedDescription)
                 }
