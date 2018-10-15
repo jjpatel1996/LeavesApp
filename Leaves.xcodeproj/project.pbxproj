@@ -25,6 +25,16 @@
 		37035C4F210EE64800ECF2F6 /* NewLeaveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C4E210EE64800ECF2F6 /* NewLeaveViewController.swift */; };
 		37035C51210F07CB00ECF2F6 /* LoginSignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C50210F07CB00ECF2F6 /* LoginSignupViewController.swift */; };
 		37035C53210F0CF900ECF2F6 /* GetLeavesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37035C52210F0CF900ECF2F6 /* GetLeavesViewController.swift */; };
+		370800572174930200DA2C20 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 370800552174930200DA2C20 /* Interface.storyboard */; };
+		370800592174930400DA2C20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 370800582174930400DA2C20 /* Assets.xcassets */; };
+		370800602174930500DA2C20 /* LeavesWatchApp Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3708005F2174930500DA2C20 /* LeavesWatchApp Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		370800652174930500DA2C20 /* LeavesInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370800642174930500DA2C20 /* LeavesInterfaceController.swift */; };
+		370800672174930500DA2C20 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370800662174930500DA2C20 /* ExtensionDelegate.swift */; };
+		370800692174930600DA2C20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 370800682174930600DA2C20 /* Assets.xcassets */; };
+		3708006D2174930600DA2C20 /* LeavesWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 370800532174930200DA2C20 /* LeavesWatchApp.app */; };
+		3708007721749E9800DA2C20 /* LeaveRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708007621749E9800DA2C20 /* LeaveRowController.swift */; };
+		3708007B2174A5D700DA2C20 /* DetailsLeaveInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708007A2174A5D700DA2C20 /* DetailsLeaveInterfaceController.swift */; };
+		3708007E2174A9BB00DA2C20 /* LeaveClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708007D2174A9BB00DA2C20 /* LeaveClass.swift */; };
 		378710472136C5A30066930A /* LeavesHistory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378710452136C5A30066930A /* LeavesHistory+CoreDataProperties.swift */; };
 		378710482136C5A30066930A /* LeavesHistory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378710462136C5A30066930A /* LeavesHistory+CoreDataClass.swift */; };
 		3787104A2136C77B0066930A /* LeavesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378710492136C77B0066930A /* LeavesHandler.swift */; };
@@ -35,6 +45,48 @@
 		37B35DBB214914E4002D50F6 /* ProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B35DBA214914E4002D50F6 /* ProfileHeaderCell.swift */; };
 		37DA7F0F215B4E8A00D2FE4C /* EditTotalLeaveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DA7F0E215B4E8A00D2FE4C /* EditTotalLeaveViewController.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		370800612174930500DA2C20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37035C0F210ECDDE00ECF2F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3708005E2174930500DA2C20;
+			remoteInfo = "LeavesWatchApp Extension";
+		};
+		3708006B2174930600DA2C20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37035C0F210ECDDE00ECF2F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 370800522174930200DA2C20;
+			remoteInfo = LeavesWatchApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		370800732174930600DA2C20 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				370800602174930500DA2C20 /* LeavesWatchApp Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		370800752174930600DA2C20 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				3708006D2174930600DA2C20 /* LeavesWatchApp.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0A00B0DF215F96A0002258B4 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -56,6 +108,18 @@
 		37035C4E210EE64800ECF2F6 /* NewLeaveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLeaveViewController.swift; sourceTree = "<group>"; };
 		37035C50210F07CB00ECF2F6 /* LoginSignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupViewController.swift; sourceTree = "<group>"; };
 		37035C52210F0CF900ECF2F6 /* GetLeavesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLeavesViewController.swift; sourceTree = "<group>"; };
+		370800532174930200DA2C20 /* LeavesWatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeavesWatchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		370800562174930200DA2C20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		370800582174930400DA2C20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3708005A2174930500DA2C20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3708005F2174930500DA2C20 /* LeavesWatchApp Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "LeavesWatchApp Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		370800642174930500DA2C20 /* LeavesInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeavesInterfaceController.swift; sourceTree = "<group>"; };
+		370800662174930500DA2C20 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		370800682174930600DA2C20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3708006A2174930600DA2C20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3708007621749E9800DA2C20 /* LeaveRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveRowController.swift; sourceTree = "<group>"; };
+		3708007A2174A5D700DA2C20 /* DetailsLeaveInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsLeaveInterfaceController.swift; sourceTree = "<group>"; };
+		3708007D2174A9BB00DA2C20 /* LeaveClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveClass.swift; sourceTree = "<group>"; };
 		378710452136C5A30066930A /* LeavesHistory+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LeavesHistory+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		378710462136C5A30066930A /* LeavesHistory+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LeavesHistory+CoreDataClass.swift"; sourceTree = "<group>"; };
 		378710492136C77B0066930A /* LeavesHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeavesHandler.swift; sourceTree = "<group>"; };
@@ -79,6 +143,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3708005C2174930500DA2C20 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -96,6 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				37035C19210ECDDE00ECF2F6 /* Leaves */,
+				370800542174930200DA2C20 /* LeavesWatchApp */,
+				370800632174930500DA2C20 /* LeavesWatchApp Extension */,
 				37035C18210ECDDE00ECF2F6 /* Products */,
 				449DA02D1751D41AE1B3CEE0 /* Pods */,
 				4261A57A0C00B319807D585C /* Frameworks */,
@@ -106,6 +179,8 @@
 			isa = PBXGroup;
 			children = (
 				37035C17210ECDDE00ECF2F6 /* Leaves.app */,
+				370800532174930200DA2C20 /* LeavesWatchApp.app */,
+				3708005F2174930500DA2C20 /* LeavesWatchApp Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,6 +225,30 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		370800542174930200DA2C20 /* LeavesWatchApp */ = {
+			isa = PBXGroup;
+			children = (
+				370800552174930200DA2C20 /* Interface.storyboard */,
+				370800582174930400DA2C20 /* Assets.xcassets */,
+				3708005A2174930500DA2C20 /* Info.plist */,
+			);
+			path = LeavesWatchApp;
+			sourceTree = "<group>";
+		};
+		370800632174930500DA2C20 /* LeavesWatchApp Extension */ = {
+			isa = PBXGroup;
+			children = (
+				370800642174930500DA2C20 /* LeavesInterfaceController.swift */,
+				3708007A2174A5D700DA2C20 /* DetailsLeaveInterfaceController.swift */,
+				3708007621749E9800DA2C20 /* LeaveRowController.swift */,
+				370800662174930500DA2C20 /* ExtensionDelegate.swift */,
+				370800682174930600DA2C20 /* Assets.xcassets */,
+				3708006A2174930600DA2C20 /* Info.plist */,
+				3708007D2174A9BB00DA2C20 /* LeaveClass.swift */,
+			);
+			path = "LeavesWatchApp Extension";
+			sourceTree = "<group>";
+		};
 		4261A57A0C00B319807D585C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -180,15 +279,51 @@
 				37035C15210ECDDE00ECF2F6 /* Resources */,
 				26D0FAAE2553BA94A27CE082 /* [CP] Embed Pods Frameworks */,
 				108F6264A47DEEB0C8325461 /* [CP] Copy Pods Resources */,
+				370800752174930600DA2C20 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3708006C2174930600DA2C20 /* PBXTargetDependency */,
 			);
 			name = Leaves;
 			productName = Leaves;
 			productReference = 37035C17210ECDDE00ECF2F6 /* Leaves.app */;
 			productType = "com.apple.product-type.application";
+		};
+		370800522174930200DA2C20 /* LeavesWatchApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 370800742174930600DA2C20 /* Build configuration list for PBXNativeTarget "LeavesWatchApp" */;
+			buildPhases = (
+				370800512174930200DA2C20 /* Resources */,
+				370800732174930600DA2C20 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				370800622174930500DA2C20 /* PBXTargetDependency */,
+			);
+			name = LeavesWatchApp;
+			productName = LeavesWatchApp;
+			productReference = 370800532174930200DA2C20 /* LeavesWatchApp.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		3708005E2174930500DA2C20 /* LeavesWatchApp Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 370800722174930600DA2C20 /* Build configuration list for PBXNativeTarget "LeavesWatchApp Extension" */;
+			buildPhases = (
+				3708005B2174930500DA2C20 /* Sources */,
+				3708005C2174930500DA2C20 /* Frameworks */,
+				3708005D2174930500DA2C20 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "LeavesWatchApp Extension";
+			productName = "LeavesWatchApp Extension";
+			productReference = 3708005F2174930500DA2C20 /* LeavesWatchApp Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -196,7 +331,7 @@
 		37035C0F210ECDDE00ECF2F6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0940;
+				LastSwiftUpdateCheck = 1000;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Jay Patel";
 				TargetAttributes = {
@@ -208,6 +343,12 @@
 								enabled = 0;
 							};
 						};
+					};
+					370800522174930200DA2C20 = {
+						CreatedOnToolsVersion = 10.0;
+					};
+					3708005E2174930500DA2C20 = {
+						CreatedOnToolsVersion = 10.0;
 					};
 				};
 			};
@@ -225,6 +366,8 @@
 			projectRoot = "";
 			targets = (
 				37035C16210ECDDE00ECF2F6 /* Leaves */,
+				370800522174930200DA2C20 /* LeavesWatchApp */,
+				3708005E2174930500DA2C20 /* LeavesWatchApp Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -238,6 +381,23 @@
 				37B0140A2119649200B5B37B /* GoogleService-Info.plist in Resources */,
 				37035C25210ECDEF00ECF2F6 /* Assets.xcassets in Resources */,
 				37035C20210ECDDE00ECF2F6 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		370800512174930200DA2C20 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				370800592174930400DA2C20 /* Assets.xcassets in Resources */,
+				370800572174930200DA2C20 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3708005D2174930500DA2C20 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				370800692174930600DA2C20 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,7 +504,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3708005B2174930500DA2C20 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				370800672174930500DA2C20 /* ExtensionDelegate.swift in Sources */,
+				370800652174930500DA2C20 /* LeavesInterfaceController.swift in Sources */,
+				3708007B2174A5D700DA2C20 /* DetailsLeaveInterfaceController.swift in Sources */,
+				3708007E2174A9BB00DA2C20 /* LeaveClass.swift in Sources */,
+				3708007721749E9800DA2C20 /* LeaveRowController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		370800622174930500DA2C20 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3708005E2174930500DA2C20 /* LeavesWatchApp Extension */;
+			targetProxy = 370800612174930500DA2C20 /* PBXContainerItemProxy */;
+		};
+		3708006C2174930600DA2C20 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 370800522174930200DA2C20 /* LeavesWatchApp */;
+			targetProxy = 3708006B2174930600DA2C20 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		37035C1E210ECDDE00ECF2F6 /* Main.storyboard */ = {
@@ -361,6 +546,14 @@
 				37035C27210ECDEF00ECF2F6 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		370800552174930200DA2C20 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				370800562174930200DA2C20 /* Base */,
+			);
+			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -489,7 +682,10 @@
 				DEVELOPMENT_TEAM = 5ZZE3DZVHL;
 				INFOPLIST_FILE = Leaves/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Jay-Patel.Leaves";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -506,11 +702,100 @@
 				DEVELOPMENT_TEAM = 5ZZE3DZVHL;
 				INFOPLIST_FILE = Leaves/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Jay-Patel.Leaves";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		3708006E2174930600DA2C20 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5ZZE3DZVHL;
+				IBSC_MODULE = LeavesWatchApp_Extension;
+				INFOPLIST_FILE = LeavesWatchApp/Info.plist;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "Jay-Patel.Leaves.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
+			};
+			name = Debug;
+		};
+		3708006F2174930600DA2C20 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5ZZE3DZVHL;
+				IBSC_MODULE = LeavesWatchApp_Extension;
+				INFOPLIST_FILE = LeavesWatchApp/Info.plist;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "Jay-Patel.Leaves.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
+			};
+			name = Release;
+		};
+		370800702174930600DA2C20 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "LeavesWatchApp Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "Jay-Patel.Leaves.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
+			};
+			name = Debug;
+		};
+		370800712174930600DA2C20 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "LeavesWatchApp Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "Jay-Patel.Leaves.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
 			};
 			name = Release;
 		};
@@ -531,6 +816,24 @@
 			buildConfigurations = (
 				37035C2D210ECDEF00ECF2F6 /* Debug */,
 				37035C2E210ECDEF00ECF2F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		370800722174930600DA2C20 /* Build configuration list for PBXNativeTarget "LeavesWatchApp Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				370800702174930600DA2C20 /* Debug */,
+				370800712174930600DA2C20 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		370800742174930600DA2C20 /* Build configuration list for PBXNativeTarget "LeavesWatchApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3708006E2174930600DA2C20 /* Debug */,
+				3708006F2174930600DA2C20 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
