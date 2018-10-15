@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import Firebase
-import GoogleSignIn
-import CoreData
+//import Firebase
+//import GoogleSignIn
+//import CoreData
 
 
 enum SettingType:String {
@@ -29,7 +29,7 @@ struct UserDetail {
     var UserName:String?
     var emailAddress:String?
 }
-
+/*
 class SettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NotifyDelegate {
 
     @IBOutlet weak var SettingTableView: UITableView!
@@ -282,4 +282,4 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
 }
 
-
+*/

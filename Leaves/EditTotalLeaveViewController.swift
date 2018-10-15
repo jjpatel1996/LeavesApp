@@ -54,7 +54,7 @@ class EditTotalLeaveViewController: UITableViewController, UITextFieldDelegate {
             
             LeavesHandler.SetSickLeaves(leaves: totalSickLeaves)
             LeavesHandler.SetWorkingLeaves(leaves: totalWorkingLeaves)
-            FirebaseActivity().UpdateTotalLeavesToFirebase()
+            //FirebaseActivity().UpdateTotalLeavesToFirebase()
         }
         self.tableView.reloadData()
         

@@ -15,42 +15,64 @@ protocol LeaveSetDelegate {
 //GetLeavesID
 class GetLeavesViewController: UIViewController, UITextFieldDelegate {
 
-    @IBOutlet weak var SickLeaveTextField: UITextField!
-    @IBOutlet weak var WorkingLeaveTextField: UITextField!
-    let fActivity = FirebaseActivity()
+    @IBOutlet weak var paidLeaveTextBox: UILabel!
+    @IBOutlet weak var sickLeaveTextBox: UILabel!
+    
+    @IBOutlet weak var leaveSlider: UISlider!
+    @IBOutlet weak var sickLeaveSlider: UISlider!
+    
+    //let fActivity = FirebaseActivity()
     var delegate:LeaveSetDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        SickLeaveTextField.text = nil
-        WorkingLeaveTextField.text = nil
-        WorkingLeaveTextField.delegate = self
-        SickLeaveTextField.delegate = self
     }
 
-    @IBAction func SubmitLeaves(_ sender: Any) {
+    @IBAction func sliderValueChanged(_ sender: Any) {
+        let changedValue = Int((sender as! UISlider).value)
+        if (sender as! UISlider).isEqual(leaveSlider){
+            paidLeaveTextBox.text = "(Paid) Leaves (\(changedValue))"
+        }else{
+            sickLeaveTextBox.text = "Sick Leaves (Optional) (\(changedValue))"
+        }
+    }
+    
+   /* @IBAction func SubmitLeaves(_ sender: Any) {
         self.view.endEditing(true)
-        guard let SickLeaveCount = Int(SickLeaveTextField.text!)  else { return }
+       
+        let SickLeaveCount = Int(sickLeaveSlider.value)
         LeavesHandler.SetSickLeaves(leaves: SickLeaveCount)
         LeavesHandler.SetRemainSickLeaves(leaves: SickLeaveCount)
 
-        guard let WorkingLeaveCount = Int(WorkingLeaveTextField.text!)  else { return }
+        let WorkingLeaveCount = Int(leaveSlider.value)
         LeavesHandler.SetWorkingLeaves(leaves: WorkingLeaveCount)
         LeavesHandler.SetRemainWorkingLeaves(leaves: WorkingLeaveCount)
 
         //saveInFirebase(SickLeave: SickLeaveCount, WorkingLeave: WorkingLeaveCount)
         saveAndDismissView()
-    }
+    }*/
     
     func saveAndDismissView(){
-        FirebaseActivity().UpdateTotalLeavesToFirebase()
+       // FirebaseActivity().UpdateTotalLeavesToFirebase()
         delegate?.LeavesSetted()
         self.dismiss(animated: true, completion: nil)
     }
 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+ 
+    @IBAction func SaveTapped(_ sender: Any) {
+        
+        let SickLeaveCount = Int(sickLeaveSlider.value)
+        LeavesHandler.SetSickLeaves(leaves: SickLeaveCount)
+        LeavesHandler.SetRemainSickLeaves(leaves: SickLeaveCount)
+        
+        let WorkingLeaveCount = Int(leaveSlider.value)
+        LeavesHandler.SetWorkingLeaves(leaves: WorkingLeaveCount)
+        LeavesHandler.SetRemainWorkingLeaves(leaves: WorkingLeaveCount)
+        saveAndDismissView()
+    }
+    
+    @IBAction func CancelTapped(_ sender: Any) {
+        saveAndDismissView()
     }
     
 }

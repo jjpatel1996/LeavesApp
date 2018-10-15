@@ -5,7 +5,7 @@
 //  Created by Jay Patel on 30/07/18.
 //  Copyright © 2018 Jay Patel. All rights reserved.
 //
-
+/*
 import UIKit
 import Firebase
 import GoogleSignIn
@@ -189,3 +189,4 @@ class LoginSignupViewController: UIViewController, GIDSignInUIDelegate, GIDSignI
 
     
 }
+*/

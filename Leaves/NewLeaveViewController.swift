@@ -42,7 +42,7 @@ class NewLeaveViewController: UIViewController {
     
     var remainTotalLeaveForCurrentSelectedLeave:Int = 0
     
-    let firebase = FirebaseActivity()
+    //let firebase = FirebaseActivity()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +59,7 @@ class NewLeaveViewController: UIViewController {
         
         if isNew {
             leaveCountTextField.text = "0"
-            IncreaseDecreaseStepper.maximumValue = Double(sickLeavesRemain)
+            IncreaseDecreaseStepper.maximumValue = Double(workingLeavesRemain)
             IncreaseDecreaseStepper.value = 0
         }else{
             guard leave != nil else {
@@ -121,11 +121,11 @@ class NewLeaveViewController: UIViewController {
     
     @IBAction func LeaveTypeChanged(_ sender: Any) {
         if (sender as! UISegmentedControl).selectedSegmentIndex == 0 {
-            leaveType = .Sick
-            IncreaseDecreaseStepper.maximumValue = Double(sickLeavesRemain)
-        }else{
             leaveType = .Working
             IncreaseDecreaseStepper.maximumValue = Double(workingLeavesRemain)
+        }else{
+            leaveType = .Working
+            IncreaseDecreaseStepper.maximumValue = Double(sickLeavesRemain)
         }
         
         if let currentSelectedLeave = Int(leaveCountTextField.text ?? "0"), currentSelectedLeave > Int(IncreaseDecreaseStepper.maximumValue) {
@@ -179,7 +179,7 @@ class NewLeaveViewController: UIViewController {
             do {
                 try CoreDataStack.saveContext()
                 SetLeaveCountInPrefrence(newLeaveCounts: Int(leaveCount))
-                saveLeaveInFirebase(leave: newLeave)
+                //saveLeaveInFirebase(leave: newLeave)
                 delegate?.LeavesSetted()
                 self.dismiss(animated: true, completion: nil)
             } catch {
@@ -214,7 +214,7 @@ class NewLeaveViewController: UIViewController {
             do {
                 try CoreDataStack.saveContext()
                 SetLeaveCountInPrefrence(newLeaveCounts: leaveCount-oldValue)
-                saveLeaveInFirebase(leave: leave!)
+                //saveLeaveInFirebase(leave: leave!)
                 delegate?.LeavesSetted()
                 self.dismiss(animated: true, completion: nil)
             } catch {
@@ -234,16 +234,13 @@ class NewLeaveViewController: UIViewController {
         
     }
     
-    func saveLeaveInFirebase(leave:LeavesHistory){
+    /*func saveLeaveInFirebase(leave:LeavesHistory){
         if leave.uniqueFirebaseID == nil {
             firebase.SaveLeave(leave: leave)
         }else{
             firebase.UpdateLeave(leave: leave)
         }
-    }
-    
-    
-    
+    }*/
     
     func showError() {
         

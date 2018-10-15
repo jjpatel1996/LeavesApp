@@ -5,7 +5,7 @@
 //  Created by Jay Patel on 18/08/18.
 //  Copyright © 2018 Jay Patel. All rights reserved.
 //
-
+/*
 import Foundation
 import Firebase
 import GoogleSignIn
@@ -400,3 +400,4 @@ class FirebaseActivity: NSObject {
     }
     
 }
+*/

@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import Firebase
-
+//import Firebase
+/*
 //EditProfileID
 class EditProfileViewController: UITableViewController, UITextFieldDelegate {
 
@@ -111,3 +111,4 @@ class EditProfileViewController: UITableViewController, UITextFieldDelegate {
     
     
 }
+*/

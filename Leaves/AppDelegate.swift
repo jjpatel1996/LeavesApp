@@ -8,45 +8,45 @@
 
 import UIKit
 import IQKeyboardManagerSwift
-import Firebase
-import GoogleSignIn
-import Reachability
+//import Firebase
+//import GoogleSignIn
+//import Reachability
 
 var isReachable = true
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
-
+class AppDelegate: UIResponder, UIApplicationDelegate {
+//, GIDSignInDelegate
     var window: UIWindow?
 
-    var reachability:Reachability?
+   // var reachability:Reachability?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
         IQKeyboardManager.shared.enable = true
-        FirebaseApp.configure()
-        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-        GIDSignIn.sharedInstance().delegate = self
+        //FirebaseApp.configure()
+        //GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+        //GIDSignIn.sharedInstance().delegate = self
     
         UINavigationBar.appearance().barTintColor =  UIColor.themeColor()
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
     
         
-        if LeavesHandler.isAppRunFirstTime() {
+        //if LeavesHandler.isAppRunFirstTime() {
             //Delete User if already existed.
-            try? Auth.auth().signOut()
-            LeavesHandler.FirstTimeRun()
-        }
+            //try? Auth.auth().signOut()
+            //LeavesHandler.FirstTimeRun()
+        //}
         
         
-        internetObserver()
-        FirebaseActivity.init().syncTotalLeaveFromFirebaseToApp(completion: nil)
-        FirebaseActivity.init().syncLeavesFromFirebaseToApp()
+        //internetObserver()
+        //FirebaseActivity.init().syncTotalLeaveFromFirebaseToApp(completion: nil)
+        //FirebaseActivity.init().syncLeavesFromFirebaseToApp()
         return true
     }
 
-    func internetObserver(){
+    /*func internetObserver(){
         reachability = Reachability()!
         
         if reachability!.connection == Reachability.Connection.none {
@@ -116,7 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
         // Perform any operations when the user disconnects from app here.
         // ...
-    }
+    }*/
     
     
     

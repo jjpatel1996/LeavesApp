@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 //LeavesIDVC
-class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDelegate, UITableViewDataSource, NotifyDelegate {
+class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDelegate, UITableViewDataSource {
 
     lazy var LeavesFetchResultController:NSFetchedResultsController<LeavesHistory> = {
         
@@ -42,14 +42,14 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     @IBOutlet weak var SetupView: CardView!
     @IBOutlet weak var TotalLeaveHeaderView: CardView!
     
-    var firebaseActivity:FirebaseActivity!
+    //var firebaseActivity:FirebaseActivity!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        firebaseActivity = FirebaseActivity.init()
+        //firebaseActivity = FirebaseActivity.init()
         setupDesign()
         fetchData()
-        firebaseActivity.syncAllLeavesToFirebase()    //Sync All not synced Local Leaves to server.
+        //firebaseActivity.syncAllLeavesToFirebase()    //Sync All not synced Local Leaves to server.
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,18 +60,13 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     
     func setupDesign(){
         
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 30))
-        label.textAlignment = .center
-        label.text = "Leaves"
-        label.textColor = UIColor.white
-        label.adjustsFontSizeToFitWidth = true
-        label.font = UIFont(name: "Arial-Bold", size: 27)
-        self.navigationItem.titleView = label
+        self.title = "Leaves"
         self.leaveTableView.tableFooterView = UIView()
         leaveTableView.delegate = self
         leaveTableView.dataSource = self
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(gotoEditLeave))
         TotalLeaveHeaderView.addGestureRecognizer(tapGesture)
+        
     }
     
     func fetchData(){
@@ -93,10 +88,12 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
     
     func setupInitialProcess(){
         
-        if LeavesHandler.isFirstTime() {
+       /* if LeavesHandler.isFirstTime() {
             LeavesHandler.DoneFirstTime()
             askForLoginSignup()
         }
+       */
+        
         if totalSickLeaves == 0 && totalWorkingLeaves == 0 {
             SetupView.isHidden = false
             TotalLeaveHeaderView.isHidden = true
@@ -105,12 +102,12 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
             TotalLeaveHeaderView.isHidden = false
         }
     }
-    
-    func askForLoginSignup(){
+     
+    /*func askForLoginSignup(){
         self.popupAlert(title: "Login/Register", message: "Do you want to login or register? This will allow you to sync data to server.", actionTitles: ["Cancel","Login"], actions: [ { cancel in }, { login in
                self.gotoLoginPage()
             } ])
-    }
+    }*/
     
     func LeavesSetted() {
         fetchLeaves()
@@ -118,14 +115,14 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         //self.leaveTableView.reloadData()
     }
     
-    func gotoLoginPage(){
+    /*func gotoLoginPage(){
         let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "AuthID") as! LoginSignupViewController
         loginVC.isPageOpenByPopup = true
         loginVC.delegate = self
         self.present( UINavigationController(rootViewController: loginVC), animated: true, completion: nil)
-    }
+    }*/
     
-    func notify() {
+   /* func notify() {
         firebaseActivity.syncLeavesFromFirebaseToApp()
         firebaseActivity.syncTotalLeaveFromFirebaseToApp { [weak self] (isUpdated) in
             guard let Strong = self else { return }
@@ -133,6 +130,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
             Strong.setupInitialProcess()
         }
     }
+    */
     
     @objc func gotoEditLeave(){
         let editTotalLeaveVC = self.storyboard?.instantiateViewController(withIdentifier: "EditTotalLeaveID") as! EditTotalLeaveViewController
@@ -160,7 +158,7 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
 //            CoreDataStack.managedObjectContext.delete(leave)
             try CoreDataStack.saveContext()
 //            FirebaseActivity().DeleteLeave(leave: leave)
-            FirebaseActivity().UpdateLeave(leave: leave)
+//            FirebaseActivity().UpdateLeave(leave: leave)
             fetchLeaves()
             
         } catch {
@@ -191,10 +189,12 @@ class LeavesViewController: UIViewController, LeaveSetDelegate, UITableViewDeleg
         self.present(newVC, animated: true, completion: nil)
     }
     
-    @IBAction func settingTapped(_ sender: Any) {
+/*
+     @IBAction func settingTapped(_ sender: Any) {
         let settingVC = storyboard?.instantiateViewController(withIdentifier: "SettingVCID") as! SettingViewController
         self.present(UINavigationController(rootViewController: settingVC), animated: true, completion: nil)
     }
+*/
     
     @IBAction func SetupLeavesTapped(_ sender: Any) {
         let GetLeavesVC = storyboard?.instantiateViewController(withIdentifier: "GetLeavesID") as! GetLeavesViewController
