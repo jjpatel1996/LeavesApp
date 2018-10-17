@@ -26,7 +26,7 @@ class NewLeaveViewController: UIViewController {
     
     @IBOutlet weak var DatePicker: UIDatePicker!
     
-    var leaveType:LeaveType = .Sick
+    var leaveType:LeaveType = .Working
     
     var isNew:Bool = true
     
